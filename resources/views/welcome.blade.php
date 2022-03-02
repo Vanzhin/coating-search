@@ -49,7 +49,7 @@
         <h1>Поиск покрытий</h1>
         <p class="lead">Подбор покрытий по параметрам</p>
         <p class="lead">
-            <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Вперед</a>
+            <a href="{{ route('home') }}" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Вперед</a>
         </p>
     </main>
 
