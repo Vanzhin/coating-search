@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\{BelongsToMany, HasOne};
 
 class Product extends Model
 {
@@ -24,6 +24,7 @@ class Product extends Model
         'tolerance',
         'min_temp',
         'max_service_temp',
+        'pds',
     ];
     public function binders(): BelongsToMany
     {
@@ -68,6 +69,16 @@ class Product extends Model
             'product_id', 'number_id',
             'id', 'id'
         );
+    }
+
+    public function brand(): HasOne
+    {
+        return $this->hasOne(Brand::class);
+    }
+
+    public function catalog(): HasOne
+    {
+        return $this->hasOne(Catalog::class);
     }
 
 }

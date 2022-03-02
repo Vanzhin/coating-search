@@ -12,4 +12,5 @@ class Brand extends Model
     protected $fillable = [
         'title'
     ];
+
 }

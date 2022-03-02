@@ -19,16 +19,16 @@ return new class extends Migration
             $table->text('description');
             $table->unsignedBigInteger('brand_id');
             $table->unsignedBigInteger('catalog_id');
-            $table->unsignedTinyInteger('vs');
-            $table->unsignedTinyInteger('dft');
-            $table->unsignedTinyInteger('dry_to_touch');
-            $table->unsignedTinyInteger('dry_to_handle');
-            $table->unsignedTinyInteger('min_int');
-            $table->unsignedTinyInteger('max_int');
+            $table->unsignedSmallInteger('vs');
+            $table->unsignedSmallInteger('dft');
+            $table->unsignedFloat('dry_to_touch');
+            $table->unsignedFloat('dry_to_handle');
+            $table->unsignedFloat('min_int');
+            $table->unsignedSmallInteger('max_int');
             $table->boolean('tolerance')->default(false);
-            $table->unsignedTinyInteger('min_temp');
-            $table->unsignedTinyInteger('max_service_temp');
-            $table->string('pds')->nullable();
+            $table->SmallInteger('min_temp');
+            $table->unsignedSmallInteger('max_service_temp');
+            $table->string('pds')->nullable()->default(null);
             $table->foreign('brand_id')
                 ->references('id')
                 ->on('brands')
