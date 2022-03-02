@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-md-top" aria-label="Fifth navbar example">
     <div class="container d-flex flex-wrap align-items-center justify-content-around justify-content-lg-start">
-        <a class="navbar-brand" href="#">{{env('APP_NAME')}}</a>
+        <a class="navbar-brand" href="{{ route('home') }}">{{env('APP_NAME')}}</a>
         <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
