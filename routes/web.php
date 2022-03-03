@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\{ProductController};
 
 /*
 |--------------------------------------------------------------------------
@@ -19,3 +20,10 @@ Route::get('/', function () {
 Route::get('/home', function () {
     return view('home');
 })->name('home');
+
+//products
+Route::get('/products', [ProductController::class, 'index'])
+    ->name('products.index');
+Route::get('/products/{product}', [ProductController::class, 'show'])
+    ->where('product', '\d+')
+    ->name('products.show');

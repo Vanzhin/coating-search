@@ -26,7 +26,19 @@ class Product extends Model
         'max_service_temp',
         'pds',
     ];
-    public function binders(): BelongsToMany
+
+public array $propertyToShow = [
+    'vs' => 'Сухой остаток,&nbsp;ч',
+    'dft' => 'Стандартная ТСП,&nbsp;мкм',
+    'dry_to_touch' => 'Сухой на отлип,&nbsp;ч',
+    'dry_to_handle' => 'Сухой до перемещения,&nbsp;ч',
+    'min_int' => 'Минимальный интервал перекрытия,&nbsp;ч',
+    'max_int' => 'Максимальный интервал перекрытия,&nbsp;ч',
+    'tolerance' => 'Толератный к подготовке поверхности',
+    'min_temp' => 'Минимальная т-ра нанесения,' . "&nbsp;&deg;C",
+    'max_service_temp' => 'Максимальная  т-ра эксплуатации,' . "&nbsp;&deg;C",
+];
+public function binders(): BelongsToMany
     {
         return $this->belongsToMany(Binder::class, 'product_binders',
             'product_id', 'binder_id',
@@ -73,12 +85,12 @@ class Product extends Model
 
     public function brand(): HasOne
     {
-        return $this->hasOne(Brand::class);
+        return $this->hasOne(Brand::class, 'id', 'brand_id');
     }
 
     public function catalog(): HasOne
     {
-        return $this->hasOne(Catalog::class);
+        return $this->hasOne(Catalog::class, 'id', 'catalog_id');
     }
 
 }

@@ -11,7 +11,7 @@ class ProductController extends Controller
     {
         $products = Product::query()->paginate(10);
         return view('products.index', [
-            'productsList' => $products,
+            'products' => $products,
 
         ]);
     }
@@ -20,6 +20,18 @@ class ProductController extends Controller
     {
         return view('products.show', [
             'product' => $product,
+            'brand' => $product->brand,
+            'catalog' => $product->catalog,
+            'binders' => $product->binders,
+            'environments' => $product->environments,
+            'numbers' => $product->numbers,
+            'resistances' => $product->resistances,
+            'substrates' => $product->substrates
+
+
+
+
+
         ]);
     }
 }
