@@ -7,14 +7,14 @@
     <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
         <div class="card w-100">
             <h5 class="card-header">{{$product->title}}
-                <span class="badge bg-secondary">{{strtoupper($brand->title)}}</span>
-                <span class="badge bg-secondary">{{strtoupper($catalog->title)}}</span>
+                <a href="{{ route('products.brand', $brand->title) }}" class="badge bg-secondary">{{Str::upper($brand->title)}}</a>
+                <span class="badge bg-secondary">{{Str::ucfirst($catalog->title)}}</span>
                 <a href="{{$product->pds}}" class="badge bg-secondary">PDS</a>
 
 
             </h5>
             <div class="card-body">
-                <h5 class="card-title">{{ucfirst($product->description)}}</h5>
+                <h5 class="card-title">{{Str::ucfirst($product->description)}}</h5>
                 <table class="table table-striped">
                     <thead>
                     </thead>
@@ -31,7 +31,7 @@
                         <td>Среда применения</td>
                         <td>
                             @foreach($environments as $environment)
-                                <span>{{Str::ucfirst($environment->title)}}</span><br>
+                                <a class="link" href="{{route('products.environment', $environment)}}">{{Str::ucfirst($environment->title)}}</a><br>
                             @endforeach
                         </td>
                     </tr>
@@ -60,7 +60,6 @@
                         </td>
                     </tr>
                     @foreach($product->propertyToShow as $key => $value)
-{{--                        @dd($product->propertyToShow, $key, $product->$key, $value, $product, property_exists($product,$key) )--}}
                         @if(isset($product->$key))
                             <tr>
                                 <td>{!! $value !!}</td>

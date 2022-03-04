@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
+use App\Models\Environment;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -27,11 +29,27 @@ class ProductController extends Controller
             'numbers' => $product->numbers,
             'resistances' => $product->resistances,
             'substrates' => $product->substrates
+        ]);
+    }
 
+    public function brand(Brand $brand)
+    {
+        return view('products.index', [
+            'products' => Brand::find($brand->id)->products()->paginate(10),
+        ]);
+    }
 
+    public function environment(Environment $environment)
+    {
+        return view('products.index', [
+            'products' => Environment::find($environment->id)->products()->paginate(10),
+        ]);
+    }
 
-
-
+    public function showLinked(Model $model)
+    {
+        return view('products.index', [
+            'products' => Brand::find($brand->id)->products()->paginate(10),
         ]);
     }
 }

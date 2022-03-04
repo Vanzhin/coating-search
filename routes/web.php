@@ -22,8 +22,17 @@ Route::get('/home', function () {
 })->name('home');
 
 //products
-Route::get('/products', [ProductController::class, 'index'])
-    ->name('products.index');
-Route::get('/products/{product}', [ProductController::class, 'show'])
+
+Route::group(['as' => 'products.', 'prefix' => 'products'], function(){
+    Route::get('/', [ProductController::class, 'index'])
+    ->name('index');
+    Route::get('/{product}', [ProductController::class, 'show'])
     ->where('product', '\d+')
-    ->name('products.show');
+    ->name('show');
+    Route::get('/brand/{brand}', [ProductController::class, 'brand'])
+        ->where('brand', '\d+')
+        ->name('brand');
+    Route::get('/environment/{environment}', [ProductController::class, 'environment'])
+        ->where('environment', '\d+')
+        ->name('environment');
+    });

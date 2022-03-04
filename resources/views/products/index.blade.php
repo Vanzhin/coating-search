@@ -19,12 +19,12 @@
                     <div class="card w-100">
                         <h5 class="card-header">{{$product->title}}</h5>
                         <div class="card-body">
-                            <h5 class="card-title">{{ucfirst($product->description)}}</h5>
+                            <h5 class="card-title">{{Str::ucfirst($product->description)}}</h5>
 
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th scope="col">{{ strtoupper('vs') }}</th>
+                                    <th scope="col">VS</th>
                                     <th scope="col">На отлип, ч</th>
                                     <th scope="col">Мин Т, &#176;C</th>
                                 </tr>
