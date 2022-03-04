@@ -7,7 +7,7 @@
     <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
         <div class="card w-100">
             <h5 class="card-header">{{$product->title}}
-                <a href="{{ route('products.brand', $brand->title) }}" class="badge bg-secondary">{{Str::upper($brand->title)}}</a>
+                <a href="{{ route('products.brand', $brand->title) }}" class="badge bg-secondary" title="Все покрытия {{Str::upper($brand->title)}}">{{Str::upper($brand->title)}}</a>
                 <span class="badge bg-secondary">{{Str::ucfirst($catalog->title)}}</span>
                 <a href="{{$product->pds}}" class="badge bg-secondary">PDS</a>
 

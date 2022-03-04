@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{ProductController};
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +45,9 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function() {
         return view('admin.index');
     })->name('index');
     Route::resources([
+        '/products' => AdminProductController::class,
 
     ]);
+    Route::get('/products', [AdminProductController::class, 'index'])
+        ->name('products');
 });
