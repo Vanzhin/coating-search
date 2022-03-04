@@ -46,10 +46,4 @@ class ProductController extends Controller
         ]);
     }
 
-    public function showLinked(Model $model)
-    {
-        return view('products.index', [
-            'products' => Brand::find($brand->id)->products()->paginate(10),
-        ]);
-    }
 }

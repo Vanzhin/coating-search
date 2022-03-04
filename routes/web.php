@@ -36,3 +36,13 @@ Route::group(['as' => 'products.', 'prefix' => 'products'], function(){
         ->where('environment', '\d+')
         ->name('environment');
     });
+
+//admin
+Route::group(['as' => 'admin.', 'prefix' => 'admin'], function() {
+    Route::get('/index', function () {
+        return view('admin.index');
+    })->name('index');
+    Route::resources([
+
+    ]);
+});

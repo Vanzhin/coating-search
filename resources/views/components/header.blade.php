@@ -24,7 +24,11 @@
                         <li><a class="dropdown-item" href="#">Химстойкость</a></li>
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.index') }}">Панель управления</a>
+                </li>
             </ul>
+
             <form>
                 <input class="form-control" type="text" placeholder="Search" aria-label="Search">
             </form>
