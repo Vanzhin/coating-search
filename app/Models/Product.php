@@ -56,6 +56,37 @@ public static function getFieldsToShow()
     ];
 }
 
+    public static function getFieldsToCreate()
+    {
+        return [
+            'title' => 'Название',
+            'description' => 'Описание',
+            'brand_id' => 'Производитель',
+            'catalog_id' => 'Сегмент',
+            'vs' => 'Сухой остаток,&nbsp;ч',
+            'dft' => 'Стандартная ТСП,&nbsp;мкм',
+            'dry_to_touch' => 'Сухой на отлип,&nbsp;ч',
+            'dry_to_handle' => 'Сухой до перемещения,&nbsp;ч',
+            'min_int' => 'Минимальный интервал перекрытия,&nbsp;ч',
+            'max_int' => 'Максимальный интервал перекрытия,&nbsp;ч',
+            'tolerance' => 'Толератный к подготовке поверхности?',
+            'min_temp' => 'Минимальная т-ра нанесения,' . "&nbsp;&deg;C",
+            'max_service_temp' => 'Максимальная  т-ра эксплуатации,' . "&nbsp;&deg;C",
+            'pds' => 'Техническое описание',
+        ];
+    }
+
+    public static function getLinkedFields()
+    {
+        return [
+            'binders' => 'Основа',
+            'environments' => 'Среда эксплуатации',
+            'numbers' => 'Очередность в системе АКЗ',
+            'resistances' => 'Стойкость к',
+            'substrates' => 'Подложка'
+        ];
+    }
+
 public function binders(): BelongsToMany
     {
         return $this->belongsToMany(Binder::class, 'product_binders',

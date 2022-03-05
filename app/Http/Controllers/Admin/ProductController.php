@@ -3,7 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Binder;
+use App\Models\Brand;
+use App\Models\Catalog;
+use App\Models\Environment;
+use App\Models\Number;
 use App\Models\Product;
+use App\Models\Resistance;
+use App\Models\Substrate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 
@@ -31,7 +38,17 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.products.create', [
+            'fields' => Product::getFieldsToCreate(),
+            'brands' => Brand::all(),
+            'catalogs' => Catalog::all(),
+            'linkedFields' => Product::getLinkedFields(),
+            'binders' => Binder::query()->orderBy('title', 'asc')->get(),
+            'environments' => Environment::query()->orderBy('title', 'asc')->get(),
+            'numbers' => Number::all(),
+            'resistances' => Resistance::query()->orderBy('title', 'asc')->get(),
+            'substrates' => Substrate::query()->orderBy('title', 'asc')->get(),
+        ]);
     }
 
     /**
