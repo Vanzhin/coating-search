@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Products\CreateRequest;
 use App\Models\Binder;
 use App\Models\Brand;
 use App\Models\Catalog;
@@ -54,13 +55,29 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param CreateRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request)
     {
-        //
-    }
+        $data = $request->validated();
+        if(key_exists('tolerance', $data)){
+            $data['tolerance'] = 1;
+        } else{
+            $data['tolerance'] = 0;
+        }
+        $created = Product::create($data);
+        //slug генерируется за счет трейта Sluggable в модели Product
+        if($created){
+
+            //заполняю сводные таблицы
+            foreach (Product::getLinkedFields() as $key => $item){
+                $created->$key()->attach($request->input($key));
+            }
+
+            return redirect()->route('admin.products')->with('success', __('messages.admin.products.created.success'));
+        }
+        return back()->with('error', __('messages.admin.products.created.error'))->withInput();    }
 
     /**
      * Display the specified resource.

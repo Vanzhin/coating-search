@@ -29,6 +29,10 @@ return new class extends Migration
             $table->SmallInteger('min_temp');
             $table->unsignedSmallInteger('max_service_temp');
             $table->string('pds')->nullable()->default(null);
+            $table->timestamps();
+            $table->string('slug',255);
+            $table->index(['title', 'slug']);
+
             $table->foreign('brand_id')
                 ->references('id')
                 ->on('brands')

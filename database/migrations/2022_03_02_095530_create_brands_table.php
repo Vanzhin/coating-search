@@ -17,7 +17,10 @@ return new class extends Migration
             $table->id();
             $table->char('title', 50)->unique();
             $table->string('image')->nullable()->default(null);
+            $table->string('slug',255);
             $table->timestamps();
+            $table->index(['title', 'slug']);
+
         });
     }
 

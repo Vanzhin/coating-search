@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ProductSeeder extends Seeder
 {
@@ -18,6 +19,7 @@ class ProductSeeder extends Seeder
         DB::table('products')->insert(
             [
                 [   'title' => 'AMERCOAT 182 ZH HB',
+                    'slug' => Str::slug('AMERCOAT 182 ZH HB'),
                     'description' => 'двухкомпонентное толстослойное цинк-фосфатное грунтовочное/ межслойное покрытие полиамидного отверждения',
                     'brand_id' => 1,
                     'catalog_id' => 1,
@@ -34,6 +36,7 @@ class ProductSeeder extends Seeder
                 ],
                 [   'title' => 'AMERCOAT 236',
                     'description' => 'двухкомпонентное многофугкциональное эпоксидное покрытие с феналкаминовым отвердителем',
+                    'slug' => Str::slug('AMERCOAT 236'),
                     'brand_id' => 1,
                     'catalog_id' => 1,
                     'vs' => 80,
@@ -50,6 +53,7 @@ class ProductSeeder extends Seeder
                 ],
                 [   'title' => 'AMERCOAT 240',
                     'description' => 'двухкомпонентное многофугкциональное эпоксидное покрытие с феналкаминовым отвердителем',
+                    'slug' => Str::slug('AMERCOAT 240'),
                     'brand_id' => 1,
                     'catalog_id' => 1,
                     'vs' => 87,

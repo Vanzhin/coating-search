@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, BelongsToMany, HasOne};
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, Sluggable;
 
     protected  $table = 'products';
     protected $fillable = [
@@ -29,7 +30,7 @@ class Product extends Model
     ];
 
 public array $propertyToShow = [
-    'vs' => 'Сухой остаток,&nbsp;ч',
+    'vs' => 'Сухой остаток,&nbsp;об %',
     'dft' => 'Стандартная ТСП,&nbsp;мкм',
     'dry_to_touch' => 'Сухой на отлип,&nbsp;ч',
     'dry_to_handle' => 'Сухой до перемещения,&nbsp;ч',
@@ -44,7 +45,7 @@ public static function getFieldsToShow()
 {
     return [
         'title' => 'Название',
-        'vs' => 'Сухой остаток,&nbsp;ч',
+        'vs' => 'Сухой остаток,&nbsp;об %',
         'dft' => 'Стандартная ТСП,&nbsp;мкм',
         'dry_to_touch' => 'Сухой на отлип,&nbsp;ч',
         'dry_to_handle' => 'Сухой до перемещения,&nbsp;ч',
@@ -63,7 +64,7 @@ public static function getFieldsToShow()
             'description' => 'Описание',
             'brand_id' => 'Производитель',
             'catalog_id' => 'Сегмент',
-            'vs' => 'Сухой остаток,&nbsp;ч',
+            'vs' => 'Сухой остаток,&nbsp;об %',
             'dft' => 'Стандартная ТСП,&nbsp;мкм',
             'dry_to_touch' => 'Сухой на отлип,&nbsp;ч',
             'dry_to_handle' => 'Сухой до перемещения,&nbsp;ч',
@@ -142,4 +143,12 @@ public function binders(): BelongsToMany
         return $this->hasOne(Catalog::class, 'id', 'catalog_id');
     }
 
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
+    }
 }

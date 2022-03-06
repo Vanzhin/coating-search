@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class EnvironmentSeeder extends Seeder
 {
@@ -15,12 +16,20 @@ class EnvironmentSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('environments')->insert(
-            [
-                ['title' => 'атмосфера'],
-                ['title' => 'погружение в воду'],
-                ['title' => 'погружение в почву'],
-            ]
-        );
+        DB::table('environments')->insert($this->getData());
+    }
+
+    private function getData()
+    {
+        $data = [
+            ['title' => 'атмосфера'],
+            ['title' => 'погружение в воду'],
+            ['title' => 'погружение в почву'],
+        ];
+
+        for ($i = 0; $i < count($data); $i++){
+            $data[$i]['slug'] = Str::slug($data[$i]['title']);
+        }
+        return $data;
     }
 }

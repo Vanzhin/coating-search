@@ -24,7 +24,7 @@
             @if($key === 'brand_id')
                     <select name="{{ $key }}" id="{{ $key }}" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
                         @foreach($brands as $brand)
-                            <option value="{{ $brand->title }}">{{ Str::upper($brand->title) }}</option>
+                            <option value="{{ $brand->id }}">{{ Str::upper($brand->title) }}</option>
                         @endforeach
                     </select>
                     @continue
@@ -32,7 +32,7 @@
                 @if($key === 'catalog_id')
                     <select name="{{ $key }}" id="{{ $key }}" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
                         @foreach($catalogs as $catalog)
-                            <option value="{{ $catalog->title }}">{{ $catalog->title }}</option>
+                            <option value="{{ $catalog->id }}">{{ $catalog->title }}</option>
                         @endforeach
                     </select>
                     @continue
@@ -43,7 +43,7 @@
                 @endif
                 @if($key === 'tolerance')
                     <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" id="{{$key}}">
+                        <input class="form-check-input" type="checkbox" role="switch" id="{{$key}}" name="{{$key}}">
                     </div>
                     @continue
                 @endif

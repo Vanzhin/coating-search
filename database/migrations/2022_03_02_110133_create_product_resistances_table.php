@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('resistance_id');
             $table->timestamps();
+
             $table->foreign('product_id')
                 ->references('id')
                 ->on('products')
