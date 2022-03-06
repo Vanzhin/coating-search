@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Products\CreateRequest;
+use App\Http\Requests\Products\UpdateRequest;
 use App\Models\Binder;
 use App\Models\Brand;
 use App\Models\Catalog;
@@ -49,6 +50,10 @@ class ProductController extends Controller
             'numbers' => Number::all(),
             'resistances' => Resistance::query()->orderBy('title', 'asc')->get(),
             'substrates' => Substrate::query()->orderBy('title', 'asc')->get(),
+            'method' => 'store',
+            'param' => null,
+            'title' => 'Добавление',
+            'button' => 'Добавить'
         ]);
     }
 
@@ -93,34 +98,67 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param Product $product
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Product $product)
     {
-        //
+        return view('admin.products.create', [
+            'fields' => Product::getFieldsToCreate(),
+            'brands' => Brand::all(),
+            'catalogs' => Catalog::all(),
+            'linkedFields' => Product::getLinkedFields(),
+            'binders' => Binder::query()->orderBy('title', 'asc')->get(),
+            'environments' => Environment::query()->orderBy('title', 'asc')->get(),
+            'numbers' => Number::all(),
+            'resistances' => Resistance::query()->orderBy('title', 'asc')->get(),
+            'substrates' => Substrate::query()->orderBy('title', 'asc')->get(),
+            'product' => $product,
+            'method' => 'update',
+            'param' => $product,
+            'title' => 'Обновление',
+            'button' => 'Обновить'
+
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param UpdateRequest $request
+     * @param Product $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, Product $product)
     {
-        //
+        $data = $request->validated();
+        $product->slug = null;
+        $updated = $product->fill($data)->save();
+        if($updated){
+
+            //сначала удаляю старые записи из связанных таблиц, потом записываю новые
+            foreach (Product::getLinkedFields() as $key => $item){
+                $product->$key()->detach();
+                $product->$key()->attach($request->input($key));
+            }
+
+            return redirect()->route('admin.products')->with('success', __('messages.admin.products.updated.success'));
+        }
+        return back()->with('error',__('messages.admin.products.updated.error'))->withInput();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Product $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        //
+        $deleted = $product->delete();
+        if($deleted){
+            return redirect()->route('admin.products')->with('success', __('messages.admin.products.deleted.success',));
+        }
+        return back()->with('error', __('messages.admin.products.deleted.error'))->withInput();
     }
 }

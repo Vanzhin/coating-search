@@ -14,7 +14,7 @@
 @endsection
 @section('content')
     <div class="table-responsive">
-{{--        @include('inc.message')--}}
+        @include('inc.message')
         <table class="table table-bordered table-sm table-hover">
             <thead class="thead-light">
             <tr>

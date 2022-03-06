@@ -1,17 +1,19 @@
 @extends('layouts.admin')
 @section('title')
-    Добавление материала @parent
+    {{ $title }} материала @parent
 @endsection
 @section('header')
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Добавление материала</h1>
+        <h1 class="h2">{{ $title }} материала</h1>
 
     </div>
 @endsection
 @section('content')
-
-    <form method="post" action="{{ route('admin.products.store') }}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('admin.products.' . $method, [$param]) }}" enctype="multipart/form-data">
     @csrf
+        @if($method == 'update')
+            @method('put')
+        @endif
         <div class="form-group">
             @foreach ($fields as  $key => $item)
                 @error($key)
@@ -24,7 +26,7 @@
             @if($key === 'brand_id')
                     <select name="{{ $key }}" id="{{ $key }}" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
                         @foreach($brands as $brand)
-                            <option value="{{ $brand->id }}">{{ Str::upper($brand->title) }}</option>
+                            <option value="{{ $brand->id }}" @if(isset($product) && $product->brand->title === $brand->title) selected @endif>{{ Str::upper($brand->title) }}</option>
                         @endforeach
                     </select>
                     @continue
@@ -32,22 +34,22 @@
                 @if($key === 'catalog_id')
                     <select name="{{ $key }}" id="{{ $key }}" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
                         @foreach($catalogs as $catalog)
-                            <option value="{{ $catalog->id }}">{{ $catalog->title }}</option>
+                            <option value="{{ $catalog->id }}" @if(isset($product) && $product->catalog->title === $catalog->title) selected @endif>{{ $catalog->title }}</option>
                         @endforeach
                     </select>
                     @continue
                 @endif
                 @if($key === 'description')
-                    <textarea rows="3" cols="5" class="form-control" id="{{ $key }}" name="{{ $key }}" >{{old($key)}}</textarea>
+                    <textarea rows="3" cols="5" class="form-control" id="{{ $key }}" name="{{ $key }}">@if(isset($product)){{$product->$key}}@else{{old($key)}}@endif</textarea>
                     @continue
                 @endif
                 @if($key === 'tolerance')
                     <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" id="{{$key}}" name="{{$key}}">
+                        <input class="form-check-input" type="checkbox" role="switch" id="{{$key}}" name="{{$key}}" @if(isset($product) && $product->tolerance === 1) checked @endif>
                     </div>
                     @continue
                 @endif
-                <input type="text" class="form-control" id="{{ $key }}" name="{{ $key }}" value="{{old($key)}}">
+                <input type="text" class="form-control" id="{{ $key }}" name="{{ $key }}" value="@if(isset($product)){{$product->$key}}@else{{old($key)}}@endif">
             @endforeach
             @foreach ($linkedFields as  $key => $item)
                     @error($key)
@@ -58,14 +60,15 @@
                     @enderror
                     <label for="{{$key}}"><p>{{$item}}:</p></label>
                     <select multiple name = "{{$key}}[]" id = "{{$key}}" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                        @foreach($$key as $item)
-                            <option value="{{$item->id}}">{{Str::ucfirst($item->title)}}</option>
+                        @foreach($$key as $value)
+
+                            <option @if(isset($product) && $product->$key->contains('title', $value->title)) selected @endif value="{{$value->id}}">{{Str::ucfirst($value->title)}}</option>
                         @endforeach
                     </select>
                 @endforeach
 
         </div>
-        <button type="submit"  class="btn btn-success">Добавить</button>
+        <button type="submit"  class="btn btn-success">{{$button}}</button>
     </form>
 @endsection
 
