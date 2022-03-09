@@ -1,0 +1,38 @@
+
+.table-container {
+    position: relative;
+    max-height:  300px;
+    overflow: scroll;
+}
+
+thead th {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+
+
+}
+
+thead th:first-child {
+    left: 0;
+    z-index: 3;
+    background: white;
+}
+
+tbody {
+    overflow: scroll;
+    height: 200px;
+}
+
+/* MAKE LEFT COLUMN FIXEZ */
+tr > :first-child {
+    position: -webkit-sticky;
+    position: sticky;
+    left: 0;
+    background: white;
+
+}
+
+
+

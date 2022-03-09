@@ -15,7 +15,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link @if(request()->routeIs('admin.binders*')) active @endif" href="{{ route('admin.binders') }}">
-                    <span data-feather="file"></span>
+                    <span data-feather="file-text"></span>
                     Основания
                 </a>
             </li>
@@ -23,6 +23,18 @@
                 <a class="nav-link @if(request()->routeIs('admin.brands*')) active @endif" href="{{ route('admin.brands') }}">
                     <span data-feather="file-text"></span>
                     Производители
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @if(request()->routeIs('admin.catalogs*')) active @endif" href="{{ route('admin.catalogs') }}">
+                    <span data-feather="file-text"></span>
+                    Сегменты
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @if(request()->routeIs('admin.additives*')) active @endif" href="{{ route('admin.additives') }}">
+                    <span data-feather="file-text"></span>
+                    Добавки
                 </a>
             </li>
 {{--            <li class="nav-item">--}}

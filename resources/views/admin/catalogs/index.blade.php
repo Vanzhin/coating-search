@@ -1,18 +1,19 @@
 @extends('layouts.admin')
 @section('title')
-    Основания @parent
+    Сегменты @parent
 @endsection
 @section('header')
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Список оснований</h1>
+        <h1 class="h2">Список сегментов</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group me-2">
-                <a href="{{ route('admin.binders.create') }}" class="btn btn-sm btn-secondary">Добавить</a>
+                <a href="{{ route('admin.catalogs.create') }}" class="btn btn-sm btn-secondary">Добавить</a>
             </div>
         </div>
     </div>
 @endsection
 @section('content')
+
     <div class="table-responsive table-container">
         @include('inc.message')
         <div class="table-horizontal-container">
@@ -26,17 +27,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                @forelse($binders as $binder)
+                @forelse($catalogs as $catalog)
 
                     <tr>
                         @foreach($fields as $key =>$item)
-                            <td >{{Str::ucfirst($binder->$key)}}</td>
+                            <td >{{Str::ucfirst($catalog->$key)}}</td>
                         @endforeach
 
                         <td>
                             <div class="d-flex">
-                                <a href="{{ route('admin.binders.edit',['binder' => $binder]) }}"  class="btn btn-warning">Редактировать</a>
-                                <form method="post" action="{{ route('admin.binders.destroy', ['binder' => $binder]) }}">
+                                <a href="{{ route('admin.catalogs.edit',['catalog' => $catalog]) }}"  class="btn btn-warning">Редактировать</a>
+                                <form method="post" action="{{ route('admin.catalogs.destroy', ['catalog' => $catalog]) }}">
                                     @csrf
                                     @method('delete')
                                     <button type="submit" class="btn btn-danger">Удалить</button>
@@ -51,6 +52,7 @@
             </table>
 
         </div>
-        {{$binders->links()}}
+        {{$catalogs->links()}}
     </div>
+
 @endsection

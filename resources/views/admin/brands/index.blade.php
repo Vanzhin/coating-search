@@ -13,42 +13,44 @@
     </div>
 @endsection
 @section('content')
-    <div class="table-responsive ">
+    <div class="table-responsive table-container">
         @include('inc.message')
-        <table class="table table-bordered table-sm table-hover align-middle">
-            <thead class="thead-light align-middle sticky-top">
-            <tr>
-                @foreach($fields as $item)
-                    <th scope="col">{!! $item !!}</th>
-                @endforeach
-                    <th scope="col">Действия</th>
-
-            </tr>
-            </thead>
-            <tbody>
-            @forelse($brands as $brand)
-
-                <tr>
-                    @foreach($fields as $key =>$item)
-                        <td >{{Str::ucfirst($brand->$key)}}</td>
+        <div class="table-horizontal-container">
+            <table class="unfixed-table table table-sm table-hover align-middle table-borderless">
+                <thead class="thead-light align-middle">
+                <tr class="justify-content-center">
+                    @foreach($fields as $item)
+                        <th class="bg-light justify-content-center" scope="col">{!! $item !!}</th>
                     @endforeach
+                    <th class="bg-light align-content-center" scope="col">Действия</th>
+                </tr>
+                </thead>
+                <tbody>
+                @forelse($brands as $brand)
+
+                    <tr>
+                        @foreach($fields as $key =>$item)
+                            <td >{{Str::ucfirst($brand->$key)}}</td>
+                        @endforeach
 
                         <td>
-                        <div class="d-flex">
-                            <a href="{{ route('admin.brands.edit',['brand' => $brand]) }}"  class="btn btn-warning">Редактировать</a>
-                            <form method="post" action="{{ route('admin.brands.destroy', ['brand' => $brand]) }}">
-                                @csrf
-                                @method('delete')
-                                <button type="submit" class="btn btn-danger">Удалить</button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-            @empty
-                <p>Записей нет</p>
-            @endforelse
-            </tbody>
-        </table>
-        {{$brands->onEachSide(2)->links()}}
+                            <div class="d-flex">
+                                <a href="{{ route('admin.brands.edit',['brand' => $brand]) }}"  class="btn btn-warning">Редактировать</a>
+                                <form method="post" action="{{ route('admin.brands.destroy', ['brand' => $brand]) }}">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-danger">Удалить</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <p>Записей нет</p>
+                @endforelse
+                </tbody>
+            </table>
+
+        </div>
+        {{$brands->links()}}
     </div>
 @endsection

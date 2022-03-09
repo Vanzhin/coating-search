@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 @section('title')
-    Основания @parent
+    Наполнители @parent
 @endsection
 @section('header')
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Список оснований</h1>
+        <h1 class="h2">Список наполнителей</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group me-2">
-                <a href="{{ route('admin.binders.create') }}" class="btn btn-sm btn-secondary">Добавить</a>
+                <a href="{{ route('admin.additives.create') }}" class="btn btn-sm btn-secondary">Добавить</a>
             </div>
         </div>
     </div>
@@ -26,17 +26,17 @@
                 </tr>
                 </thead>
                 <tbody>
-                @forelse($binders as $binder)
+                @forelse($additives as $additive)
 
                     <tr>
                         @foreach($fields as $key =>$item)
-                            <td >{{Str::ucfirst($binder->$key)}}</td>
+                            <td >{{Str::ucfirst($additive->$key)}}</td>
                         @endforeach
 
                         <td>
                             <div class="d-flex">
-                                <a href="{{ route('admin.binders.edit',['binder' => $binder]) }}"  class="btn btn-warning">Редактировать</a>
-                                <form method="post" action="{{ route('admin.binders.destroy', ['binder' => $binder]) }}">
+                                <a href="{{ route('admin.additives.edit',['additive' => $additive]) }}"  class="btn btn-warning">Редактировать</a>
+                                <form method="post" action="{{ route('admin.additives.destroy', ['additive' => $additive]) }}">
                                     @csrf
                                     @method('delete')
                                     <button type="submit" class="btn btn-danger">Удалить</button>
@@ -51,6 +51,6 @@
             </table>
 
         </div>
-        {{$binders->links()}}
+        {{$additives->links()}}
     </div>
 @endsection

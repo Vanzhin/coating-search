@@ -5,6 +5,10 @@ use App\Http\Controllers\{ProductController};
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\BinderController as AdminBinderController;
 use App\Http\Controllers\Admin\BrandController as AdminBrandController;
+use App\Http\Controllers\Admin\CatalogController as AdminCatalogController;
+use App\Http\Controllers\Admin\AdditiveController as AdminAdditiveController;
+
+
 
 
 
@@ -51,6 +55,9 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function() {
         '/products' => AdminProductController::class,
         '/binders' => AdminBinderController::class,
         '/brands' => AdminBrandController::class,
+        '/catalogs' => AdminCatalogController::class,
+        '/additives' => AdminAdditiveController::class
+
 
 
 
@@ -61,4 +68,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function() {
         ->name('binders');
     Route::get('/brands', [AdminBrandController::class, 'index'])
         ->name('brands');
+    Route::get('/catalogs', [AdminCatalogController::class, 'index'])
+        ->name('catalogs');
+    Route::get('/additives', [AdminAdditiveController::class, 'index'])
+        ->name('additives');
 });

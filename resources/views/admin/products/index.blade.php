@@ -13,42 +13,45 @@
     </div>
 @endsection
 @section('content')
-    <div class="table-responsive ">
+    <div class="table-responsive table-container">
         @include('inc.message')
-        <table class="table table-bordered table-sm table-hover align-middle">
-            <thead class="thead-light align-middle sticky-top">
-            <tr>
-                @foreach($fields as $item)
-                    <th scope="col">{!! $item !!}</th>
-                @endforeach
-                    <th scope="col">Действия</th>
-
-            </tr>
-            </thead>
-            <tbody>
-            @forelse($products as $product)
-
-                <tr>
-                    @foreach($fields as $key =>$item)
-                        <td >@if($product->$key){{Str::ucfirst($product->$key)}}@else {{'нет'}} @endif</td>
+        <div class="table-horizontal-container">
+            <table class="unfixed-table table table-sm table-hover align-middle table-borderless">
+                <thead class="thead-light align-middle">
+                <tr class="justify-content-center">
+                    @foreach($fields as $item)
+                        <th class="bg-light justify-content-center" scope="col">{!! $item !!}</th>
                     @endforeach
+                    <th class="bg-light align-content-center" scope="col">Действия</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                @forelse($products as $product)
+
+                    <tr>
+                        @foreach($fields as $key =>$item)
+                            <td >@if($product->$key){{Str::ucfirst($product->$key)}}@else {{'нет'}} @endif</td>
+                        @endforeach
 
                         <td>
-                        <div class="d-flex">
-                            <a href="{{ route('admin.products.edit',['product' => $product]) }}"  class="btn btn-warning">Редактировать</a>
-                            <form method="post" action="{{ route('admin.products.destroy', ['product' => $product]) }}">
-                                @csrf
-                                @method('delete')
-                                <button type="submit" class="btn btn-danger">Удалить</button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-            @empty
-                <p>Записей нет</p>
-            @endforelse
-            </tbody>
-        </table>
+                            <div class="d-flex">
+                                <a href="{{ route('admin.products.edit',['product' => $product]) }}"  class="btn btn-warning">Редактировать</a>
+                                <form method="post" action="{{ route('admin.products.destroy', ['product' => $product]) }}">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-danger">Удалить</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <p>Записей нет</p>
+                @endforelse
+                </tbody>
+            </table>
+
+        </div>
         {{$products->links()}}
     </div>
 @endsection
