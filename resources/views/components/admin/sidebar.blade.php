@@ -37,6 +37,18 @@
                     Добавки
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link @if(request()->routeIs('admin.environments*')) active @endif" href="{{ route('admin.environments') }}">
+                    <span data-feather="file-text"></span>
+                    Среда эксплуатации
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @if(request()->routeIs('admin.numbers*')) active @endif" href="{{ route('admin.numbers') }}">
+                    <span data-feather="file-text"></span>
+                    Слои
+                </a>
+            </li>
 {{--            <li class="nav-item">--}}
 {{--                <a class="nav-link @if(request()->routeIs('admin.users*')) active @endif" href="{{ route('admin.users') }}">--}}
 {{--                    <span data-feather="users"></span>--}}

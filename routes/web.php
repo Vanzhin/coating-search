@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\BinderController as AdminBinderController;
 use App\Http\Controllers\Admin\BrandController as AdminBrandController;
 use App\Http\Controllers\Admin\CatalogController as AdminCatalogController;
 use App\Http\Controllers\Admin\AdditiveController as AdminAdditiveController;
+use App\Http\Controllers\Admin\EnvironmentController as AdminEnvironmentController;
+use App\Http\Controllers\Admin\NumberController as AdminNumberController;
 
 
 
@@ -56,7 +58,10 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function() {
         '/binders' => AdminBinderController::class,
         '/brands' => AdminBrandController::class,
         '/catalogs' => AdminCatalogController::class,
-        '/additives' => AdminAdditiveController::class
+        '/additives' => AdminAdditiveController::class,
+        '/environments' => AdminEnvironmentController::class,
+        '/numbers' => AdminNumberController::class,
+
 
 
 
@@ -72,4 +77,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function() {
         ->name('catalogs');
     Route::get('/additives', [AdminAdditiveController::class, 'index'])
         ->name('additives');
+    Route::get('/environments', [AdminEnvironmentController::class, 'index'])
+        ->name('environments');
+    Route::get('/numbers', [AdminNumberController::class, 'index'])
+        ->name('numbers');
 });
