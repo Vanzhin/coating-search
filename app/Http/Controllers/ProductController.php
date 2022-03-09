@@ -28,7 +28,9 @@ class ProductController extends Controller
             'environments' => $product->environments,
             'numbers' => $product->numbers,
             'resistances' => $product->resistances,
-            'substrates' => $product->substrates
+            'substrates' => $product->substrates,
+            'additives' => $product->additives,
+
         ]);
     }
 

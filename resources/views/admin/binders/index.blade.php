@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 @section('title')
-    Материалы @parent
+    Основания @parent
 @endsection
 @section('header')
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Список Материалов</h1>
+        <h1 class="h2">Список Оснований</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group me-2">
-                <a href="{{ route('admin.products.create') }}" class="btn btn-sm btn-secondary">Добавить</a>
+                <a href="{{ route('admin.binders.create') }}" class="btn btn-sm btn-secondary">Добавить</a>
             </div>
         </div>
     </div>
@@ -26,17 +26,17 @@
             </tr>
             </thead>
             <tbody>
-            @forelse($products as $product)
+            @forelse($binders as $binder)
 
                 <tr>
                     @foreach($fields as $key =>$item)
-                        <td >@if($product->$key){{Str::ucfirst($product->$key)}}@else {{'нет'}} @endif</td>
+                        <td >{{Str::ucfirst($binder->$key)}}</td>
                     @endforeach
 
                         <td>
                         <div class="d-flex">
-                            <a href="{{ route('admin.products.edit',['product' => $product]) }}"  class="btn btn-warning">Редактировать</a>
-                            <form method="post" action="{{ route('admin.products.destroy', ['product' => $product]) }}">
+                            <a href="{{ route('admin.binders.edit',['binder' => $binder]) }}"  class="btn btn-warning">Редактировать</a>
+                            <form method="post" action="{{ route('admin.binders.destroy', ['binder' => $binder]) }}">
                                 @csrf
                                 @method('delete')
                                 <button type="submit" class="btn btn-danger">Удалить</button>
@@ -49,6 +49,6 @@
             @endforelse
             </tbody>
         </table>
-        {{$products->links()}}
+        {{$binders->onEachSide(2)->links()}}
     </div>
 @endsection

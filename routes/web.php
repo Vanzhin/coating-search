@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{ProductController};
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\BinderController as AdminBinderController;
+use App\Http\Controllers\Admin\BrandController as AdminBrandController;
+
 
 
 /*
@@ -46,8 +49,16 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function() {
     })->name('index');
     Route::resources([
         '/products' => AdminProductController::class,
+        '/binders' => AdminBinderController::class,
+        '/brands' => AdminBrandController::class,
+
+
 
     ]);
     Route::get('/products', [AdminProductController::class, 'index'])
         ->name('products');
+    Route::get('/binders', [AdminBinderController::class, 'index'])
+        ->name('binders');
+    Route::get('/brands', [AdminBrandController::class, 'index'])
+        ->name('brands');
 });

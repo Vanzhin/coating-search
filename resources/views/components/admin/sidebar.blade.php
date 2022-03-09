@@ -13,18 +13,18 @@
                     Покрытия
                 </a>
             </li>
-{{--            <li class="nav-item">--}}
-{{--                <a class="nav-link @if(request()->routeIs('admin.categories*')) active @endif" href="{{ route('admin.categories') }}">--}}
-{{--                    <span data-feather="file"></span>--}}
-{{--                    Категории--}}
-{{--                </a>--}}
-{{--            </li>--}}
-{{--            <li class="nav-item">--}}
-{{--                <a class="nav-link @if(request()->routeIs('admin.feedbacks*')) active @endif" href="{{ route('admin.feedbacks') }}">--}}
-{{--                    <span data-feather="file-text"></span>--}}
-{{--                    Отзывы--}}
-{{--                </a>--}}
-{{--            </li>--}}
+            <li class="nav-item">
+                <a class="nav-link @if(request()->routeIs('admin.binders*')) active @endif" href="{{ route('admin.binders') }}">
+                    <span data-feather="file"></span>
+                    Основания
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @if(request()->routeIs('admin.brands*')) active @endif" href="{{ route('admin.brands') }}">
+                    <span data-feather="file-text"></span>
+                    Производители
+                </a>
+            </li>
 {{--            <li class="nav-item">--}}
 {{--                <a class="nav-link @if(request()->routeIs('admin.users*')) active @endif" href="{{ route('admin.users') }}">--}}
 {{--                    <span data-feather="users"></span>--}}

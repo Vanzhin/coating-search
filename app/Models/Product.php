@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Interfaces\IModel;
+use App\Traits\TModel;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\{BelongsTo, BelongsToMany, HasOne};
 
 class Product extends Model
 {
-    use HasFactory, Sluggable;
+    use HasFactory, Sluggable, TModel;
 
     protected  $table = 'products';
     protected $fillable = [
@@ -41,7 +43,7 @@ public array $propertyToShow = [
     'max_service_temp' => 'Максимальная  т-ра эксплуатации,' . "&nbsp;&deg;C",
 ];
 
-public static function getFieldsToShow()
+public static function getFieldsToShow(): array
 {
     return [
         'title' => 'Название',
@@ -57,7 +59,7 @@ public static function getFieldsToShow()
     ];
 }
 
-    public static function getFieldsToCreate()
+    public static function getFieldsToCreate(): array
     {
         return [
             'title' => 'Название',
@@ -77,14 +79,15 @@ public static function getFieldsToShow()
         ];
     }
 
-    public static function getLinkedFields()
+    public static function getLinkedFields(): array
     {
         return [
             'binders' => 'Основа',
             'environments' => 'Среда эксплуатации',
             'numbers' => 'Очередность в системе АКЗ',
             'resistances' => 'Стойкость к',
-            'substrates' => 'Подложка'
+            'substrates' => 'Подложка',
+            'additives' => 'Добавка'
         ];
     }
 

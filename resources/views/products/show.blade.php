@@ -59,6 +59,14 @@
                             @endforeach
                         </td>
                     </tr>
+                    <tr>
+                        <td>Добавки</td>
+                        <td>
+                            @foreach($additives as $additive)
+                                <span>{{Str::ucfirst($additive->title)}}</span><br>
+                            @endforeach
+                        </td>
+                    </tr>
                     @foreach($product->propertyToShow as $key => $value)
                         @if(isset($product->$key))
                             <tr>

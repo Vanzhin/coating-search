@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Products\CreateRequest;
 use App\Http\Requests\Products\UpdateRequest;
+use App\Models\Additive;
 use App\Models\Binder;
 use App\Models\Brand;
 use App\Models\Catalog;
@@ -13,7 +14,6 @@ use App\Models\Number;
 use App\Models\Product;
 use App\Models\Resistance;
 use App\Models\Substrate;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 
 class ProductController extends Controller
@@ -50,6 +50,7 @@ class ProductController extends Controller
             'numbers' => Number::all(),
             'resistances' => Resistance::query()->orderBy('title', 'asc')->get(),
             'substrates' => Substrate::query()->orderBy('title', 'asc')->get(),
+            'additives' => Additive::query()->orderBy('title', 'asc')->get(),
             'method' => 'store',
             'param' => null,
             'title' => 'Добавление',
@@ -82,7 +83,9 @@ class ProductController extends Controller
 
             return redirect()->route('admin.products')->with('success', __('messages.admin.products.created.success'));
         }
-        return back()->with('error', __('messages.admin.products.created.error'))->withInput();    }
+        return back()->with('error', __('messages.admin.products.created.error'))->withInput();
+
+    }
 
     /**
      * Display the specified resource.
@@ -113,6 +116,7 @@ class ProductController extends Controller
             'numbers' => Number::all(),
             'resistances' => Resistance::query()->orderBy('title', 'asc')->get(),
             'substrates' => Substrate::query()->orderBy('title', 'asc')->get(),
+            'additives' => Additive::query()->orderBy('title', 'asc')->get(),
             'product' => $product,
             'method' => 'update',
             'param' => $product,

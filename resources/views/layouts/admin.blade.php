@@ -13,6 +13,7 @@
 
 
 
+
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -57,6 +58,8 @@
 <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('js/feather.min.js') }}"></script>
 <script src="{{ asset('js/dashboard.js') }}"></script>
+<script src="{{ asset('js/table.js') }}"></script>
+
 
 @stack('js')
 </html>
