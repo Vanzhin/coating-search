@@ -49,6 +49,18 @@
                     Слои
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link @if(request()->routeIs('admin.substrates*')) active @endif" href="{{ route('admin.substrates') }}">
+                    <span data-feather="file-text"></span>
+                    Подложки
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @if(request()->routeIs('admin.resistances*')) active @endif" href="{{ route('admin.resistances') }}">
+                    <span data-feather="file-text"></span>
+                    Стойкость
+                </a>
+            </li>
 {{--            <li class="nav-item">--}}
 {{--                <a class="nav-link @if(request()->routeIs('admin.users*')) active @endif" href="{{ route('admin.users') }}">--}}
 {{--                    <span data-feather="users"></span>--}}

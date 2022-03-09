@@ -9,6 +9,9 @@ use App\Http\Controllers\Admin\CatalogController as AdminCatalogController;
 use App\Http\Controllers\Admin\AdditiveController as AdminAdditiveController;
 use App\Http\Controllers\Admin\EnvironmentController as AdminEnvironmentController;
 use App\Http\Controllers\Admin\NumberController as AdminNumberController;
+use App\Http\Controllers\Admin\ResistanceController as AdminResistanceController;
+use App\Http\Controllers\Admin\SubstarteController as AdminSubstrateController;
+
 
 
 
@@ -61,6 +64,10 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function() {
         '/additives' => AdminAdditiveController::class,
         '/environments' => AdminEnvironmentController::class,
         '/numbers' => AdminNumberController::class,
+        '/resistances' => AdminResistanceController::class,
+        '/substrates' => AdminSubstrateController::class,
+
+
 
 
 
@@ -81,4 +88,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function() {
         ->name('environments');
     Route::get('/numbers', [AdminNumberController::class, 'index'])
         ->name('numbers');
+    Route::get('/resistances', [AdminResistanceController::class, 'index'])
+        ->name('resistances');
+    Route::get('/substrates', [AdminSubstrateController::class, 'index'])
+        ->name('substrates');
 });
