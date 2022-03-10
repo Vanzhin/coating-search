@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+
 @section('title')
     {{ $title }} материала @parent
 @endsection
@@ -24,7 +25,7 @@
                 @enderror
                 <label for="{{ $key }}"><p>{!! $item !!}:</p></label>
             @if($key === 'brand_id')
-                    <select name="{{ $key }}" id="{{ $key }}" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                    <select name="{{ $key }}" id="{{ $key }}" class="form-control selectpicker" data-live-search="true" aria-label=".form-select-lg example">
                         @foreach($brands as $brand)
                             <option value="{{ $brand->id }}" @if(isset($product) && $product->brand->title === $brand->title) selected @endif>{{ Str::upper($brand->title) }}</option>
                         @endforeach
@@ -32,7 +33,7 @@
                     @continue
                 @endif
                 @if($key === 'catalog_id')
-                    <select name="{{ $key }}" id="{{ $key }}" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                    <select name="{{ $key }}" id="{{ $key }}" class="form-control selectpicker" data-live-search="true" aria-label=".form-select-lg example">
                         @foreach($catalogs as $catalog)
                             <option value="{{ $catalog->id }}" @if(isset($product) && $product->catalog->title === $catalog->title) selected @endif>{{ $catalog->title }}</option>
                         @endforeach
@@ -53,22 +54,29 @@
             @endforeach
             @foreach ($linkedFields as  $key => $item)
                     @error($key)
+
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
                         <strong>{{ $message }}</strong>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                     @enderror
-                    <label for="{{$key}}"><p>{{$item}}:</p></label>
-                    <select multiple name = "{{$key}}[]" id = "{{$key}}" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                        @foreach($$key as $value)
+                        <label for="{{$key}}"><p>{{$item}}:</p></label>
+                        <select multiple name = "{{$key}}[]" id = "{{$key}}" class="form-control selectpicker" data-live-search="true" aria-label=".form-select-lg example">
+                            @foreach($$key as $value)
+                                @if(old($key))
+                                    <option value="{{$value->id}}" {{ in_array($value->id, old($key)) ? 'selected' : '' }}>{{Str::ucfirst($value->title)}}</option>
+                                @else
+                                    <option @if(isset($product) && $product->$key->contains('title', $value->title)) selected @endif value="{{$value->id}}">{{Str::ucfirst($value->title)}}</option>
 
-                            <option @if(isset($product) && $product->$key->contains('title', $value->title)) selected @endif value="{{$value->id}}">{{Str::ucfirst($value->title)}}</option>
-                        @endforeach
-                    </select>
+                                @endif
+                            @endforeach
+                        </select>
+
                 @endforeach
 
         </div>
         <button type="submit"  class="btn btn-success">{{$button}}</button>
     </form>
 @endsection
+
 
