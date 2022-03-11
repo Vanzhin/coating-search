@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{ProductController};
+use App\Http\Controllers\{ProductController, SearchController};
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\BinderController as AdminBinderController;
 use App\Http\Controllers\Admin\BrandController as AdminBrandController;
@@ -49,7 +49,17 @@ Route::group(['as' => 'products.', 'prefix' => 'products'], function(){
     Route::get('/environment/{environment}', [ProductController::class, 'environment'])
         ->where('environment', '\d+')
         ->name('environment');
+
     });
+
+//search
+
+Route::resources([
+    '/search' => SearchController::class,
+]);
+Route::get('/search', [SearchController::class, 'index'])
+    ->name('search');
+
 
 //admin
 Route::group(['as' => 'admin.', 'prefix' => 'admin'], function() {
@@ -66,12 +76,6 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function() {
         '/numbers' => AdminNumberController::class,
         '/resistances' => AdminResistanceController::class,
         '/substrates' => AdminSubstrateController::class,
-
-
-
-
-
-
 
     ]);
     Route::get('/products', [AdminProductController::class, 'index'])

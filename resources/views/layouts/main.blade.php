@@ -7,6 +7,10 @@
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/carousel.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/fixedtable.css') }}" rel="stylesheet">
+
+    <!-- Latest compiled and minified CSS -->
+    <link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet">
 
 
     <style>
@@ -40,5 +44,10 @@
 @component('components.footer')
 @endcomponent
 <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('js/jquery.min.js') }}"></script>
+
+{{--<!-- Latest compiled and minified JavaScript -->--}}
+<script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
+
 </body>
 </html>

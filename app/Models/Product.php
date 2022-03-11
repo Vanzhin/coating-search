@@ -78,6 +78,37 @@ public static function getFieldsToShow(): array
             'pds' => 'Техническое описание',
         ];
     }
+    public static function getFieldsToSearch(): array
+    {
+        return [
+            'vs' => 'Сухой остаток, не менее&nbsp;об %',
+            'dft' => 'Стандартная ТСП, от&nbsp;мкм',
+            'dry_to_touch' => 'Сухой на отлип, не более&nbsp;ч',
+            'brand_id' => 'Производитель',
+            'catalog_id' => 'Сегмент',
+            'dry_to_handle' => 'Сухой до перемещения, не более&nbsp;ч',
+            'min_int' => 'Минимальный интервал перекрытия, не более&nbsp;ч',
+            'max_int' => 'Максимальный интервал перекрытия, не более&nbsp;д',
+            'tolerance' => 'Толератный к подготовке поверхности?',
+            'min_temp' => 'Минимальная т-ра нанесения, ' . "от&nbsp;&deg;C",
+            'max_service_temp' => 'Максимальная  т-ра эксплуатации,' . "до&nbsp;&deg;C",
+            'title' => 'Название',
+
+        ];
+    }
+    public static function getFieldsToMath(): array
+    {
+        return [
+            'vs',
+            'dft',
+            'dry_to_touch',
+            'dry_to_handle',
+            'min_int',
+            'max_int',
+            'min_temp',
+            'max_service_temp',
+        ];
+    }
 
     public static function getLinkedFields(): array
     {

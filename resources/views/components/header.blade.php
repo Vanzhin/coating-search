@@ -11,7 +11,7 @@
                     <a class="nav-link @if(request()->routeIs('products*')) active @endif" href="{{ route('products.index') }}">Покрытия</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Подбор</a>
+                    <a class="nav-link  @if(request()->routeIs('search*')) active @endif" href="{{ route('search') }}">Подбор</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Вопросы</a>
