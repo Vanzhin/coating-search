@@ -29,13 +29,23 @@ class SearchController extends Controller
      */
     public function index()
     {
-         $selectionData= [];
-         foreach (Product::getFieldsToMath() as $fieldName){
-             $selectionData[$fieldName] = app(ExtractValuesService::class)
-                 ->getValues('products', $fieldName);
-         }
+        return view('searches.index');
+    }
 
-        return view('search', [
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $selectionData= [];
+        foreach (Product::getFieldsToMath() as $fieldName){
+            $selectionData[$fieldName] = app(ExtractValuesService::class)
+                ->getValues('products', $fieldName);
+        }
+
+        return view('searches.create', [
             'fields'=> Product::getFieldsToSearch(),
             'brands' => Brand::all(),
             'catalogs' => Catalog::all(),
@@ -52,16 +62,6 @@ class SearchController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param CreateRequest $request
@@ -70,8 +70,13 @@ class SearchController extends Controller
     public function store(CreateRequest $request)
     {
         $data = $request->validated();
-        dd(app(ProductSearchService::class)
-            ->getProducts($data)->paginate(Config::get('constants.ITEMS_PER_PAGE')));
+        $created = app(ProductSearchService::class)
+            ->getProducts($data)->paginate(Config::get('constants.ITEMS_PER_PAGE'));
+        if($created){
+
+            return redirect()->route('search.index')->with('success', __('messages.searches.created.success'));
+        }
+        return back()->with('error', __('messages.searches.created.error'))->withInput();
     }
 
     /**
