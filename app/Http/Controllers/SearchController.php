@@ -13,6 +13,8 @@ use App\Models\Product;
 use App\Models\Resistance;
 use App\Models\Substrate;
 use App\Services\ExtractValuesService;
+use App\Services\ProductSearchService;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -67,21 +69,9 @@ class SearchController extends Controller
      */
     public function store(CreateRequest $request)
     {
-        $selectionData= [];
-        foreach (Product::getFieldsToMath() as $fieldName){
-            $selectionData[$fieldName] = app(ExtractValuesService::class)
-                ->getValues('products', $fieldName);
-        }
-        //проверяю если значение null или меньше меньшего
-        $searchData = [];
-        foreach ($request->validated() as $key =>$value){
-//            dd($request->validated(), $key, $value, $selectionData, key_exists('vs', $selectionData), 54<$selectionData['vs']['min'], !is_null(55));
-
-            if (!is_null($value) && (key_exists($key, $selectionData) && $value >= $selectionData[$key]['min'])){
-                $searchData[$key] = $value;
-            }
-        }
-        dd($searchData);
+        $data = $request->validated();
+        dd(app(ProductSearchService::class)
+            ->getProducts($data)->paginate(Config::get('constants.ITEMS_PER_PAGE')));
     }
 
     /**
@@ -90,7 +80,7 @@ class SearchController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show($id)
     {
 
     }

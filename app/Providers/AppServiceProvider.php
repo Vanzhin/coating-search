@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Services\ExtractValuesService;
 use App\Services\MinMaxValuesService;
+use App\Services\ProductSearchService;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
@@ -17,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(ExtractValuesService::class);
+        $this->app->bind(ProductSearchService::class);
     }
 
     /**

@@ -14,7 +14,6 @@
             <form method="post" action="{{ route('search.store') }}">
                 @csrf
 
-
                 @include('inc.message')
                 <div class="form-group row-cols-auto">
 
@@ -55,7 +54,7 @@
                             <label for="{{ $key }}"><h5 class="card-header">{!! $item !!}:
                                 </h5>
                             </label>
-                            <select  name="{{ $key }}" id="{{ $key }}"
+                            <select  multiple name = "{{$key}}[]" id="{{ $key }}"
                                      class="form-control selectpicker"
                                      aria-label=".form-select-lg example"
                                      title="Выберите {{$item}}"
@@ -71,7 +70,7 @@
                         @if($key === 'catalog_id')
                             <label for="{{ $key }}"><h5 class="card-header">{!! $item !!}:</h5>
                             </label>
-                            <select name="{{ $key }}" id="{{ $key }}"
+                            <select multiple name = "{{$key}}[]" id="{{ $key }}"
                                     class="form-control selectpicker"
                                     aria-label=".form-select-lg example"
                                     title="Выберите {{$item}}">

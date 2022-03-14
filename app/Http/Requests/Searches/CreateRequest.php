@@ -24,8 +24,8 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'brand_id' => ['integer', 'nullable'],
-            'catalog_id' => ['integer', 'nullable'],
+            'brand_id' => ['array', 'nullable'],
+            'catalog_id' => ['array', 'nullable'],
             'vs' => ['integer', 'max:100'],
             'dft' => ['integer', 'min:1'],
             'dry_to_touch' => ['integer', 'min:0'],
@@ -39,7 +39,8 @@ class CreateRequest extends FormRequest
             'numbers' => ['array', 'min:1'],
             'resistances' => ['array', 'min:1'],
             'substrates' => ['array', 'min:1'],
-            'tolerance' =>['string'],
+            'tolerance' => ['string'],
+            'title' => ['string', 'nullable'],
         ];
     }
 }
