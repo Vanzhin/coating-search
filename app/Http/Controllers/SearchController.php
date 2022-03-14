@@ -11,6 +11,7 @@ use App\Models\Environment;
 use App\Models\Number;
 use App\Models\Product;
 use App\Models\Resistance;
+use App\Models\Search;
 use App\Models\Substrate;
 use App\Services\ExtractValuesService;
 use App\Services\ProductSearchService;
@@ -29,6 +30,7 @@ class SearchController extends Controller
      */
     public function index()
     {
+
         return view('searches.index');
     }
 
@@ -69,12 +71,17 @@ class SearchController extends Controller
      */
     public function store(CreateRequest $request)
     {
-        $data = $request->validated();
-        $created = app(ProductSearchService::class)
-            ->getProducts($data)->paginate(Config::get('constants.ITEMS_PER_PAGE'));
+        $data = app(ProductSearchService::class)->getSearchData($request->validated());
+
+        $created = Search::create([
+            'data' => json_encode($data),
+        ]);
+
+//        $created = app(ProductSearchService::class)
+//            ->getProducts($data)->paginate(Config::get('constants.ITEMS_PER_PAGE'));
         if($created){
 
-            return redirect()->route('search.index')->with('success', __('messages.searches.created.success'));
+            return redirect()->route('search.show', [$created])->with('success', __('messages.searches.created.success'));
         }
         return back()->with('error', __('messages.searches.created.error'))->withInput();
     }
@@ -82,12 +89,19 @@ class SearchController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Search $search
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Search $search)
     {
+//        dd(json_decode($search->data, true));
+        $q = json_decode($search->data, true);
 
+        return view('searches.show', [
+            'products' => app(ProductSearchService::class)
+            ->getProducts($q)->paginate(Config::get('constants.ITEMS_PER_PAGE')),
+            'search' => $search,
+        ]);
     }
 
     /**

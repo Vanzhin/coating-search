@@ -45,8 +45,16 @@ class ProductSearchService
 
     public function getProducts(array $request): object
     {
+        $searchData = $this->getSearchData($request);
+
+        return $this->queryBuilder($searchData);
+
+    }
+
+    public function getSearchData(array $request): array
+    {
         $selectionData = $this->getSelectionData();
-        //проверяю если меньше меньшего или null, то удаляю из поиска
+        //проверяю, если меньше меньшего или null, то удаляю из поиска
         $searchData = [];
         foreach ($request as $key => $value){
 
@@ -59,7 +67,7 @@ class ProductSearchService
             }
         }
 
-        return $this->queryBuilder($searchData);
-
+        return $searchData;
     }
+
 }

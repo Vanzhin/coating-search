@@ -19,11 +19,11 @@ return new class extends Migration
             $table->json('data');
             $table->unsignedBigInteger('user_id')->default(1);
             $table->timestamps();
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
+//            $table->foreign('user_id')
+//                ->references('id')
+//                ->on('users')
+//                ->cascadeOnDelete()
+//                ->cascadeOnUpdate();
         });
     }
 
