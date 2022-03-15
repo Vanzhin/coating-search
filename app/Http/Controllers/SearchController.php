@@ -17,6 +17,7 @@ use App\Services\ExtractValuesService;
 use App\Services\ProductSearchService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use function PHPUnit\Framework\isNull;
@@ -72,10 +73,24 @@ class SearchController extends Controller
     public function store(CreateRequest $request)
     {
         $data = app(ProductSearchService::class)->getSearchData($request->validated());
+        if (Auth::guest()){
+            $created = Search::updateOrCreate(
+                ['session_token' => $request->session()->get('_token')],
+                [
+                    'data' => json_encode($data),
+                    'description' => 'hello',
+                    'session_token' => $request->session()->get('_token')
+                ]
+            );
 
-        $created = Search::create([
-            'data' => json_encode($data),
-        ]);
+        } else {
+//            $created = Search::create([
+//                'data' => json_encode($data),
+//                'token' => $request->session()->get('_token'),
+//
+//            ]);
+        }
+
 
 //        $created = app(ProductSearchService::class)
 //            ->getProducts($data)->paginate(Config::get('constants.ITEMS_PER_PAGE'));
@@ -94,7 +109,6 @@ class SearchController extends Controller
      */
     public function show(Search $search)
     {
-//        dd(json_decode($search->data, true));
         $q = json_decode($search->data, true);
 
         return view('searches.show', [

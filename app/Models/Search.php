@@ -13,6 +13,8 @@ class Search extends Model
     protected $fillable = [
         'title',
         'data',
-        'user_id'
+        'user_id',
+        'session_token',
+        'description',
     ];
 }
