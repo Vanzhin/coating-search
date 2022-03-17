@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Searches\CreateRequest;
+use App\Http\Requests\Searches\UpdateRequest;
 use App\Models\Additive;
 use App\Models\Binder;
 use App\Models\Brand;
@@ -13,14 +14,10 @@ use App\Models\Product;
 use App\Models\Resistance;
 use App\Models\Search;
 use App\Models\Substrate;
-use App\Services\ExtractValuesService;
 use App\Services\ProductSearchService;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
-use function PHPUnit\Framework\isNull;
 
 class SearchController extends Controller
 {
@@ -42,11 +39,7 @@ class SearchController extends Controller
      */
     public function create()
     {
-        $selectionData= [];
-        foreach (Product::getFieldsToMath() as $fieldName){
-            $selectionData[$fieldName] = app(ExtractValuesService::class)
-                ->getValues('products', $fieldName);
-        }
+        $selectionData = Product::getSelectionData();
 
         return view('searches.create', [
             'fields'=> Product::getFieldsToSearch(),
@@ -60,6 +53,7 @@ class SearchController extends Controller
             'substrates' => Substrate::query()->orderBy('title', 'asc')->get(),
             'additives' => Additive::query()->orderBy('title', 'asc')->get(),
             'selectionData' => $selectionData,
+            'button' => 'Поиск'
 
         ]);
     }
@@ -74,16 +68,13 @@ class SearchController extends Controller
     {
         $data = app(ProductSearchService::class)->getSearchData($request->validated());
         if (sizeof($data)){
-
-
-        $title = app(ProductSearchService::class)->getSearchDescription($data);
-        dd($title);
-        if (Auth::guest()){
-            $created = Search::updateOrCreate(
+            // если не зарегистрирован, то сохранять поиски нельзя
+            if (Auth::guest()){
+                $created = Search::updateOrCreate(
                 ['session_token' => $request->session()->get('_token')],
                 [
                     'data' => json_encode($data),
-                    'description' => 'hello',
+                    'description' => app(ProductSearchService::class)->getSearchDescription($data),
                     'session_token' => $request->session()->get('_token')
                 ]
             );
@@ -99,7 +90,6 @@ class SearchController extends Controller
             return back()->with('error', __('messages.searches.created.empty'))->withInput();
 
         }
-
 
 //        $created = app(ProductSearchService::class)
 //            ->getProducts($data)->paginate(Config::get('constants.ITEMS_PER_PAGE'));
@@ -118,46 +108,86 @@ class SearchController extends Controller
      */
     public function show(Search $search)
     {
-        $q = json_decode($search->data, true);
+        $searchData = json_decode($search->data, true);
 
         return view('searches.show', [
             'products' => app(ProductSearchService::class)
-            ->getProducts($q)->paginate(Config::get('constants.ITEMS_PER_PAGE')),
+            ->getProducts($searchData)->paginate(Config::get('constants.ITEMS_PER_PAGE')),
             'search' => $search,
+            'fields' => array_merge(Product::getFieldsToCreate(), Product::getLinkedFields()),
+            'linkedFields' => Product::getLinkedFields(),
+
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param Search $search
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Search $search)
     {
-        //
+
+        $selectionData = Product::getSelectionData();
+
+        return view('searches.create', [
+            'fields'=> Product::getFieldsToSearch(),
+            'brands' => Brand::all(),
+            'catalogs' => Catalog::all(),
+            'linkedFields' => Product::getLinkedFields(),
+            'binders' => Binder::query()->orderBy('title', 'asc')->get(),
+            'environments' => Environment::query()->orderBy('title', 'asc')->get(),
+            'numbers' => Number::all(),
+            'resistances' => Resistance::query()->orderBy('title', 'asc')->get(),
+            'substrates' => Substrate::query()->orderBy('title', 'asc')->get(),
+            'additives' => Additive::query()->orderBy('title', 'asc')->get(),
+            'selectionData' => $selectionData,
+            'search' => $search,
+            'dataSearch' => json_decode($search->data, true),
+            'method' => 'update',
+            'button' => 'Повторить поиск'
+
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param UpdateRequest $request
+     * @param Search $search
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, Search $search)
     {
-        //
+        $data = $request->validated();
+        $updated = $search->fill(
+            [
+                'data' => json_encode($data),
+                'description' => app(ProductSearchService::class)->getSearchDescription($data),
+                'session_token' => $request->session()->get('_token')
+            ]
+        )->save();
+        if($updated){
+
+            return redirect()->route('search.show', [$updated])->with('success', __('messages.searches.updated.success'));
+        }
+        return back()->with('error', __('messages.searches.updated.error'))->withInput();
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Search $search
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Search $search)
     {
-        //
+        $deleted = $search->delete();
+        if($deleted){
+            return redirect()->route('searches')->with('success', __('messages.searches.deleted.success',));
+        }
+        return back()->with('error', __('messages.searches.deleted.error'))->withInput();
     }
 }

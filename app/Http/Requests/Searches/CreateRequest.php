@@ -39,6 +39,7 @@ class CreateRequest extends FormRequest
             'numbers' => ['array', 'min:1'],
             'resistances' => ['array', 'min:1'],
             'substrates' => ['array', 'min:1'],
+            'additives' => ['array', 'min:1'],
             'tolerance' => ['string'],
             'title' => ['string', 'nullable'],
         ];

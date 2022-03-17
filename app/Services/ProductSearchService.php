@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Brand;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
@@ -94,8 +93,11 @@ class ProductSearchService
                             if (array_key_exists($key,$tableParam)) {
                                 $key = $tableParam[$key];
                             }
+
                             return DB::table($key)->where('id', $value)->value('title');}, $item)) . '; ';
 
+            } elseif ($key === 'tolerance'){
+                $this->title = $this->title . 'да; ';
             } else $this->title = $this->title . $item . '; ';
         }
 

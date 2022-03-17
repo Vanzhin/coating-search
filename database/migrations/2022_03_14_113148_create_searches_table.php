@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('searches', function (Blueprint $table) {
             $table->id();
             $table->char('title', 255)->nullable();
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->string('session_token');
             $table->enum('status', ['active', 'saved', 'deleted'])->default('active');
             $table->json('data');

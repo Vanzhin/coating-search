@@ -7,7 +7,6 @@
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/carousel.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/fixedtable.css') }}" rel="stylesheet">
 
     <!-- Latest compiled and minified CSS -->
     <link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet">

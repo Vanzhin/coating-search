@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Interfaces\IModel;
+use App\Services\ExtractValuesService;
 use App\Traits\TModel;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -59,7 +60,7 @@ public static function getFieldsToShow(): array
     ];
 }
 
-    public static function getFieldsToCreate(): array
+public static function getFieldsToCreate(): array
     {
         return [
             'title' => 'Название',
@@ -78,7 +79,7 @@ public static function getFieldsToShow(): array
             'pds' => 'Техническое описание',
         ];
     }
-    public static function getFieldsToSearch(): array
+public static function getFieldsToSearch(): array
     {
         return [
             'vs' => 'Сухой остаток, не менее&nbsp;об %',
@@ -89,14 +90,14 @@ public static function getFieldsToShow(): array
             'dry_to_handle' => 'Сухой до перемещения, не более&nbsp;ч',
             'min_int' => 'Минимальный интервал перекрытия, не более&nbsp;ч',
             'max_int' => 'Максимальный интервал перекрытия, не более&nbsp;д',
-            'tolerance' => 'Толератный к подготовке поверхности?',
+            'tolerance' => 'Толерантный к подготовке поверхности?',
             'min_temp' => 'Минимальная т-ра нанесения, ' . "от&nbsp;&deg;C",
             'max_service_temp' => 'Максимальная  т-ра эксплуатации,' . "до&nbsp;&deg;C",
             'title' => 'Название',
 
         ];
     }
-    public static function getFieldsToMath(): array
+public static function getFieldsToMath(): array
     {
         return [
             'vs',
@@ -110,7 +111,7 @@ public static function getFieldsToShow(): array
         ];
     }
 
-    public static function getLinkedFields(): array
+public static function getLinkedFields(): array
     {
         return [
             'binders' => 'Основа',
@@ -121,6 +122,17 @@ public static function getFieldsToShow(): array
             'additives' => 'Добавка'
         ];
     }
+
+public static function getSelectionData()
+{
+    $selectionData = [];
+    foreach (Product::getFieldsToMath() as $fieldName) {
+        $selectionData[$fieldName] = app(ExtractValuesService::class)
+            ->getValues('products', $fieldName);
+
+    }
+    return $selectionData;
+}
 
 public function binders(): BelongsToMany
     {

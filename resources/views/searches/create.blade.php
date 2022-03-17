@@ -11,7 +11,12 @@
 @section('content')
     <div class="album py-5 bg-light">
         <div class="container">
-            <form method="post" action="{{ route('search.store') }}">
+            @if(isset($method))
+                <form method="post" action="{{ route('search.update', [$search]) }}">
+                @method('put')
+            @else
+                <form method="post" action="{{ route('search.store') }}">
+            @endif
                 @csrf
 
                 @include('inc.message')
@@ -31,11 +36,15 @@
                             aria-label=".form-select-lg example"
                             title="Выберите {{$item}}"
                             >
-                        @foreach($$key as $value)
+                    @foreach($$key as $value)
+
                             @if(old($key))
                                 <option value="{{$value->id}}" {{ in_array($value->id, old($key)) ? 'selected' : '' }}>{{Str::ucfirst($value->title)}}</option>
+                            @elseif(isset($search) && array_key_exists($key, $dataSearch))
+                                <option value="{{$value->id}}" {{ in_array($value->id, $dataSearch[$key]) ? 'selected' : '' }}>{{Str::ucfirst($value->title)}}</option>
+
                             @else
-                                <option @if(isset($product) && $product->$key->contains('title', $value->title)) selected @endif value="{{$value->id}}">{{Str::ucfirst($value->title)}}</option>
+                                <option value="{{$value->id}}">{{Str::ucfirst($value->title)}}</option>
 
                             @endif
                         @endforeach
@@ -60,7 +69,13 @@
                                      title="Выберите {{$item}}"
                             >
                                 @foreach($brands as $brand)
-                                    <option value="{{ $brand->id }}" >{{ Str::upper($brand->title) }}</option>
+                                    @if(old($key))
+                                        <option value="{{ $brand->id }}" {{ in_array($brand->id, old($key)) ? 'selected' : '' }}>{{Str::upper($brand->title)}}</option>
+                                    @elseif(isset($search) && array_key_exists($key, $dataSearch))
+                                        <option value="{{$brand->id}}" {{ in_array($brand->id, $dataSearch[$key]) ? 'selected' : '' }}>{{Str::upper($brand->title)}}</option>
+                                    @else
+                                        <option value="{{ $brand->id }}" >{{ Str::upper($brand->title) }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                     </div>
@@ -75,7 +90,13 @@
                                     aria-label=".form-select-lg example"
                                     title="Выберите {{$item}}">
                                 @foreach($catalogs as $catalog)
-                                    <option value="{{ $catalog->id }}" @if(isset($product) && $product->catalog->title === $catalog->title) selected @endif>{{ $catalog->title }}</option>
+                                    @if(old($key))
+                                        <option value="{{ $catalog->id }}" {{ in_array($catalog->id, old($key)) ? 'selected' : '' }}>{{Str::ucfirst($catalog->title)}}</option>
+                                    @elseif(isset($search) && array_key_exists($key, $dataSearch))
+                                        <option value="{{$catalog->id}}" {{ in_array($catalog->id, $dataSearch[$key]) ? 'selected' : '' }}>{{Str::ucfirst($catalog->title)}}</option>
+                                    @else
+                                        <option value="{{ $catalog->id }}">{{Str::ucfirst($catalog->title)}}</option>
+                                    @endif
                                 @endforeach
                             </select>
                     </div>
@@ -84,7 +105,7 @@
                         @if($key === 'tolerance')
                             <label for="{{ $key }}"><h5 class="card-header">{!! $item !!}:</h5></label>
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="{{$key}}" name="{{$key}}" @if(isset($product) && $product->tolerance === 1) checked @endif>
+                                    <input class="form-check-input" type="checkbox" role="switch" id="{{$key}}" name="{{$key}}" @if(isset($search) && array_key_exists($key, $dataSearch) or old($key)) checked @endif>
                                 </div>
                     </div>
                             @continue
@@ -93,25 +114,26 @@
                             <label for="{{ $key }}">
                                 <h5 class="card-header">{!! $item !!}:</h5>
                             </label>
-                            <input type="text" class="form-control" id="{{ $key }}" name="{{ $key }}" value="@if(isset($product)){{$product->$key}}@else{{old($key)}}@endif">
+                            <input type="text" class="form-control" id="{{ $key }}" name="{{ $key }}" value="@if(isset($search) && array_key_exists($key, $dataSearch)){{$dataSearch[$key]}}@else{{old($key)}}@endif">
                             @continue
                         @endif
                         <label for="{{ $key }}">
                             <h5 class="card-header">{!! $item !!}:
-                                <span id="rangeval-{{$key}}"><strong>Не выбрано</strong></span>
+
+                                <span id="rangeval-{{$key}}"><strong>@if(isset($search) && array_key_exists($key, $dataSearch)){{$dataSearch[$key]}} @else не выбрано @endif</strong></span>
                                 <span>(от {{$selectionData[$key]['min']}} до {{$selectionData[$key]['max']}})</span>
                             </h5>
                         </label>
-                        <input value="{{$selectionData[$key]['min']-1}}" name="{{ $key }}" type="range" class="form-range form-control" id="{{ $key }}" onInput="$('#rangeval-{{$key}}').html($(this).val())"
+                        <input value="@if(isset($search) && array_key_exists($key, $dataSearch)){{$dataSearch[$key]}} @else{{$selectionData[$key]['min']-1}}@endif" name="{{ $key }}" type="range" class="form-range form-control" id="{{ $key }}" onInput="$('#rangeval-{{$key}}').html($(this).val())"
                                min="{{$selectionData[$key]['min']-1}}" max="{{$selectionData[$key]['max']}}" step="1">
                     </div>
                 @endforeach
                 </div>
-    <button type="submit"  class="btn btn-success">Искать</button>
+    <button type="submit"  class="btn btn-success">{{$button}}</button>
 
     </form>
-        </div>
     </div>
+</div>
 @endsection
 
 

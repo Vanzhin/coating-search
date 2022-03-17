@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Resistances;
+namespace App\Http\Requests\Searches;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -25,9 +25,24 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title'=>['min:3', 'required', 'string',
-                Rule::unique('resistances')->ignore($this->resistance->id, 'id')],
-
+            'brand_id' => ['array', 'nullable'],
+            'catalog_id' => ['array', 'nullable'],
+            'vs' => ['integer', 'max:100'],
+            'dft' => ['integer', 'min:1'],
+            'dry_to_touch' => ['integer', 'min:0'],
+            'dry_to_handle' => ['integer', 'min:0'],
+            'min_int' => ['integer', 'min:0'],
+            'max_int' => ['integer', 'min:-2'],
+            'min_temp' => ['integer', 'min:-20'],
+            'max_service_temp' => ['integer', 'min:0'],
+            'binders' => ['array', 'min:1'],
+            'environments' => ['array', 'min:1'],
+            'numbers' => ['array', 'min:1'],
+            'resistances' => ['array', 'min:1'],
+            'substrates' => ['array', 'min:1'],
+            'additives' => ['array', 'min:1'],
+            'tolerance' => ['string'],
+            'title' => ['string', 'nullable'],
         ];
     }
 }
