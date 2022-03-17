@@ -2,11 +2,14 @@
 
 namespace App\Services;
 
+use App\Models\Brand;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class ProductSearchService
 {
+    private string $title = '';
     private function queryBuilder(array $searchData)
     {
         $products = Product::query();
@@ -68,6 +71,35 @@ class ProductSearchService
         }
 
         return $searchData;
+    }
+
+    public function getSearchDescription(array $request): string
+    {
+        $data = array_merge(Product::getFieldsToSearch(), Product::getLinkedFields());
+
+        foreach ($request as $key => $item){
+            $this->title = $this->title . $data[$key] . ': ';
+            if (is_array($item)){
+                /* составляю строку для поля title в search, если не массив сразу подставляется значение,
+                если массив перебирается функцией array_map , поскольку brand_id и catalog_id находятся
+                в одной таблице с products, пришлось поставить костыль для них
+                */
+                $this->title = $this->title . implode(', ',
+                        array_map(function ($value) use ($key)
+                        {
+                            $tableParam = [
+                                'brand_id' => 'brands',
+                                'catalog_id' => 'catalogs'
+                            ];
+                            if (array_key_exists($key,$tableParam)) {
+                                $key = $tableParam[$key];
+                            }
+                            return DB::table($key)->where('id', $value)->value('title');}, $item)) . '; ';
+
+            } else $this->title = $this->title . $item . '; ';
+        }
+
+        return $this->title;
     }
 
 }

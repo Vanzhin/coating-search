@@ -73,6 +73,11 @@ class SearchController extends Controller
     public function store(CreateRequest $request)
     {
         $data = app(ProductSearchService::class)->getSearchData($request->validated());
+        if (sizeof($data)){
+
+
+        $title = app(ProductSearchService::class)->getSearchDescription($data);
+        dd($title);
         if (Auth::guest()){
             $created = Search::updateOrCreate(
                 ['session_token' => $request->session()->get('_token')],
@@ -89,6 +94,10 @@ class SearchController extends Controller
 //                'token' => $request->session()->get('_token'),
 //
 //            ]);
+        }
+        }else {
+            return back()->with('error', __('messages.searches.created.empty'))->withInput();
+
         }
 
 
