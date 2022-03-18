@@ -43,6 +43,7 @@ class SearchController extends Controller
 
         return view('searches.create', [
             'fields'=> Product::getFieldsToSearch(),
+            'fieldsToOrderBy'=> Product::getFieldsToOrderBy(),
             'brands' => Brand::all(),
             'catalogs' => Catalog::all(),
             'linkedFields' => Product::getLinkedFields(),
@@ -112,8 +113,11 @@ class SearchController extends Controller
 
         return view('searches.show', [
             'products' => app(ProductSearchService::class)
-            ->getProducts($searchData)->paginate(Config::get('constants.ITEMS_PER_PAGE')),
+                ->getProducts($searchData)
+                ->paginate(Config::get('constants.ITEMS_PER_PAGE')),
             'search' => $search,
+            'searchData' => $searchData,
+            'fieldsToOrderBy'=> Product::getFieldsToOrderBy(),
             'fields' => array_merge(Product::getFieldsToCreate(), Product::getLinkedFields()),
             'linkedFields' => Product::getLinkedFields(),
 
@@ -133,6 +137,7 @@ class SearchController extends Controller
 
         return view('searches.create', [
             'fields'=> Product::getFieldsToSearch(),
+            'fieldsToOrderBy'=> Product::getFieldsToOrderBy(),
             'brands' => Brand::all(),
             'catalogs' => Catalog::all(),
             'linkedFields' => Product::getLinkedFields(),
@@ -144,7 +149,7 @@ class SearchController extends Controller
             'additives' => Additive::query()->orderBy('title', 'asc')->get(),
             'selectionData' => $selectionData,
             'search' => $search,
-            'dataSearch' => json_decode($search->data, true),
+            'searchData' => json_decode($search->data, true),
             'method' => 'update',
             'button' => 'Повторить поиск'
 

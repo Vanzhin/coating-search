@@ -42,6 +42,7 @@ class CreateRequest extends FormRequest
             'additives' => ['array', 'min:1'],
             'tolerance' => ['string'],
             'title' => ['string', 'nullable'],
+            'order-by' => ['string', 'nullable'],
         ];
     }
 }

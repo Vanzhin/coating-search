@@ -39,7 +39,7 @@ public array $propertyToShow = [
     'dry_to_handle' => 'Сухой до перемещения,&nbsp;ч',
     'min_int' => 'Минимальный интервал перекрытия,&nbsp;ч',
     'max_int' => 'Максимальный интервал перекрытия,&nbsp;д',
-    'tolerance' => 'Толератный к подготовке поверхности',
+    'tolerance' => 'Толерантный к подготовке поверхности',
     'min_temp' => 'Минимальная т-ра нанесения,' . "&nbsp;&deg;C",
     'max_service_temp' => 'Максимальная  т-ра эксплуатации,' . "&nbsp;&deg;C",
 ];
@@ -54,7 +54,7 @@ public static function getFieldsToShow(): array
         'dry_to_handle' => 'Сухой до перемещения,&nbsp;ч',
         'min_int' => 'Минимальный интервал перекрытия,&nbsp;ч',
         'max_int' => 'Максимальный интервал перекрытия,&nbsp;д',
-        'tolerance' => 'Толератный к подготовке поверхности',
+        'tolerance' => 'Толерантный к подготовке поверхности',
         'min_temp' => 'Минимальная т-ра нанесения,' . "&nbsp;&deg;C",
         'max_service_temp' => 'Максимальная  т-ра эксплуатации,' . "&nbsp;&deg;C",
     ];
@@ -73,7 +73,7 @@ public static function getFieldsToCreate(): array
             'dry_to_handle' => 'Сухой до перемещения,&nbsp;ч',
             'min_int' => 'Минимальный интервал перекрытия,&nbsp;ч',
             'max_int' => 'Максимальный интервал перекрытия,&nbsp;д',
-            'tolerance' => 'Толератный к подготовке поверхности?',
+            'tolerance' => 'Толерантный к подготовке поверхности?',
             'min_temp' => 'Минимальная т-ра нанесения,' . "&nbsp;&deg;C",
             'max_service_temp' => 'Максимальная  т-ра эксплуатации,' . "&nbsp;&deg;C",
             'pds' => 'Техническое описание',
@@ -94,6 +94,22 @@ public static function getFieldsToSearch(): array
             'min_temp' => 'Минимальная т-ра нанесения, ' . "от&nbsp;&deg;C",
             'max_service_temp' => 'Максимальная  т-ра эксплуатации,' . "до&nbsp;&deg;C",
             'title' => 'Название',
+
+        ];
+    }
+    public static function getFieldsToOrderBy(): array
+    {
+        return [
+            'vs' => 'Сухой остаток',
+            'dft' => 'Стандартная ТСП',
+            'dry_to_touch' => 'Сухой на отлип',
+            'brand_id' => 'Производитель',
+            'catalog_id' => 'Сегмент',
+            'dry_to_handle' => 'Сухой до перемещения',
+            'min_int' => 'Минимальный интервал перекрытия',
+            'max_int' => 'Максимальный интервал перекрытия',
+            'min_temp' => 'Минимальная т-ра нанесения',
+            'max_service_temp' => 'Максимальная  т-ра эксплуатации',
 
         ];
     }

@@ -18,6 +18,9 @@ class ProductSearchService
                 $products = $products->where($key,'>=',$value);
             } elseif (in_array($key,['brand_id', 'catalog_id'])) {
                 $products = $products->whereIn($key, $value);
+            }
+            elseif ($key === 'order-by') {
+               continue;
             } elseif ($key == 'title') {
                 $products = $products->where($key,'like', "%$value%");
             }
@@ -29,6 +32,11 @@ class ProductSearchService
             else{
                 $products = $products->where($key,'<=',$value);
             }
+        }
+        if (isset($searchData['order-by'])){
+
+            $orderParam = explode('@', $searchData['order-by']);
+            $products = $products->orderBy($orderParam[0], $orderParam[1]);
         }
 
         return $products;
@@ -60,7 +68,7 @@ class ProductSearchService
         $searchData = [];
         foreach ($request as $key => $value){
 
-            if ((key_exists($key, $selectionData) && $value >= $selectionData[$key]['min'] or ($key === 'title' && !is_null($value)))){
+            if ((key_exists($key, $selectionData) && $value >= $selectionData[$key]['min'] or (in_array($key, ['title', 'order-by']) && !is_null($value)))){
                 $searchData[$key] = $value;
             }  elseif (is_array($value) ){
                 $searchData[$key] = $value;
@@ -75,12 +83,13 @@ class ProductSearchService
     public function getSearchDescription(array $request): string
     {
         $data = array_merge(Product::getFieldsToSearch(), Product::getLinkedFields());
-
+        //todo убрать костыль
+        unset($request['order-by']);
         foreach ($request as $key => $item){
             $this->title = $this->title . $data[$key] . ': ';
             if (is_array($item)){
                 /* составляю строку для поля title в search, если не массив сразу подставляется значение,
-                если массив перебирается функцией array_map , поскольку brand_id и catalog_id находятся
+                если массив перебирается функцией array_map, поскольку brand_id и catalog_id находятся
                 в одной таблице с products, пришлось поставить костыль для них
                 */
                 $this->title = $this->title . implode(', ',

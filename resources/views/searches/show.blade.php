@@ -12,8 +12,27 @@
 @endsection
 @section('content')
         <div class="container">
-            <a href="{{ route('search.edit', ['search' => $search]) }}" class="btn btn-primary btn-lg">Обновить поиск</a>
-            <a  href="#"class="btn btn-secondary btn-lg">Мои поиски</a>
+            <div class="d-flex flex-md-wrap">
+                <a href="{{ route('search.edit', ['search' => $search]) }}" class="btn btn-primary btn-">Обновить поиск</a>
+                <a  href="#"class="btn btn-secondary btn-md">Мои поиски</a>
+                <div class="card col ">
+                    <select  name = "order-by" id = "order-by" class="form-control selectpicker"
+                             data-live-search="true"
+                             aria-label=".form-select-lg example"
+                             title="Выберите параметр сортировки"
+                    >
+                        @foreach($fieldsToOrderBy as $key => $field)
+
+                            <option value="{{$key}}@asc" @if(isset($searchData['order-by']) && $searchData['order-by'] === $key.'@asc') selected @endif>{{Str::ucfirst($field)}} - по возрастанию</option>
+                            <option value="{{$key}}@desc" @if(isset($searchData['order-by']) && $searchData['order-by'] === $key.'@desc') selected @endif>{{Str::ucfirst($field)}} - по убыванию</option>
+
+
+                        @endforeach
+                    </select>
+                </div>
+
+            </div>
+
                 <div class="accordion" id="accordionPanelsStayOpenExample">
 
                 @forelse($products as $product)
@@ -21,14 +40,16 @@
                             <h2 class="accordion-header" id="panelsStayOpen-headingOne">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse-{{ $product->id}}" aria-expanded="false" aria-controls="panelsStayOpen-collapse-{{ $product->id}}">
                                     <h5 class="header">{{$product->title}}</h5>
-
                                 </button>
                             </h2>
                             <div id="panelsStayOpen-collapse-{{ $product->id}}" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading-{{ $product->id}}">
                                 <div class="accordion-body ">
-                                    <h5 class="card-title">{{Str::ucfirst($product->description)}}</h5>
+                                    <h5 class="card-title">{{Str::ucfirst($product->description)}}
+                                        <a class="badge bg-secondary" href="{{$product->pds}}">PDS</a>
+                                    </h5>
+
                                     <div class="table-responsive">
-                                        <table class="table table-sm">
+                                        <table class="table table-sm w-auto">
                                             <thead class="table-light">
                                             <tr>
                                                 @foreach($fields as $key => $value)
@@ -71,11 +92,11 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
                 @empty
                     <h2>Ничего не найдено</h2>
                 @endforelse
             {{ $products->onEachSide(0)->links() }}
+
         </div>
 @endsection
 
