@@ -165,7 +165,12 @@ class SearchController extends Controller
      */
     public function update(UpdateRequest $request, Search $search)
     {
-        $data = $request->validated();
+        $data = app(ProductSearchService::class)->getSearchData($request->validated());
+
+        if (count($data) == 1 && isset($data['order-by'])){
+            $data = array_merge(json_decode($search->data, 1), $data);
+
+        }
         $updated = $search->fill(
             [
                 'data' => json_encode($data),
@@ -173,6 +178,7 @@ class SearchController extends Controller
                 'session_token' => $request->session()->get('_token')
             ]
         )->save();
+
         if($updated){
 
             return redirect()->route('search.show', [$updated])->with('success', __('messages.searches.updated.success'));

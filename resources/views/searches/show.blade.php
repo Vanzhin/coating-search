@@ -12,24 +12,31 @@
 @endsection
 @section('content')
         <div class="container">
-            <div class="d-flex flex-md-wrap">
+            <div class="d-flex flex-wrap">
                 <a href="{{ route('search.edit', ['search' => $search]) }}" class="btn btn-primary btn-">Обновить поиск</a>
                 <a  href="#"class="btn btn-secondary btn-md">Мои поиски</a>
-                <div class="card col ">
-                    <select  name = "order-by" id = "order-by" class="form-control selectpicker"
-                             data-live-search="true"
-                             aria-label=".form-select-lg example"
-                             title="Выберите параметр сортировки"
-                    >
-                        @foreach($fieldsToOrderBy as $key => $field)
+                <form class="form-control d-flex" method="post" action="{{ route('search.update', [$search]) }}">
+                    @method('put')
+                    @csrf
+                    <div class="card col">
+                        <select  name = "order-by" id = "order-by" class="form-control selectpicker"
+                                 data-live-search="true"
+                                 aria-label=".form-select-lg example"
+                                 title="Выберите параметр сортировки"
+                        >
+                            @foreach($fieldsToOrderBy as $key => $field)
 
-                            <option value="{{$key}}@asc" @if(isset($searchData['order-by']) && $searchData['order-by'] === $key.'@asc') selected @endif>{{Str::ucfirst($field)}} - по возрастанию</option>
-                            <option value="{{$key}}@desc" @if(isset($searchData['order-by']) && $searchData['order-by'] === $key.'@desc') selected @endif>{{Str::ucfirst($field)}} - по убыванию</option>
+                                <option value="{{$key}}@asc" @if(isset($searchData['order-by']) && $searchData['order-by'] === $key.'@asc') selected @endif>{{Str::ucfirst($field)}} - по возрастанию</option>
+                                <option value="{{$key}}@desc" @if(isset($searchData['order-by']) && $searchData['order-by'] === $key.'@desc') selected @endif>{{Str::ucfirst($field)}} - по убыванию</option>
 
 
-                        @endforeach
-                    </select>
-                </div>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <button type="submit"  class="btn btn-success">Сортировать</button>
+
+                </form>
 
             </div>
 

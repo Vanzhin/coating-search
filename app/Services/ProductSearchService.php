@@ -83,8 +83,9 @@ class ProductSearchService
     public function getSearchDescription(array $request): string
     {
         $data = array_merge(Product::getFieldsToSearch(), Product::getLinkedFields());
+
+        $data['order-by'] = 'Сортировка';
         //todo убрать костыль
-        unset($request['order-by']);
         foreach ($request as $key => $item){
             $this->title = $this->title . $data[$key] . ': ';
             if (is_array($item)){
@@ -107,9 +108,12 @@ class ProductSearchService
 
             } elseif ($key === 'tolerance'){
                 $this->title = $this->title . 'да; ';
-            } else $this->title = $this->title . $item . '; ';
+            }
+//            elseif ($key === 'order-by'){
+//                $this->title = $this->title . 'выполнена; ';
+//            }
+            else $this->title = $this->title . $item . '; ';
         }
-
         return $this->title;
     }
 
