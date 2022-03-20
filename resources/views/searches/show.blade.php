@@ -12,13 +12,12 @@
 @endsection
 @section('content')
         <div class="container">
-            <div class="d-flex flex-wrap">
-                <a href="{{ route('search.edit', ['search' => $search]) }}" class="btn btn-primary btn-">Обновить поиск</a>
-                <a  href="#"class="btn btn-secondary btn-md">Мои поиски</a>
-                <form class="form-control d-flex" method="post" action="{{ route('search.update', [$search]) }}">
+            <div class="d-flex">
+
+                <form class="form-control d-flex flex-wrap align-items-stretch" method="post" action="{{ route('search.update', [$search]) }}">
                     @method('put')
                     @csrf
-                    <div class="card col">
+                    <div class="card flex-fill">
                         <select  name = "order-by" id = "order-by" class="form-control selectpicker"
                                  data-live-search="true"
                                  aria-label=".form-select-lg example"
@@ -33,10 +32,14 @@
                             @endforeach
                         </select>
                     </div>
-
-                    <button type="submit"  class="btn btn-success">Сортировать</button>
-
-                </form>
+                    <div class="d-flex flex-fill">
+                        <button type="submit"  class="btn btn-success p-2 flex-fill">Сортировать</button>
+                        <a href="{{ route('search.edit', ['search' => $search]) }}" class="btn btn-primary p-2 flex-fill">Обновить поиск</a>
+                        <a  href="#" type="button" class="btn bg-secondary btn-click">
+                            Сравнить <span id = "compare"class="badge btn-warning"></span>
+                        </a>
+                    </div>
+                    </form>
 
             </div>
 
@@ -44,10 +47,13 @@
 
                 @forelse($products as $product)
                         <div class="accordion-item">
-                            <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                            <h2 class="accordion-header d-flex align-items-stretch" id="panelsStayOpen-headingOne">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse-{{ $product->id}}" aria-expanded="false" aria-controls="panelsStayOpen-collapse-{{ $product->id}}">
                                     <h5 class="header">{{$product->title}}</h5>
                                 </button>
+                                <button id="product-to-compare-{{ $product->id }}" type="button" class="btn bg-warning text-dark btn-click"
+                                >Сравнить</button>
+
                             </h2>
                             <div id="panelsStayOpen-collapse-{{ $product->id}}" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading-{{ $product->id}}">
                                 <div class="accordion-body ">
@@ -106,7 +112,4 @@
 
         </div>
 @endsection
-
-
-
 

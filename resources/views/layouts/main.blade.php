@@ -47,6 +47,6 @@
 
 {{--<!-- Latest compiled and minified JavaScript -->--}}
 <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
-
+<script src="{{ asset('js/button-click.js') }}"></script>
 </body>
 </html>
