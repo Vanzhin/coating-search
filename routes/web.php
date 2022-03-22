@@ -60,6 +60,10 @@ Route::resources([
 Route::get('/search', [SearchController::class, 'index'])
     ->name('search');
 
+// session
+Route::get('/products/compare/{product}', [ProductController::class, 'addToCompare'])
+    ->where('product', '\d+')
+    ->name('compare');
 
 //admin
 Route::group(['as' => 'admin.', 'prefix' => 'admin'], function() {

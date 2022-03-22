@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head>
     <meta charset="utf-8">
+{{--    <meta name="csrf-token" content="{{ csrf_token() }}">--}}
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <title>@section('title') {{env('APP_NAME')}} @show</title>
@@ -47,6 +48,6 @@
 
 {{--<!-- Latest compiled and minified JavaScript -->--}}
 <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
-<script src="{{ asset('js/button-click.js') }}"></script>
+@stack('js')
 </body>
 </html>

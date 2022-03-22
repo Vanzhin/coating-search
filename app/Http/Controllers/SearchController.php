@@ -120,6 +120,7 @@ class SearchController extends Controller
             'fieldsToOrderBy'=> Product::getFieldsToOrderBy(),
             'fields' => array_merge(Product::getFieldsToCreate(), Product::getLinkedFields()),
             'linkedFields' => Product::getLinkedFields(),
+            'compareProduct' => session()->get('products.compare'),
 
         ]);
     }

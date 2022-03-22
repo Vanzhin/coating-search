@@ -11,7 +11,8 @@
     </section>
 @endsection
 @section('content')
-        <div class="container">
+{{--@dd(session()->get('products.compare'))--}}
+    <div class="container">
             <div class="d-flex">
 
                 <form class="form-control d-flex flex-wrap align-items-stretch" method="post" action="{{ route('search.update', [$search]) }}">
@@ -35,8 +36,8 @@
                     <div class="d-flex flex-fill">
                         <button type="submit"  class="btn btn-success p-2 flex-fill">Сортировать</button>
                         <a href="{{ route('search.edit', ['search' => $search]) }}" class="btn btn-primary p-2 flex-fill">Обновить поиск</a>
-                        <a  href="#" type="button" class="btn bg-secondary btn-click">
-                            Сравнить <span id = "compare"class="badge btn-warning"></span>
+                        <a  href="#" class="btn bg-secondary">
+                            Сравнить <span id = "product-to-compare" class="badge btn-warning">@if($compareProduct){{count($compareProduct)}}@else{{''}}@endif</span>
                         </a>
                     </div>
                     </form>
@@ -51,8 +52,8 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse-{{ $product->id}}" aria-expanded="false" aria-controls="panelsStayOpen-collapse-{{ $product->id}}">
                                     <h5 class="header">{{$product->title}}</h5>
                                 </button>
-                                <button id="product-to-compare-{{ $product->id }}" type="button" class="btn bg-warning text-dark btn-click"
-                                >Сравнить</button>
+                                <a href="javascript:;" class="btn bg-warning text-dark compare" compare="{{$product->id}}"
+                                >@if(isset($compareProduct) && in_array($product->id, $compareProduct))Убрать из сравнения@elseСравнить@endif</a>
 
                             </h2>
                             <div id="panelsStayOpen-collapse-{{ $product->id}}" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading-{{ $product->id}}">
@@ -112,4 +113,34 @@
 
         </div>
 @endsection
+@push('js')
+    <script type="text/javascript">
+        let productCount = 0;
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttons = document.querySelectorAll("a.compare");
+            const badge = document.getElementById('compare');
+            buttons.forEach(button => button.addEventListener("click", function() {
+                const id = this.getAttribute('compare');
+                send('/products/compare/' + id).then(() => {
+                    location.reload();
+                })
+
+            }));
+        });
+async function send(url){
+    let response = await fetch(url, {
+        method: 'GET',
+        // headers: {
+        //     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+        //         .getAttribute('content')
+        // }
+    });
+    let result = await response.json();
+    return result.ok;
+}
+
+    </script>
+
+@endpush
+
 

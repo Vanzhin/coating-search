@@ -31,8 +31,12 @@ class Product extends Model
         'max_service_temp',
         'pds',
     ];
+    protected $casts = [
+        'tolerance' => 'boolean',
+    ];
 
-public array $propertyToShow = [
+
+    public array $propertyToShow = [
     'vs' => 'Сухой остаток,&nbsp;об %',
     'dft' => 'Стандартная ТСП,&nbsp;мкм',
     'dry_to_touch' => 'Сухой на отлип,&nbsp;ч',
