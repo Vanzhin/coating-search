@@ -11,7 +11,6 @@
     </section>
 @endsection
 @section('content')
-{{--@dd(session()->get('products.compare'))--}}
     <div class="container">
             <div class="d-flex">
 
@@ -35,10 +34,11 @@
                     </div>
                     <div class="d-flex flex-fill">
                         <button type="submit"  class="btn btn-success p-2 flex-fill">Сортировать</button>
+
                         <a href="{{ route('search.edit', ['search' => $search]) }}" class="btn btn-primary p-2 flex-fill">Обновить поиск</a>
-                        <a  href="#" class="btn bg-secondary">
+                        <a  href="#" class="btn bg-secondary p-2 flex-fill @if($compareProduct){{''}}@else disabled @endif">
                             Сравнить <span id = "product-to-compare" class="badge btn-warning">@if($compareProduct){{count($compareProduct)}}@else{{''}}@endif</span>
-                        </a>
+                            </a>
                     </div>
                     </form>
 
@@ -53,7 +53,7 @@
                                     <h5 class="header">{{$product->title}}</h5>
                                 </button>
                                 <a href="javascript:;" class="btn bg-warning text-dark compare" compare="{{$product->id}}"
-                                >@if(isset($compareProduct) && in_array($product->id, $compareProduct))Убрать из сравнения@elseСравнить@endif</a>
+                                >@if(isset($compareProduct) && in_array($product->id, $compareProduct))Убрать из сравнения@elseДобавить в сравнение@endif</a>
 
                             </h2>
                             <div id="panelsStayOpen-collapse-{{ $product->id}}" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading-{{ $product->id}}">
