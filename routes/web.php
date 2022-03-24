@@ -49,6 +49,8 @@ Route::group(['as' => 'products.', 'prefix' => 'products'], function(){
     Route::get('/environment/{environment}', [ProductController::class, 'environment'])
         ->where('environment', '\d+')
         ->name('environment');
+    Route::get('/compare', [ProductController::class, 'compare'])
+        ->name('compare');
 
     });
 
@@ -62,8 +64,7 @@ Route::get('/search', [SearchController::class, 'index'])
 
 // session
 Route::get('/products/compare/{product}', [ProductController::class, 'addToCompare'])
-    ->where('product', '\d+')
-    ->name('compare');
+    ->where('product', '\d+');
 
 //admin
 Route::group(['as' => 'admin.', 'prefix' => 'admin'], function() {

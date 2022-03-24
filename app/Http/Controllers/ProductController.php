@@ -35,6 +35,7 @@ class ProductController extends Controller
 
         ]);
     }
+    //todo убрать отсюда
     public function addToCompare($productId){
         try {
             if (session()->has('products.compare') && in_array($productId, session()->get('products.compare'))){
@@ -54,7 +55,15 @@ class ProductController extends Controller
 
         }
 
+    }
+    public function compare()
+    {
+        $products = Product::query()->whereIn('id', session()->get('products.compare'))->get();
 
+        return view('products.compare', [
+            'products' => $products,
+            'linkedFields' => Product::getLinkedFields(),
+        ]);
     }
 
     public function brand(Brand $brand)

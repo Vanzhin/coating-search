@@ -36,7 +36,7 @@
                         <button type="submit"  class="btn btn-success p-2 flex-fill">Сортировать</button>
 
                         <a href="{{ route('search.edit', ['search' => $search]) }}" class="btn btn-primary p-2 flex-fill">Обновить поиск</a>
-                        <a  href="#" class="btn bg-secondary p-2 flex-fill @if($compareProduct){{''}}@else disabled @endif">
+                        <a  href="{{ route('products.compare') }}" class="btn bg-secondary p-2 flex-fill @if($compareProduct){{''}}@else disabled @endif">
                             Сравнить <span id = "product-to-compare" class="badge btn-warning">@if($compareProduct){{count($compareProduct)}}@else{{''}}@endif</span>
                             </a>
                     </div>
