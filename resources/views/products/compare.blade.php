@@ -9,10 +9,10 @@
     </section>
 @endsection
 @section('content')
-    <div class="container-fluid overflow-auto">
-        <div class="row flex-nowrap text-light">
+    <div class="container-fluid overflow-scroll">
+        <div class="row flex-nowrap text-light sticky-top">
             @foreach($products as $product)
-            <div class="col bg-secondary" style="min-width: 50%;">
+            <div class="col bg-secondary " style="min-width: 50%;">
                         <div class="card-body">
                             <h5 class="card-title text-center">{{$product->title}}</h5>
                         </div>
