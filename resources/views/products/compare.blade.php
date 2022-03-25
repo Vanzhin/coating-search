@@ -9,7 +9,7 @@
     </section>
 @endsection
 @section('content')
-    <div class="container-fluid overflow-scroll">
+    <div class="container-fluid overflow-scroll" style="height: 80vh;">
         <div class="row flex-nowrap text-light sticky-top">
             @foreach($products as $product)
             <div class="col bg-secondary " style="min-width: 50%;">

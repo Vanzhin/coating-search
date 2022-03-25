@@ -36,7 +36,7 @@
                         <button type="submit"  class="btn btn-success p-2 flex-fill">Сортировать</button>
 
                         <a href="{{ route('search.edit', ['search' => $search]) }}" class="btn btn-primary p-2 flex-fill">Обновить поиск</a>
-                        <a  href="{{ route('products.compare') }}" class="btn bg-secondary p-2 flex-fill @if($compareProduct){{''}}@else disabled @endif">
+                        <a  href="{{ route('products.compare') }}" id = "compare-btn" class="btn bg-secondary p-2 flex-fill @if($compareProduct){{''}}@else disabled @endif">
                             Сравнить <span id = "product-to-compare" class="badge btn-warning">@if($compareProduct){{count($compareProduct)}}@else{{''}}@endif</span>
                             </a>
                     </div>
@@ -52,7 +52,7 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse-{{ $product->id}}" aria-expanded="false" aria-controls="panelsStayOpen-collapse-{{ $product->id}}">
                                     <h5 class="header">{{$product->title}}</h5>
                                 </button>
-                                <a href="javascript:;" class="btn bg-warning text-dark compare" compare="{{$product->id}}"
+                                <a href="javascript:;" id="prod-{{$product->id}}"  class="btn bg-warning text-dark compare @if(isset($compareProduct) && in_array($product->id, $compareProduct)){{"add"}}@endif" compare="{{$product->id}}"
                                 >@if(isset($compareProduct) && in_array($product->id, $compareProduct))Убрать из сравнения@elseДобавить в сравнение@endif</a>
 
                             </h2>
@@ -118,13 +118,12 @@
         let productCount = 0;
         document.addEventListener('DOMContentLoaded', () => {
             const buttons = document.querySelectorAll("a.compare");
-            const badge = document.getElementById('compare');
             buttons.forEach(button => button.addEventListener("click", function() {
                 const id = this.getAttribute('compare');
                 send('/products/compare/' + id).then(() => {
-                    location.reload();
-                })
+                    // location.reload();
 
+                })
             }));
         });
 async function send(url){
@@ -136,6 +135,24 @@ async function send(url){
         // }
     });
     let result = await response.json();
+    const prod_id = result.product_id;
+    const badge = document.getElementById('product-to-compare');
+    const compare_btn = document.getElementById('compare-btn');
+    const btn = document.getElementById('prod-'+ prod_id);
+    btn.classList.toggle("add");
+
+    if(result.total > 0){
+        badge.innerText = result.total;
+        compare_btn.classList.remove('disabled')
+    } else{
+        badge.innerText = '';
+        compare_btn.classList.add('disabled')
+    }
+    if(btn.classList.contains('add')){
+        btn.innerText = 'Убрать из сравнения';
+    } else {
+        btn.innerText = 'Добавить в сравнение';
+    }
     return result.ok;
 }
 
