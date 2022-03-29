@@ -44,6 +44,14 @@
                     <textarea rows="3" cols="5" class="form-control" id="{{ $key }}" name="{{ $key }}">@if(isset($product)){{$product->$key}}@else{{old($key)}}@endif</textarea>
                     @continue
                 @endif
+                @if($key === 'pds')
+                    <div class=" d-flex flex-column">
+                        <input type="file" class="form-control" id="{{ $key }}-local" name="{{ $key }}-local" value="@if(isset($product)){{$product->$key}}@else{{old('pds-local')}}@endif" aria-label="Upload">
+                        <p>или укажите ссылку:</p>
+                        <input type="text" class="form-control" id="{{ $key }}-link" name="{{ $key }}-link" value="@if(isset($product)){{$product->$key}}@else{{old('pds-link')}}@endif">
+                    </div>
+                    @continue
+                @endif
                 @if($key === 'tolerance')
                     <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" role="switch" id="{{$key}}" name="{{$key}}" @if(isset($product) && $product->tolerance === 1) checked @endif>

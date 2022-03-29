@@ -43,8 +43,8 @@ Route::group(['as' => 'products.', 'prefix' => 'products'], function(){
     Route::get('/{product}', [ProductController::class, 'show'])
     ->where('product', '\d+')
     ->name('show');
-    Route::get('/brand/{brand}', [ProductController::class, 'brand'])
-        ->where('brand', '\d+')
+    Route::get('/brand/{slug}', [ProductController::class, 'brand'])
+        ->where('slug', '\w+')
         ->name('brand');
     Route::get('/environment/{environment}', [ProductController::class, 'environment'])
         ->where('environment', '\d+')

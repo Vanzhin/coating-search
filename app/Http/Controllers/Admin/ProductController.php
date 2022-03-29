@@ -14,6 +14,7 @@ use App\Models\Number;
 use App\Models\Product;
 use App\Models\Resistance;
 use App\Models\Substrate;
+use App\Services\UploadService;
 use Illuminate\Support\Facades\Config;
 
 class ProductController extends Controller
@@ -67,6 +68,14 @@ class ProductController extends Controller
     public function store(CreateRequest $request)
     {
         $data = $request->validated();
+        if($request->hasFile('pds-local')){
+            $data['pds'] = app(UploadService::class)
+                ->savePds($request->file('pds-local'), 'pds');
+        }else{
+            $data['pds'] = $data['pds-link'];
+        };
+        unset($data['pds-link'],$data['pds-local']);
+
         if(key_exists('tolerance', $data)){
             $data['tolerance'] = 1;
         } else{
@@ -136,6 +145,17 @@ class ProductController extends Controller
     public function update(UpdateRequest $request, Product $product)
     {
         $data = $request->validated();
+        if($request->hasFile('pds-local')){
+            $data['pds'] = app(UploadService::class)
+                ->savePds($request->file('pds-local'), 'pds');
+            // если сохранился файл, то старый удаляю
+            if ($data['pds']){
+                app(UploadService::class)->deletePds($product->pds);
+            }
+        }else{
+            $data['pds'] = $data['pds-link'];
+        };
+        unset($data['pds-link'],$data['pds-local']);
         $product->slug = null;
         $updated = $product->fill($data)->save();
         if($updated){

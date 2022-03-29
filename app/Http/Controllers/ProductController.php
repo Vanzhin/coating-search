@@ -69,8 +69,10 @@ class ProductController extends Controller
         ]);
     }
 
-    public function brand(Brand $brand)
+    public function brand( $slug)
     {
+        //сделал со слагом, чтобы был красивый адрес типа http://coating-search.test/products/brand/ppg
+        $brand = Brand::where('slug', $slug)->first();
         return view('products.index', [
             'products' => Brand::find($brand->id)->products()->paginate(10),
         ]);
