@@ -115,18 +115,20 @@
 @endsection
 @push('js')
     <script type="text/javascript">
-        let productCount = 0;
         document.addEventListener('DOMContentLoaded', () => {
             const buttons = document.querySelectorAll("a.compare");
             buttons.forEach(button => button.addEventListener("click", function() {
+                button.classList.toggle("disabled");
                 const id = this.getAttribute('compare');
                 send('/products/compare/' + id).then(() => {
                     // location.reload();
+                    button.classList.toggle("disabled");
 
                 })
             }));
         });
 async function send(url){
+
     let response = await fetch(url, {
         method: 'GET',
         // headers: {
