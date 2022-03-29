@@ -15,7 +15,9 @@
                 @foreach($products as $product)
                     <div class="col bg-secondary " style="min-width: 50%;">
                         <div class="card-body d-flex justify-content-around">
-                            <h5 class="card-title text-center">{{$product->title}}</h5>
+                            <a href="{{route('products.show', $product)}}" class="text-light text-decoration-none">
+                                <h5 class="card-title text-center">{{$product->title}}</h5>
+                            </a>
                             <button type="button" class="btn btn-close" data-bs-toggle="modal" data-bs-target="#exampleModal"
                                     data-bs-product="{{$product->title}}"
                                     data-bs-id="{{$product->id}}">
@@ -72,8 +74,7 @@
                     <div class="modal-message"></div>
                 </div>
                 <div class="modal-footer">
-                    <a class="btn btn-secondary" data-bs-dismiss="modal">Отмена</a>
-                    <a id="delete" href="javascript:;" class="btn btn-outline-danger">Удалить</a>
+                    <a id="delete" href="javascript:;" class="btn btn-outline-danger col">Удалить</a>
                 </div>
             </div>
         </div>
@@ -102,7 +103,10 @@
             const myModalEl = document.getElementById('delete')
             myModalEl.addEventListener('click', () => {
                 const id = event.target.getAttribute('product-to-delete');
+                event.target.classList.toggle('disabled')
+                event.target.innerHTML= '<div class="spinner-border" role="status"></div>'
                 send('/products/compare/' + id).then(() => {
+                    myModalEl.innerHTML='Удалено'
                     location.reload();
 
                 })
