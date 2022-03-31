@@ -1,7 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{ProductController, SearchController};
+use App\Http\Controllers\{ProductController, SearchController, HomeController};
+use App\Http\Controllers\Account\IndexController as AccountController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\BinderController as AdminBinderController;
 use App\Http\Controllers\Admin\BrandController as AdminBrandController;
@@ -101,4 +103,19 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin'], function() {
         ->name('resistances');
     Route::get('/substrates', [AdminSubstrateController::class, 'index'])
         ->name('substrates');
+});
+
+Auth::routes();
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::group(['middleware' => ['auth']], function (){
+
+    Route::get('/account', AccountController::class)
+        ->middleware('verified')
+        ->name('account');
+    Route::get('/logout', function (){
+        Auth::logout();
+        return redirect()->route('login');
+    })->name('account.logout');
+
 });

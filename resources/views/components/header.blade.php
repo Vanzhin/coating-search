@@ -32,18 +32,23 @@
             <form>
                 <input class="form-control" type="text" placeholder="Search" aria-label="Search">
             </form>
-            <div class="dropdown text-end">
-                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
-                </a>
-                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                    <li><a class="dropdown-item" href="#">Профиль</a></li>
-                    <li><a class="dropdown-item" href="#">Настройки</a></li>
-{{--                    <li><a class="dropdown-item" href="#">Profile</a></li>--}}
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Выйти</a></li>
-                </ul>
-            </div>
+            @if(Auth::guest())
+                <div class="text-end navbar-brand">
+                    <a href="{{ route('login') }}"  class="btn btn-outline-primary me-auto">Вход / Регистрация</a>
+                </div>
+            @else
+                <div class="dropdown text-end">
+                    <a href="{{ route('account') }}" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="@if(Auth::user()->avatar){!!Auth::user()->avatar!!}@else{!!Storage::disk('public')->url('images/users/default.png')!!}@endif" width="32" height="32" class="rounded-circle">
+                    </a>
+                    <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+                        <li><a class="dropdown-item" href="#">Профиль</a></li>
+                        <li><a class="dropdown-item" href="#">Настройки</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ route('logout') }}">Выйти</a></li>
+                    </ul>
+                </div>
+            @endif
         </div>
-        </div>
+    </div>
 </nav>
