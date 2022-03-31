@@ -69,41 +69,6 @@ Route::get('/products/compare/{product}', [ProductController::class, 'addToCompa
     ->where('product', '\d+');
 
 //admin
-Route::group(['as' => 'admin.', 'prefix' => 'admin'], function() {
-    Route::get('/index', function () {
-        return view('admin.index');
-    })->name('index');
-    Route::resources([
-        '/products' => AdminProductController::class,
-        '/binders' => AdminBinderController::class,
-        '/brands' => AdminBrandController::class,
-        '/catalogs' => AdminCatalogController::class,
-        '/additives' => AdminAdditiveController::class,
-        '/environments' => AdminEnvironmentController::class,
-        '/numbers' => AdminNumberController::class,
-        '/resistances' => AdminResistanceController::class,
-        '/substrates' => AdminSubstrateController::class,
-
-    ]);
-    Route::get('/products', [AdminProductController::class, 'index'])
-        ->name('products');
-    Route::get('/binders', [AdminBinderController::class, 'index'])
-        ->name('binders');
-    Route::get('/brands', [AdminBrandController::class, 'index'])
-        ->name('brands');
-    Route::get('/catalogs', [AdminCatalogController::class, 'index'])
-        ->name('catalogs');
-    Route::get('/additives', [AdminAdditiveController::class, 'index'])
-        ->name('additives');
-    Route::get('/environments', [AdminEnvironmentController::class, 'index'])
-        ->name('environments');
-    Route::get('/numbers', [AdminNumberController::class, 'index'])
-        ->name('numbers');
-    Route::get('/resistances', [AdminResistanceController::class, 'index'])
-        ->name('resistances');
-    Route::get('/substrates', [AdminSubstrateController::class, 'index'])
-        ->name('substrates');
-});
 
 Auth::routes();
 
@@ -111,11 +76,47 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::group(['middleware' => ['auth']], function (){
 
     Route::get('/account', AccountController::class)
-        ->middleware('verified')
+//        ->middleware('verified')
         ->name('account');
     Route::get('/logout', function (){
         Auth::logout();
-        return redirect()->route('login');
+        return redirect()->route('home');
     })->name('account.logout');
+    Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => 'admin'], function() {
+        Route::get('/index', function () {
+            return view('admin.index');
+        })->name('index');
+        Route::resources([
+            '/products' => AdminProductController::class,
+            '/binders' => AdminBinderController::class,
+            '/brands' => AdminBrandController::class,
+            '/catalogs' => AdminCatalogController::class,
+            '/additives' => AdminAdditiveController::class,
+            '/environments' => AdminEnvironmentController::class,
+            '/numbers' => AdminNumberController::class,
+            '/resistances' => AdminResistanceController::class,
+            '/substrates' => AdminSubstrateController::class,
+
+        ]);
+        Route::get('/products', [AdminProductController::class, 'index'])
+            ->name('products');
+        Route::get('/binders', [AdminBinderController::class, 'index'])
+            ->name('binders');
+        Route::get('/brands', [AdminBrandController::class, 'index'])
+            ->name('brands');
+        Route::get('/catalogs', [AdminCatalogController::class, 'index'])
+            ->name('catalogs');
+        Route::get('/additives', [AdminAdditiveController::class, 'index'])
+            ->name('additives');
+        Route::get('/environments', [AdminEnvironmentController::class, 'index'])
+            ->name('environments');
+        Route::get('/numbers', [AdminNumberController::class, 'index'])
+            ->name('numbers');
+        Route::get('/resistances', [AdminResistanceController::class, 'index'])
+            ->name('resistances');
+        Route::get('/substrates', [AdminSubstrateController::class, 'index'])
+            ->name('substrates');
+    });
+
 
 });

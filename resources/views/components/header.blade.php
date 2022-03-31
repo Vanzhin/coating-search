@@ -24,9 +24,11 @@
                         <li><a class="dropdown-item" href="#">Химстойкость</a></li>
                     </ul>
                 </li>
+                @if(Auth::user() && Auth::user()->role === 'admin')
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.index') }}">Панель управления</a>
                 </li>
+                @endif
             </ul>
 
             <form>
@@ -37,12 +39,12 @@
                     <a href="{{ route('login') }}"  class="btn btn-outline-primary me-auto">Вход / Регистрация</a>
                 </div>
             @else
-                <div class="dropdown text-end">
+                <div class="dropdown">
                     <a href="{{ route('account') }}" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="@if(Auth::user()->avatar){!!Auth::user()->avatar!!}@else{!!Storage::disk('public')->url('images/users/default.png')!!}@endif" width="32" height="32" class="rounded-circle">
                     </a>
-                    <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                        <li><a class="dropdown-item" href="#">Профиль</a></li>
+                    <ul class="dropdown-menu text-small dropdown-menu dropdown-menu-dark shadow">
+                        <li><a class="dropdown-item" href="{{ route('account') }}">Профиль</a></li>
                         <li><a class="dropdown-item" href="#">Настройки</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="{{ route('logout') }}">Выйти</a></li>
