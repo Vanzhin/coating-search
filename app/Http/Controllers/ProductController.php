@@ -59,6 +59,7 @@ class ProductController extends Controller
         }
 
     }
+
     public function compare()
     {
         $products = Product::query()->whereIn('id', session()->get('products.compare'))->get();

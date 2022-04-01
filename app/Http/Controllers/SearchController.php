@@ -127,7 +127,8 @@ class SearchController extends Controller
             'fieldsToOrderBy'=> Product::getFieldsToOrderBy(),
             'fields' => array_merge(Product::getFieldsToCreate(), Product::getLinkedFields()),
             'linkedFields' => Product::getLinkedFields(),
-            'compareProduct' => session()->get('products.compare'),
+            //если есть данные по сравнению в сессии выдаю их, если нет, то пустой массив
+            'compareProduct' => session()->get('products.compare') ?? [],
 
         ]);
     }
@@ -178,7 +179,7 @@ class SearchController extends Controller
         if (count($data) == 1 && isset($data['order-by'])){
             $data = array_merge(json_decode($search->data, 1), $data);
         }
-        
+
         $updatedData = app(ProductSearchService::class)->getUpdatedData($search, $data);
 
         $updated = $search->fill(

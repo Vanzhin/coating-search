@@ -22,6 +22,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         LoginEvent::class => [
             LastLoginUpdateListener::class,
+
         ],
     ];
 

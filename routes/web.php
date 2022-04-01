@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{ProductController, SearchController, HomeController};
+use App\Http\Controllers\{Auth\LoginController, ProductController, SearchController, HomeController};
 use App\Http\Controllers\Account\IndexController as AccountController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\BinderController as AdminBinderController;
@@ -78,10 +78,9 @@ Route::group(['middleware' => ['auth']], function (){
     Route::get('/account', AccountController::class)
 //        ->middleware('verified')
         ->name('account');
-    Route::get('/logout', function (){
-        Auth::logout();
-        return redirect()->route('home');
-    })->name('account.logout');
+
+    Route::get('/logout', [LoginController::class, 'logout'])
+    ->name('account.logout');
 
     Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => 'admin'], function() {
         Route::get('/index', function () {
