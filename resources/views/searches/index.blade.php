@@ -11,7 +11,9 @@
     <div class="album py-5 bg-light">
         <div class="container">
             <a href="{{ route('search.create') }}" class="btn btn-primary btn-lg">Начать поиск</a>
-            <a  href="#"class="btn btn-secondary btn-lg">Мои поиски</a>
+            @if(Auth::user())
+                <a  href="#"class="btn btn-secondary btn-lg">Мои поиски</a>
+            @endif
     </div>
     </div>
 @endsection

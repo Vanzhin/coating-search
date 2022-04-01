@@ -39,6 +39,7 @@
                     <a href="{{ route('login') }}"  class="btn btn-outline-primary me-auto">Вход / Регистрация</a>
                 </div>
             @else
+
                 <div class="dropdown">
                     <a href="{{ route('account') }}" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="@if(Auth::user()->avatar){!!Auth::user()->avatar!!}@else{!!Storage::disk('public')->url('images/users/default.png')!!}@endif" width="32" height="32" class="rounded-circle">
@@ -54,3 +55,4 @@
         </div>
     </div>
 </nav>
+

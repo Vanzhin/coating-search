@@ -104,8 +104,8 @@
                         @endif
                         @if($key === 'tolerance')
                             <label for="{{ $key }}"><h5 class="card-header">{!! $item !!}:</h5></label>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="{{$key}}" name="{{$key}}" @if(isset($search) && array_key_exists($key, $searchData) or old($key)) checked @endif>
+                                <div class="form-check form-switch ms-4 mb-2 mt-2">
+                                    <input class="form-check-input form-control" type="checkbox" role="switch" id="{{$key}}" name="{{$key}}" @if(isset($search) && array_key_exists($key, $searchData) or old($key)) checked @endif>
                                 </div>
                     </div>
                             @continue
@@ -124,7 +124,7 @@
                                 <span>(от {{$selectionData[$key]['min']}} до {{$selectionData[$key]['max']}})</span>
                             </h5>
                         </label>
-                        <input value="@if(isset($search) && array_key_exists($key, $searchData)){{$searchData[$key]}} @else{{$selectionData[$key]['min']-1}}@endif" name="{{ $key }}" type="range" class="form-range form-control" id="{{ $key }}" onInput="$('#rangeval-{{$key}}').html($(this).val())"
+                        <input value="@if(isset($search) && array_key_exists($key, $searchData)){{$searchData[$key]}} @else{{$selectionData[$key]['min']-1}}@endif" name="{{ $key }}" type="range" class="form-range form-control p-4" id="{{ $key }}" onInput="$('#rangeval-{{$key}}').html($(this).val())"
                                min="{{$selectionData[$key]['min']-1}}" max="{{$selectionData[$key]['max']}}" step="1">
                     </div>
                 @endforeach
