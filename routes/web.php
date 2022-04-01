@@ -82,6 +82,7 @@ Route::group(['middleware' => ['auth']], function (){
         Auth::logout();
         return redirect()->route('home');
     })->name('account.logout');
+
     Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => 'admin'], function() {
         Route::get('/index', function () {
             return view('admin.index');

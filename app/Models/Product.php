@@ -97,7 +97,7 @@ public static function getFieldsToSearch(): array
             'tolerance' => 'Толерантный к подготовке поверхности?',
             'min_temp' => 'Минимальная т-ра нанесения, ' . "от&nbsp;&deg;C",
             'max_service_temp' => 'Максимальная  т-ра эксплуатации,' . "до&nbsp;&deg;C",
-            'title' => 'Название',
+            'title' => 'Название содержит',
 
         ];
     }

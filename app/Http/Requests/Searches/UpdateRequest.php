@@ -44,6 +44,9 @@ class UpdateRequest extends FormRequest
             'tolerance' => ['string'],
             'title' => ['string', 'nullable'],
             'order-by' => ['string', 'nullable'],
+            'status' => ['string'],
+            'search_title' => ['string', 'nullable'],
+
 
         ];
     }

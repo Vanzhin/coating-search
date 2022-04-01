@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('title')
-    @parent Подбор покрытий
+    @parent | Подбор покрытий
 @endsection
 @section('header')
     <section class="text-center container">
@@ -34,9 +34,15 @@
                     </div>
                     <div class="d-flex flex-fill">
                         <button type="submit"  class="btn btn-success p-2 flex-fill">Сортировать</button>
-
-                        <a href="{{ route('search.edit', ['search' => $search]) }}" class="btn btn-primary p-2 flex-fill">Обновить поиск</a>
-                        <a  href="{{ route('products.compare') }}" id = "compare-btn" class="btn bg-secondary p-2 flex-fill @if($compareProduct){{''}}@else disabled @endif">
+                        <a href="{{ route('search.edit', ['search' => $search]) }}" class="btn btn-primary p-2 flex-fill">Обновить</a>
+                        @if(Auth::user())
+                            @if($search->status === 'saved')
+                                <a href="#" class="btn btn-secondary">Мои поиски</a>
+                            @else
+                                <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal">Сохранить</a>
+                            @endif
+                        @endif
+                        <a  href="{{ route('products.compare') }}" id = "compare-btn" class="btn bg-secondary p-2 flex-fill @if(count($compareProduct) > 1){{''}}@else disabled @endif">
                             Сравнить <span id = "product-to-compare" class="badge btn-warning">@if($compareProduct){{count($compareProduct)}}@else{{''}}@endif</span>
                             </a>
                     </div>
@@ -112,6 +118,34 @@
             {{ $products->onEachSide(0)->links() }}
 
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Сохранение поиска</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form class="was-validated" method="post" action="{{ route('search.update', [$search]) }}">
+                        @method('put')
+                        @csrf
+                        <div class="modal-body">
+                            <label for="search-title"><h6>Название поиска: </h6></label>
+                            <input class="form-control" type="text"  id="validationText" placeholder="Необходимо указать название" required name="search_title" value="Поиск №{{$search->id}}">
+                            <div class="invalid-feedback">
+                                Пожалуйста, укажите название
+                            </div>
+                            <input class="form-control" type="text"  id="status" name="status" value="saved" hidden>
+                        </div>
+                        <div class="modal-footer">
+                            <button  class="btn btn-outline-secondary" data-bs-dismiss="modal">Отмена</button>
+                            <button type="submit" class="btn btn-outline-success">Сохранить поиск</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
 @endsection
 @push('js')
     <script type="text/javascript">
@@ -131,10 +165,6 @@ async function send(url){
 
     let response = await fetch(url, {
         method: 'GET',
-        // headers: {
-        //     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-        //         .getAttribute('content')
-        // }
     });
     let result = await response.json();
     const prod_id = result.product_id;
@@ -143,11 +173,14 @@ async function send(url){
     const btn = document.getElementById('prod-'+ prod_id);
     btn.classList.toggle("add");
 
-    if(result.total > 0){
+    if(result.total > 1){
         badge.innerText = result.total;
         compare_btn.classList.remove('disabled')
-    } else{
+    } else if(result.total === 0){
         badge.innerText = '';
+        compare_btn.classList.add('disabled')
+    } else{
+        badge.innerText = result.total;
         compare_btn.classList.add('disabled')
     }
     if(btn.classList.contains('add')){

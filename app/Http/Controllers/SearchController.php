@@ -81,11 +81,18 @@ class SearchController extends Controller
             );
 
         } else {
-//            $created = Search::create([
-//                'data' => json_encode($data),
-//                'token' => $request->session()->get('_token'),
-//
-//            ]);
+                $created = Search::updateOrCreate(
+                    [
+                        'status' => 'active',
+                        'user_id' => Auth::user()->getAuthIdentifier()
+                    ],
+                    [
+                        'data' => json_encode($data),
+                        'description' => app(ProductSearchService::class)->getSearchDescription($data),
+                        'session_token' => $request->session()->get('_token'),
+                        'user_id' => Auth::user()->getAuthIdentifier()
+
+                    ]);
         }
         }else {
             return back()->with('error', __('messages.searches.created.empty'))->withInput();
@@ -170,19 +177,24 @@ class SearchController extends Controller
 
         if (count($data) == 1 && isset($data['order-by'])){
             $data = array_merge(json_decode($search->data, 1), $data);
-
         }
+        
+        $updatedData = app(ProductSearchService::class)->getUpdatedData($search, $data);
+
         $updated = $search->fill(
             [
-                'data' => json_encode($data),
-                'description' => app(ProductSearchService::class)->getSearchDescription($data),
-                'session_token' => $request->session()->get('_token')
+                'data' => json_encode($updatedData),
+                'description' => app(ProductSearchService::class)->getSearchDescription($updatedData),
+                'session_token' => $request->session()->get('_token'),
+                'title' => $data['search_title'] ?? $search->title ?? null,
+                'status' => $data['status'] ?? $search->status ?? 'active',
             ]
         )->save();
 
+
         if($updated){
 
-            return redirect()->route('search.show', [$updated])->with('success', __('messages.searches.updated.success'));
+            return redirect()->route('search.show', [$search])->with('success', __('messages.searches.updated.success'));
         }
         return back()->with('error', __('messages.searches.updated.error'))->withInput();
 

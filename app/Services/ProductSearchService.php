@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Product;
+use App\Models\Search;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
@@ -64,11 +65,12 @@ class ProductSearchService
     public function getSearchData(array $request): array
     {
         $selectionData = $this->getSelectionData();
+
         //проверяю, если меньше меньшего или null, то удаляю из поиска
         $searchData = [];
         foreach ($request as $key => $value){
 
-            if ((key_exists($key, $selectionData) && $value >= $selectionData[$key]['min'] or (in_array($key, ['title', 'order-by']) && !is_null($value)))){
+            if ((key_exists($key, $selectionData) && $value >= $selectionData[$key]['min'] or (in_array($key, ['title', 'order-by', 'search_title', 'status']) && !is_null($value)))){
                 $searchData[$key] = $value;
             }  elseif (is_array($value) ){
                 $searchData[$key] = $value;
@@ -76,7 +78,6 @@ class ProductSearchService
                 $searchData[$key] = 1;
             }
         }
-
         return $searchData;
     }
 
@@ -115,6 +116,18 @@ class ProductSearchService
             else $this->title = $this->title . $item . '; ';
         }
         return $this->title;
+    }
+    public function getUpdatedData(Search $search, $requestedData): array
+    {
+        $updatedData = json_decode($search->data, 1);
+        foreach ($requestedData as $key => $value){
+            if (key_exists($key, $updatedData) && $updatedData[$key] === $value or in_array($key, ['status', 'search_title'])){
+                continue;
+            } else {
+                $updatedData[$key] = $value;
+            }
+        }
+        return $updatedData;
     }
 
 }

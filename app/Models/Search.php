@@ -16,5 +16,6 @@ class Search extends Model
         'user_id',
         'session_token',
         'description',
+        'status',
     ];
 }
