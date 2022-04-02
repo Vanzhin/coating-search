@@ -29,9 +29,9 @@
                 @empty
                     <h2>Записей нет</h2>
                 @endforelse
+                    {{ $searches->onEachSide(0)->links() }}
             @endif
         </div>
-        {{ $searches->onEachSide(0)->links() }}
     </div>
 @endsection
 
