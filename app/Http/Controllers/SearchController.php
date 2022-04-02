@@ -29,7 +29,12 @@ class SearchController extends Controller
     public function index()
     {
 
-        return view('searches.index');
+        return view('searches.index',[
+            'searches' => Search::query()
+                ->where('user_id', Auth::user()->getAuthIdentifier())
+                ->whereIn('status', ['saved', 'active'])->orderByDesc('updated_at')
+                ->paginate(Config::get('constants.ITEMS_PER_PAGE'))
+        ]);
     }
 
     /**

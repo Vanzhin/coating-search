@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('title')
-    @parent - Главная
+    @parent | Главная
 @endsection
 @section('header')
     <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">

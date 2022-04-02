@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Interfaces\IModel;
 use App\Services\ExtractValuesService;
 use App\Traits\TModel;
 use Cviebrock\EloquentSluggable\Sluggable;

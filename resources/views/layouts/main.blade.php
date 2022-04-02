@@ -8,6 +8,8 @@
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/carousel.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/list-groups.css') }}" rel="stylesheet">
+
 
 
     <!-- Latest compiled and minified CSS -->

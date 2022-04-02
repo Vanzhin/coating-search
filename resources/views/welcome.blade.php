@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <title>Coating Search - Welcome</title>
+    <title>Coating Search | Приветствие</title>
 
 
     <!-- Bootstrap core CSS -->
@@ -39,8 +39,8 @@
             <h3 class="float-md-start mb-0">Coating Search</h3>
             <nav class="nav nav-masthead justify-content-center float-md-end">
 {{--                <a class="nav-link active" aria-current="page" href="#">Главная</a>--}}
-                <a class="nav-link" href="#">Вход</a>
-                <a class="nav-link" href="#">Регистрация</a>
+                <a class="nav-link" href="{{ route('login') }}">Вход</a>
+                <a class="nav-link" href="{{ route('register') }}">Регистрация</a>
             </nav>
         </div>
     </header>

@@ -26,10 +26,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate(Config::get('constants.ITEMS_PER_PAGE'));
-
         return view('admin.products.index', [
-            'products' => $products,
+            'products' => Product::paginate(Config::get('constants.ITEMS_PER_PAGE')),
             'fields'=> Product::getFieldsToShow(),
             ]);
     }
