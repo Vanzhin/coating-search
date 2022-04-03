@@ -15,7 +15,6 @@ use App\Models\Resistance;
 use App\Models\Search;
 use App\Models\Substrate;
 use App\Services\ProductSearchService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 
@@ -137,6 +136,7 @@ class SearchController extends Controller
             //если есть данные по сравнению в сессии выдаю их, если нет, то пустой массив
             'compareProduct' => session()->get('products.compare') ?? [],
 
+
         ]);
     }
 
@@ -216,10 +216,18 @@ class SearchController extends Controller
      */
     public function destroy(Search $search)
     {
-        $deleted = $search->delete();
-        if($deleted){
-            return redirect()->route('searches')->with('success', __('messages.searches.deleted.success',));
+//        $deleted = $search->delete();
+//        if($deleted){
+//            return redirect()->route('searches')->with('success', __('messages.searches.deleted.success',));
+//        }
+//        return back()->with('error', __('messages.searches.deleted.error'))->withInput();
+        try {
+            $search->status = 'deleted';
+            $search->save();
+            return response()->json('ok');
+
+        }catch(\Exception $e){
+            return response()->json('error', 400);
         }
-        return back()->with('error', __('messages.searches.deleted.error'))->withInput();
     }
 }

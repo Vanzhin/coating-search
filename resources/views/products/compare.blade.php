@@ -79,9 +79,9 @@
             </div>
         </div>
     </div>
-    @push('js')
-        <script>
-            const exampleModal = document.getElementById('exampleModal');
+@push('js')
+    <script>
+        const exampleModal = document.getElementById('exampleModal');
             exampleModal.addEventListener('show.bs.modal', function (event) {
                 // Button that triggered the modal
                 const button = event.relatedTarget;
@@ -120,13 +120,12 @@
                 let result = await response.json();
                 return result.ok;
             }
-
-        </script>
-    @endpush
+    </script>
+@endpush
 
     @else
-                <h4 class="text-warning text-center">Список пуст</h4>
-            @endif
+        <h4 class="text-warning text-center">Список пуст</h4>
+    @endif
 @endsection
 
 

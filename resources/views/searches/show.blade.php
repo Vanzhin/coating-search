@@ -3,15 +3,16 @@
     @parent | Подбор покрытий
 @endsection
 @section('header')
-    <section class="text-center container">
+{{--    если пользователь пытается просмотреть не свою запись, то выводу заглушку--}}
+    @if(Auth::check() ? Auth::user()->getAuthIdentifier() : false === $search->user_id or $search->session_token === session()->get('_token'))
+        <section class="text-center container">
         <h1 class="fw-light">Подбор покрытий</h1>
         @include('inc.message')
         <h3 class="fw-light">{!! $search->description!!}</h3>
-
     </section>
 @endsection
 @section('content')
-    <div class="container">
+        <div class="container">
             <div class="d-flex">
 
                 <form class="form-control d-flex flex-wrap align-items-stretch" method="post" action="{{ route('search.update', [$search]) }}">
@@ -146,6 +147,11 @@
                 </div>
             </div>
         </div>
+    @else
+        <div class="container text-center py-5">
+            <h5>Запись не найдена</h5>
+        </div>
+    @endif
 @endsection
 @push('js')
     <script type="text/javascript">
