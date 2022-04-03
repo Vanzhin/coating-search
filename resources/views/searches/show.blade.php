@@ -38,7 +38,7 @@
                         <a href="{{ route('search.edit', ['search' => $search]) }}" class="btn btn-primary p-2 flex-fill">Обновить</a>
                         @if(Auth::user())
                             @if($search->status === 'saved')
-                                <a href="#" class="btn btn-secondary">Мои поиски</a>
+                                <a href="{{route('search')}}" class="btn btn-info">Мои поиски</a>
                             @else
                                 <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal">Сохранить</a>
                             @endif
