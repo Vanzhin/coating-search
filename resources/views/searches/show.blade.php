@@ -34,17 +34,30 @@
                         </select>
                     </div>
                     <div class="d-flex flex-fill">
-                        <button type="submit"  class="btn btn-success p-2 flex-fill">Сортировать</button>
-                        <a href="{{ route('search.edit', ['search' => $search]) }}" class="btn btn-primary p-2 flex-fill">Обновить</a>
+                        <button type="submit"  class="btn btn-success p-2 flex-fill">
+                            <i class="fa-solid fa-arrow-down-short-wide"></i>
+                            Сортировать
+                        </button>
+                        <a href="{{ route('search.edit', ['search' => $search]) }}" class="btn btn-primary p-2 flex-fill">
+                            <i class="fa-solid fa-arrow-rotate-left"></i>
+                            Обновить
+                        </a>
                         @if(Auth::user())
                             @if($search->status === 'saved')
-                                <a href="{{route('search')}}" class="btn btn-info">Мои поиски</a>
+                                <a href="{{route('search')}}" class="btn btn-info">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                    Мои поиски
+                                </a>
                             @else
-                                <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal">Сохранить</a>
+                                <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    <i class="fa-regular fa-floppy-disk"></i>
+                                    Сохранить
+                                </a>
                             @endif
                         @endif
                         <a  href="{{ route('products.compare') }}" id = "compare-btn" class="btn bg-secondary p-2 flex-fill @if(count($compareProduct) > 1){{''}}@else disabled @endif">
-                            Сравнить <span id = "product-to-compare" class="badge btn-warning">@if($compareProduct){{count($compareProduct)}}@else{{''}}@endif</span>
+                            <i class="fa-solid fa-chart-simple"></i>
+                            <span id = "product-to-compare" class="badge btn-warning">@if($compareProduct){{count($compareProduct)}}@else{{''}}@endif</span>
                             </a>
                     </div>
                     </form>
@@ -59,7 +72,7 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse-{{ $product->id}}" aria-expanded="false" aria-controls="panelsStayOpen-collapse-{{ $product->id}}">
                                     <h5 class="header">{{$product->title}}</h5>
                                 </button>
-                                <a href="javascript:;" id="prod-{{$product->id}}"  class="btn bg-warning text-dark compare @if(isset($compareProduct) && in_array($product->id, $compareProduct)){{"add"}}@endif" compare="{{$product->id}}"
+                                <a href="javascript:;" id="prod-{{$product->id}}"  class="btn compare @if(isset($compareProduct) && in_array($product->id, $compareProduct)){{"add btn-secondary"}}@else {{"btn-warning"}}@endif" compare="{{$product->id}}"
                                 >@if(isset($compareProduct) && in_array($product->id, $compareProduct))Убрать из сравнения@elseДобавить в сравнение@endif</a>
 
                             </h2>
@@ -159,6 +172,7 @@
             const buttons = document.querySelectorAll("a.compare");
             buttons.forEach(button => button.addEventListener("click", function() {
                 button.classList.toggle("disabled");
+                button.innerHTML = '<div class="spinner-border" role="status"></div>';
                 const id = this.getAttribute('compare');
                 send('/products/compare/' + id).then(() => {
                     // location.reload();
@@ -167,6 +181,7 @@
                 })
             }));
         });
+        //todo убрать отсюда и перенести в основной код выше
 async function send(url){
 
     let response = await fetch(url, {
@@ -190,10 +205,13 @@ async function send(url){
         compare_btn.classList.add('disabled')
     }
     if(btn.classList.contains('add')){
-        btn.innerText = 'Убрать из сравнения';
+        btn.innerHTML = 'Убрать из сравнения';
+
     } else {
-        btn.innerText = 'Добавить в сравнение';
+        btn.innerHTML = 'Добавить в сравнение';
     }
+    btn.classList.toggle('btn-warning');
+    btn.classList.toggle('btn-secondary');
     return result.ok;
 }
 
