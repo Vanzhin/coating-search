@@ -18,4 +18,5 @@ class LikeController extends Controller
 
         return app(LikeService::class)->likeHandle($product);
     }
+
 }

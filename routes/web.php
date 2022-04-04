@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{Auth\LoginController, ProductController, SearchController, HomeController, LikeController};
-use App\Http\Controllers\Account\IndexController as AccountController;
+use App\Http\Controllers\Account\AccountController as AccountController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\BinderController as AdminBinderController;
 use App\Http\Controllers\Admin\BrandController as AdminBrandController;
@@ -78,10 +78,15 @@ Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::group(['middleware' => ['auth']], function (){
-
-    Route::get('/account', AccountController::class)
+    Route::group(['as' => 'account.', 'prefix' => 'account'], function (){
+        Route::get('/', [AccountController::class, 'index'])
 //        ->middleware('verified')
-        ->name('account');
+            ->name('index');
+        Route::get('/my/products', [AccountController::class, 'showFavoriteProducts'])
+//        ->middleware('verified')
+            ->name('my');
+    });
+
 
     Route::get('/logout', [LoginController::class, 'logout'])
     ->name('account.logout');

@@ -1,38 +1,27 @@
 @extends('layouts.main')
 @section('title')
-    @parent | Покрытия
+    @parent | Мои покрытия
 @endsection
 @section('header')
     <section class="text-center container">
-        <h1 class="fw-light">Все покрытия</h1>
-
+        <h1 class="fw-light">Мои покрытия</h1>
     </section>
 @endsection
 @section('content')
     <div class="album py-5 bg-light">
         <div class="container">
-{{--            @include('inc.message')--}}
-
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 @forelse($products as $product)
-                    <div class="col card-group">
+                    <div id="{{$product->id}}" class="col card-group">
                         <div class="card">
                             <h5 class="card-header d-flex flex-nowrap justify-content-between align-items-center">
                                 <span>{{$product->title}}</span>
-                                @if(Auth::check())
-                                    <span like="{{$product->id}}" onclick="likeHandle(this)">
-                                        @if(in_array($product->id, $likes))
-                                            <i class="fa-star fa-solid"></i>
-                                        @else
-                                            <i class="fa-star fa-regular"></i>
-                                        @endif
+                                    <span like="{{$product->id}}" onclick="likeRemove(this)">
+                                        <i class="fa-xmark fa-solid fa-xl disabled"></i>
                                     </span>
-                                @endif
                             </h5>
-
                             <div class="card-body">
                                 <h5 class="card-title">{{Str::ucfirst($product->description)}}</h5>
-
                                 <table class="table">
                                     <thead>
                                     <tr>
@@ -54,7 +43,7 @@
                         </div>
                     </div>
                 @empty
-                    <h2>Записей нет</h2>
+                    <h2 class="text-center w-100 vh-100">Записей нет</h2>
                 @endforelse
             </div>
             {{ $products->onEachSide(0)->links() }}
@@ -62,20 +51,19 @@
     </div>
 @endsection
 @push('js')
-    <script>function likeHandle(like) {
+    <script>function likeRemove(like) {
             const id = like.getAttribute('like');
-            like.style.pointerEvents='none';
-            like.firstElementChild.remove();
+            const card = document.getElementById(id);
+            console.log(card);
+            card.style.pointerEvents='none';
+            card.style.opacity='0.5';
             like.innerHTML = '<i class="fa-regular fa-clock"></i>';
             send('/like/' + id).then((result) => {
-                like.firstElementChild.remove();
                 if(result === 'dislike'){
-                    like.innerHTML = '<i class="fa-solid fa-star"></i>';
-
+                    like.innerHTML = '<i class="fa-duotone fa-triangle-exclamation"></i>';
                 } else{
-                    like.innerHTML = '<i class="fa-regular fa-star"></i>';
+                    card.remove();
                 }
-                like.style.pointerEvents='auto';
             })
 
         }
