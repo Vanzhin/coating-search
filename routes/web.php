@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{Auth\LoginController, ProductController, SearchController, HomeController};
+use App\Http\Controllers\{Auth\LoginController, ProductController, SearchController, HomeController, LikeController};
 use App\Http\Controllers\Account\IndexController as AccountController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\BinderController as AdminBinderController;
@@ -55,6 +55,10 @@ Route::group(['as' => 'products.', 'prefix' => 'products'], function(){
         ->name('compare');
 
     });
+//likes
+Route::get('/like/{product}', [LikeController::class, 'likeHandling'])
+    ->where('product', '\d+')
+    ->name('like');
 
 //search
 

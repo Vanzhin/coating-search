@@ -13,15 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('searches', function (Blueprint $table) {
+        Schema::create('product_likes', function (Blueprint $table) {
             $table->id();
-            $table->char('title', 255)->nullable();
-            $table->text('description')->nullable();
-            $table->string('session_token');
-            $table->enum('status', ['active', 'saved', 'deleted'])->default('active');
-            $table->json('data');
-            $table->unsignedBigInteger('user_id')->default(1);
+            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
+            $table->foreign('product_id')
+                ->references('id')
+                ->on('products')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
@@ -37,6 +38,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('searches');
+        Schema::dropIfExists('product_likes');
+
     }
 };

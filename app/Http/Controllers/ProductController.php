@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Brand;
 use App\Models\Environment;
 use App\Models\Product;
+use App\Services\LikeService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -16,6 +18,7 @@ class ProductController extends Controller
         $products = Product::query()->paginate(10);
         return view('products.index', [
             'products' => $products,
+            'likes' => app(LikeService::class)->getLikedProductsId(),
 
         ]);
     }
