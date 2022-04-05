@@ -21,6 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'status',
+        'role',
     ];
 
     /**
@@ -41,4 +43,36 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public static function getFieldsToShow(): array
+    {
+        return [
+            'name' => 'Имя',
+            'email' => 'Почта',
+            'last_login_at' => 'Дата последнего входа',
+            'email_verified_at' => 'Дата верификации почты',
+            'role' => 'Роль',
+            'status' => 'Статус',
+        ];
+    }
+
+    public static function getFieldsToCreate(): array
+    {
+        return [
+            'name' => 'Имя',
+            'email' => 'Почта',
+            'role' => 'Роль',
+            'status' => 'Статус',
+            'password' => 'Пароль'
+        ];
+    }
+    public static function getFieldsToUpdate(): array
+    {
+        return [
+            'name' => 'Имя',
+            'email' => 'Почта',
+            'role' => 'Роль',
+            'status' => 'Статус',
+        ];
+    }
 }

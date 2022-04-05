@@ -14,6 +14,12 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link @if(request()->routeIs('admin.users*')) active @endif" href="{{ route('admin.users') }}">
+                    <span data-feather="users"></span>
+                    Пользователи
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link @if(request()->routeIs('admin.binders*')) active @endif" href="{{ route('admin.binders') }}">
                     <span data-feather="file-text"></span>
                     Основания

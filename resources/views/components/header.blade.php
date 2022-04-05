@@ -11,11 +11,10 @@
                 <input class="form-control" type="text" placeholder="Search" aria-label="Search">
             </form>
             @if(Auth::guest())
-                <div class="text-end navbar-brand">
+                <div class="text-center">
                     <a href="{{ route('login') }}"  class="btn btn-outline-primary me-auto">Вход</a>
                 </div>
             @else
-
                 <div class="dropdown">
                     <a href="{{ route('account.index') }}" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="@if(Auth::user()->avatar){!!Auth::user()->avatar!!}@else{!!Storage::disk('public')->url('images/users/default.png')!!}@endif" width="32" height="32" class="rounded-circle">

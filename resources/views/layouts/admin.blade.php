@@ -13,6 +13,9 @@
     <link href="{{ asset('css/fixedtable.css') }}" rel="stylesheet">
     <!-- Latest compiled and minified CSS -->
     <link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/all.min.css') }}" rel="stylesheet">
+
+
 
 
 
@@ -67,6 +70,7 @@
 
 {{--<!-- Latest compiled and minified JavaScript -->--}}
 <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
+<script src="{{ asset('js/all.min.js') }}"></script>
 
 
 

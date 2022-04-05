@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\DbService;
 use App\Services\ExtractValuesService;
 use App\Services\LikeService;
 use App\Services\MinMaxValuesService;
@@ -21,6 +22,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ExtractValuesService::class);
         $this->app->bind(ProductSearchService::class);
         $this->app->bind(LikeService::class);
+        $this->app->bind(DbService::class);
+
 
     }
 

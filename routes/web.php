@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{Auth\LoginController, ProductController, SearchController, HomeController, LikeController};
 use App\Http\Controllers\Account\AccountController as AccountController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\BinderController as AdminBinderController;
 use App\Http\Controllers\Admin\BrandController as AdminBrandController;
 use App\Http\Controllers\Admin\CatalogController as AdminCatalogController;
@@ -105,6 +106,7 @@ Route::group(['middleware' => ['auth']], function (){
             '/numbers' => AdminNumberController::class,
             '/resistances' => AdminResistanceController::class,
             '/substrates' => AdminSubstrateController::class,
+            '/users' => AdminUserController::class
 
         ]);
         Route::get('/products', [AdminProductController::class, 'index'])
@@ -125,6 +127,8 @@ Route::group(['middleware' => ['auth']], function (){
             ->name('resistances');
         Route::get('/substrates', [AdminSubstrateController::class, 'index'])
             ->name('substrates');
+        Route::get('/users', [AdminUserController::class, 'index'])
+            ->name('users');
     });
 
 
