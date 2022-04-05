@@ -78,7 +78,8 @@ Route::get('/products/compare/{product}', [ProductController::class, 'addToCompa
 Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::group(['middleware' => ['auth']], function (){
+// todo сделать если не активный пользователь, то и не авторизовать его
+Route::group(['middleware' => ['auth', 'active']], function (){
     Route::group(['as' => 'account.', 'prefix' => 'account'], function (){
         Route::get('/', [AccountController::class, 'index'])
 //        ->middleware('verified')
