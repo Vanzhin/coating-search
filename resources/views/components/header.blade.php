@@ -1,44 +1,18 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-md-top" aria-label="Fifth navbar example">
-    <div class="container d-flex flex-wrap align-items-center justify-content-space-between justify-content-lg-start">
-        <a class="navbar-brand" href="{{ route('home') }}">{{env('APP_NAME')}}</a>
-        <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-dark bg-dark sticky-md-top" aria-label="Fifth navbar example">
+    <div class="container">
+        <a class="navbar-brand col" href="{{ route('home') }}">{{env('APP_NAME')}}</a>
+        <a class="col btn btn-outline-secondary text-reset text-decoration-none" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"
+        style="max-width: 50px;">
             <span class="navbar-toggler-icon"></span>
-        </button>
+        </a>
+        <div class="col offset d-flex justify-content-end align-items-center flex-nowrap" id="navbarsExample05" style="">
 
-        <div class="navbar-collapse collapse" id="navbarsExample05" style="">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link @if(request()->routeIs('products*')) active @endif" href="{{ route('products.index') }}">Покрытия</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link  @if(request()->routeIs('search*')) active @endif" href="{{ route('search') }}">Подбор</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#" >Вопросы</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle disabled" href="#" id="dropdown05" data-bs-toggle="dropdown" aria-expanded="false">Типовые решения</a>
-                    <ul class="dropdown-menu" aria-labelledby="dropdown05">
-                        <li><a class="dropdown-item" href="#">Погружение</a></li>
-                        <li><a class="dropdown-item" href="#">Атмосфера</a></li>
-                        <li><a class="dropdown-item" href="#">Химстойкость</a></li>
-                    </ul>
-                </li>
-                @if(Auth::user() && Auth::user()->role === 'admin')
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('admin.index') }}">Панель управления</a>
-                </li>
-                @endif
-            </ul>
-            <a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
-                Link with href
-            </a>
-            <form>
+            <form class="mx-2">
                 <input class="form-control" type="text" placeholder="Search" aria-label="Search">
             </form>
             @if(Auth::guest())
                 <div class="text-end navbar-brand">
-                    <a href="{{ route('login') }}"  class="btn btn-outline-primary me-auto">Вход / Регистрация</a>
+                    <a href="{{ route('login') }}"  class="btn btn-outline-primary me-auto">Вход</a>
                 </div>
             @else
 
@@ -59,21 +33,34 @@
 </nav>
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">{{env('APP_NAME')}}</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
         <div>
-            Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
-        </div>
-        <div class="dropdown mt-3">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
-                Dropdown button
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="link-secondary nav-link @if(request()->routeIs('products*')) link-dark text-decoration-underline @endif" href="{{ route('products.index') }}">Покрытия</a>
+                </li>
+                <li class="nav-item">
+                    <a class="link-secondary nav-link  @if(request()->routeIs('search*')) link-dark text-decoration-underline @endif" href="{{ route('search') }}">Подбор</a>
+                </li>
+                <li class="nav-item">
+                    <a class="link-secondary nav-link disabled" href="#" >Вопросы</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="link-secondary nav-link dropdown-toggle disabled" href="#" id="dropdown05" data-bs-toggle="dropdown" aria-expanded="false">Типовые решения</a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdown05">
+                        <li><a class="dropdown-item" href="#">Погружение</a></li>
+                        <li><a class="dropdown-item" href="#">Атмосфера</a></li>
+                        <li><a class="dropdown-item" href="#">Химстойкость</a></li>
+                    </ul>
+                </li>
+                @if(Auth::user() && Auth::user()->role === 'admin')
+                    <li class="nav-item">
+                        <a class="nav-link link-success" href="{{ route('admin.index') }}">Панель управления</a>
+                    </li>
+                @endif
             </ul>
         </div>
     </div>
