@@ -2,7 +2,12 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{Auth\LoginController, ProductController, SearchController, HomeController, LikeController};
+use App\Http\Controllers\{Auth\LoginController,
+    OAuthController,
+    ProductController,
+    SearchController,
+    HomeController,
+    LikeController};
 use App\Http\Controllers\Account\AccountController as AccountController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -79,7 +84,7 @@ Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 // todo сделать если не активный пользователь, то и не авторизовать его
-Route::group(['middleware' => ['auth', 'active']], function (){
+Route::group(['middleware' => ['auth']], function (){
     Route::group(['as' => 'account.', 'prefix' => 'account'], function (){
         Route::get('/', [AccountController::class, 'index'])
 //        ->middleware('verified')
@@ -88,7 +93,6 @@ Route::group(['middleware' => ['auth', 'active']], function (){
 //        ->middleware('verified')
             ->name('my');
     });
-
 
     Route::get('/logout', [LoginController::class, 'logout'])
     ->name('account.logout');
@@ -131,6 +135,14 @@ Route::group(['middleware' => ['auth', 'active']], function (){
         Route::get('/users', [AdminUserController::class, 'index'])
             ->name('users');
     });
-
-
 });
+Route::group(['middleware' => 'guest'], function(){
+    Route::get('/auth/{network}/redirect', [OAuthController::class, 'redirect'])
+        ->where('network', '\w+')
+        ->name('auth.redirect');
+    Route::get('/auth/{network}/callback', [OAuthController::class, 'callback'])
+        ->where('network', '\w+')
+        ->name('auth.callback');
+}
+
+);

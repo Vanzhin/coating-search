@@ -69,6 +69,11 @@
                         </div>
                     </form>
                 </div>
+                <div class="card-footer d-flex justify-content-evenly align-items-center">
+                    <span class="col">Войти через:</span>
+                    <a href="{{ route('auth.redirect', ['network' =>'vkontakte']) }}" class="col text-secondary" style="font-size: 40px;"><i class="fa-brands fa-vk"></i></a>
+                    <a href="{{ route('auth.redirect', ['network' =>'github']) }}" class="col text-secondary" style="font-size: 40px;"><i class="fa-brands fa-github"></i></a>
+                </div>
             </div>
         </div>
     </div>
