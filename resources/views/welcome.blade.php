@@ -38,9 +38,13 @@
         <div>
             <h3 class="float-md-start mb-0">Coating Search</h3>
             <nav class="nav nav-masthead justify-content-center float-md-end">
-{{--                <a class="nav-link active" aria-current="page" href="#">Главная</a>--}}
-                <a class="nav-link" href="{{ route('login') }}">Вход</a>
-                <a class="nav-link" href="{{ route('register') }}">Регистрация</a>
+                @if(Auth::check())
+                    <a class="nav-link" href="{{ route('account.index') }}">Мой профиль</a>
+                @else
+                    <a class="nav-link" href="{{ route('login') }}">Вход</a>
+                    <a class="nav-link" href="{{ route('register') }}">Регистрация</a>
+                @endif
+
             </nav>
         </div>
     </header>
