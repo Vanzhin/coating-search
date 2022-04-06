@@ -80,7 +80,8 @@
                     <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" oninput="quickSearch(this)">
                     <label for="floatingInput">Поиск</label>
                 </div>
-                <div id="products" class="">
+                <div id="products" class="text-center">
+                    <p class="text-center">Начните вводить запрос для получения результата</p>
 
                 </div>
             </div>
@@ -92,6 +93,7 @@
         function quickSearch(content) {
             const input = content.value;
             const products = document.getElementById('products');
+            products.innerHTML = '<div class="spinner-border" role="status"></div>';
             if (input){
                 send('/search/quick/' + input).then((result) => {
                     let links ='';
@@ -101,11 +103,11 @@
                     if(links){
                         products.innerHTML = links;
                     }else {
-                        products.innerHTML = '<p class="col text-center" >Кажется, ничего не найдено ;(</p>' + '<a href="http://coating-search.test/search/create" class="btn col-12 btn-secondary btn-lg mb-4">Начать поиск по параметрам</a>';
+                        products.innerHTML = '<p class="col" >Кажется, ничего не найдено ;(</p>' + '<a href="http://coating-search.test/search/create" class="btn col-12 btn-secondary btn-lg mb-4">Начать поиск по параметрам</a>';
                     }
                 });
             } else {
-                products.innerHTML = '<p class="col text-center">Похоже, задан пустой запрос</p>' + '<a href="http://coating-search.test/search/create" class="btn col-12 btn-secondary btn-lg mb-4">Начать поиск по параметрам</a>';
+                products.innerHTML = '<p class="col">Похоже, задан пустой запрос</p>' + '<a href="http://coating-search.test/search/create" class="btn col-12 btn-secondary btn-lg mb-4">Начать поиск по параметрам</a>';
             }
         }
         async function send(url){
