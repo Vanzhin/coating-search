@@ -6,10 +6,11 @@
             <span class="navbar-toggler-icon"></span>
         </a>
         <div class="col offset d-flex justify-content-end align-items-center flex-nowrap" id="navbarsExample05" style="">
-
-            <form class="mx-2">
-                <input class="form-control" type="text" placeholder="Search" aria-label="Search">
-            </form>
+            <!-- Button trigger modal -->
+            <button class="btn btn-outline-secondary mx-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span>Поиск</span>
+            </button>
             @if(Auth::guest())
                 <div class="text-center">
                     <a href="{{ route('login') }}"  class="btn btn-outline-primary me-auto">Вход</a>
@@ -64,4 +65,60 @@
         </div>
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">
+                    Поиск по названию
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" oninput="quickSearch(this)">
+                    <label for="floatingInput">Поиск</label>
+                </div>
+                <div id="products" class="">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@push('js')
+    <script>
+        function quickSearch(content) {
+            const input = content.value;
+            const products = document.getElementById('products');
+            if (input){
+                send('/search/quick/' + input).then((result) => {
+                    let links ='';
+                    result.forEach(function(item, i) {
+                        links = links + '<a href="http://coating-search.test/products/' + item.id + '\"' + ' class="btn btn-outline-secondary col-12 col-md-4">' + item.title + '</a>';
+                    })
+                    if(links){
+                        products.innerHTML = links;
+                    }else {
+                        products.innerHTML = '<p class="col text-center" >Кажется, ничего не найдено ;(</p>' + '<a href="http://coating-search.test/search/create" class="btn col-12 btn-secondary btn-lg mb-4">Начать поиск по параметрам</a>';
+                    }
+                });
+            } else {
+                products.innerHTML = '<p class="col text-center">Похоже, задан пустой запрос</p>' + '<a href="http://coating-search.test/search/create" class="btn col-12 btn-secondary btn-lg mb-4">Начать поиск по параметрам</a>';
+            }
+        }
+        async function send(url){
+
+            let response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                        .getAttribute('content')
+                }
+            });
+            return await response.json();
+        }
+    </script>
+@endpush
 

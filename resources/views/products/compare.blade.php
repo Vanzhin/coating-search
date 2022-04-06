@@ -122,7 +122,6 @@
             }
     </script>
 @endpush
-
     @else
         <h4 class="text-warning text-center">Список пуст</h4>
     @endif

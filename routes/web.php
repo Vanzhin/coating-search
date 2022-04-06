@@ -73,6 +73,9 @@ Route::resources([
 ]);
 Route::get('/search', [SearchController::class, 'index'])
     ->name('search');
+Route::post('/search/quick/{content}', [SearchController::class, 'quickProductSearch'])
+//    ->where('content', '\w+')
+    ->name('search.quick');
 
 // session
 Route::get('/products/compare/{product}', [ProductController::class, 'addToCompare'])

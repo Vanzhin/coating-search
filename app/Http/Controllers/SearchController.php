@@ -97,16 +97,12 @@ class SearchController extends Controller
                         'description' => app(ProductSearchService::class)->getSearchDescription($data),
                         'session_token' => $request->session()->get('_token'),
                         'user_id' => Auth::user()->getAuthIdentifier()
-
                     ]);
-        }
+            }
         }else {
             return back()->with('error', __('messages.searches.created.empty'))->withInput();
 
         }
-
-//        $created = app(ProductSearchService::class)
-//            ->getProducts($data)->paginate(Config::get('constants.ITEMS_PER_PAGE'));
         if($created){
 
             return redirect()->route('search.show', [$created])->with('success', __('messages.searches.created.success'));
@@ -148,7 +144,6 @@ class SearchController extends Controller
      */
     public function edit(Search $search)
     {
-
         $selectionData = Product::getSelectionData();
 
         return view('searches.create', [
@@ -230,4 +225,13 @@ class SearchController extends Controller
             return response()->json('error', 400);
         }
     }
+
+    public function quickProductSearch(string $content)
+    {
+        try {
+            return response()->json(app(ProductSearchService::class)->quickSearch($content));
+
+        }catch(\Exception $e){
+            return response()->json('error', 400);
+        }    }
 }

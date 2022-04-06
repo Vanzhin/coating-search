@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 class ProductSearchService
 {
     private string $title = '';
+
     private function queryBuilder(array $searchData)
     {
         $products = Product::query();
@@ -128,6 +129,11 @@ class ProductSearchService
             }
         }
         return $updatedData;
+    }
+    public function quickSearch(string $content)
+    {
+        return DB::table('products')->where('title','like', "%$content%")
+            ->get(['id', 'title'])->toArray();
     }
 
 }
