@@ -60,10 +60,20 @@
         const exampleModal = document.getElementById('exampleModal');
         exampleModal.addEventListener('show.bs.modal', function (event) {
             // Button that triggered the modal
+            // возвращаю кнопку #delete в первоначальное состояние
+            const myModalEl = document.getElementById('delete');
+            myModalEl.removeAttribute('hidden');
+            myModalEl.classList.remove('disabled');
+            myModalEl.innerHTML= 'Удалить'
+            //прячу кнопку #ok-button
+            const okButton = document.getElementById('ok-button')
+            okButton.setAttribute('hidden', true);
+
             const button = event.relatedTarget;
             // Extract info from data-bs-* attributes
             const title = button.getAttribute('data-bs-item');
             const item_id = button.getAttribute('data-bs-id');
+
 
             // If necessary, you could initiate an AJAX request here
             // and then do the updating in a callback.
@@ -85,11 +95,11 @@
             const id = event.target.getAttribute('item-to-delete');
             const el = document.getElementById(id);
             const okButton = document.getElementById('ok-button')
-            event.target.classList.add('disabled')
+            event.target.classList.toggle('disabled')
             event.target.innerHTML= '<div class="spinner-border" role="status"></div>'
             send('/search/' + id).then(() => {
                 el.remove();
-                myModalEl.remove();
+                myModalEl.setAttribute('hidden', true);
                 okButton.removeAttribute('hidden');
                 modalMessage.innerText = 'Поиск удален';
                 // location.reload();

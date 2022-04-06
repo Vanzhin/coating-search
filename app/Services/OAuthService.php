@@ -33,8 +33,6 @@ class OAuthService implements OAuth
 
            ];
            session()->put($socialUser);
-           //TODO удаляю данные сессии в представлении register.blade
-
            return route('register');
        }
         return back()->with('error', __('Ошибка авторизации через ' . $network));
