@@ -20,7 +20,6 @@ class UserController extends Controller
      */
     public function index()
     {
-
         return view('admin.users.index', [
             'users' => User::paginate(Config::get('constants.ITEMS_PER_PAGE')),
             'fields'=> User::getFieldsToShow(),

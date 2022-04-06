@@ -19,20 +19,24 @@
             <table class="unfixed-table table table-sm table-hover align-middle table-borderless">
                 <thead class="thead-light align-middle">
                 <tr class="justify-content-center">
-                    @foreach($fields as $item)
-                        <th class="bg-light justify-content-center" scope="col">{!! $item !!}</th>
+                    @foreach($fields as $field)
+                        <th class="bg-light justify-content-center" scope="col">{!! $field !!}</th>
                     @endforeach
                     <th class="bg-light align-content-center" scope="col">Действия</th>
                 </tr>
                 </thead>
                 <tbody>
                 @forelse($users as $user)
-
                     <tr>
                         @foreach($fields as $key =>$item)
-                            <td >{{Str::ucfirst($user->$key)}}</td>
+                            @if($key === 'avatar')
+                                <td >
+                                    <img alt="avatar" src="{!! $user->avatar ?? Storage::disk('public')->url('images/users/default.png')!!}" width="32" height="32" class="rounded-circle">
+                                </td>
+                            @else
+                                <td >{{Str::ucfirst($user->$key)}}</td>
+                            @endif
                         @endforeach
-
                         <td>
                             <div class="d-flex">
                                 <a href="{{ route('admin.users.edit',['user' => $user]) }}"  class="btn btn-warning">Редактировать</a>

@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'status',
         'role',
+        'avatar',
     ];
 
     /**
@@ -47,6 +48,7 @@ class User extends Authenticatable
     public static function getFieldsToShow(): array
     {
         return [
+            'avatar' => 'Фото',
             'name' => 'Имя',
             'email' => 'Почта',
             'last_login_at' => 'Дата последнего входа',

@@ -26,13 +26,15 @@ class OAuthService implements OAuth
 
        }
        else{
-           session()->put([
+           $socialUser = [
                'socialUser.name' => $socialUser->getName(),
                'socialUser.email' => $socialUser->getEmail(),
                'socialUser.avatar' => $socialUser->getAvatar(),
 
-           ]);
+           ];
+           session()->put($socialUser);
            //TODO удаляю данные сессии в представлении register.blade
+
            return route('register');
        }
         return back()->with('error', __('Ошибка авторизации через ' . $network));
