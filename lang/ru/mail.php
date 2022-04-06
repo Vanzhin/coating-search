@@ -1,4 +1,6 @@
 <?php
 return [
-        'salutation' => 'С уважением'
+    'hello' => 'Приветствуем Вас, ',
+    'salutation' => 'С уважением',
+
 ];

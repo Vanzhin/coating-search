@@ -23,6 +23,7 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+
         LoginEvent::class => [
             LastLoginUpdateListener::class,
 

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dateTime('last_login_at')->nullable();
-            $table->char('role', 50)->nullable();
+            $table->char('role', 50)->nullable()->default('user');
         });
     }
 

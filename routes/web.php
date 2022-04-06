@@ -83,7 +83,7 @@ Route::get('/products/compare/{product}', [ProductController::class, 'addToCompa
 
 //admin
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 // todo сделать если не активный пользователь, то и не авторизовать его
