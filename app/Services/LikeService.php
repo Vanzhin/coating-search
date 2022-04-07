@@ -17,7 +17,7 @@ class LikeService
         foreach ($data as $key => $value){
             $likedProductsId[] = $value->product_id;
         }
-        return$likedProductsId;
+        return $likedProductsId;
     }
 
     public function likeHandle(Product $product)
