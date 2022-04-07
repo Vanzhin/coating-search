@@ -17,12 +17,14 @@
                 </div>
             @else
                 <div class="dropdown">
-                    <a href="{{ route('account.index') }}" class="d-block link-dark text-warning text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a href="{{ route('account.index') }}" class="d-block link-dark text-warning text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="true">
                         <img src="@if(Auth::user()->avatar){!!Auth::user()->avatar!!}@else{!!Storage::disk('public')->url('images/users/default.png')!!}@endif" width="32" height="32" class="rounded-circle">
                     </a>
-                    <ul class="dropdown-menu text-small dropdown-menu dropdown-menu-dark shadow">
+                    <ul class="dropdown-menu text-small shadow text-small dropdown-menu-dark" data-popper-placement="bottom-end" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(0px, 34px, 0px);">
                         <li><a class="dropdown-item" href="{{ route('account.index') }}">Профиль</a></li>
-                        <li><a class="dropdown-item" href="#">Настройки</a></li>
+                        <li><a class="dropdown-item" href="{{ route('search') }}">Мои поиски</a></li>
+                        <li><a class="dropdown-item" href="{{ route('account.my') }}">Мои покрытия</a></li>
+                        <li><a class="dropdown-item disabled" href="#">Настройки</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="{{ route('logout') }}">Выйти</a></li>
                     </ul>

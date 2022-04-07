@@ -8,8 +8,8 @@
     </section>
 @endsection
 @section('content')
-    <div class="container album py-5 bg-light">
-        <div class="d-flex flex-column">
+    <div class="album py-5 bg-light min-vh-100 ">
+        <div class="container d-flex flex-column rounded-2">
             <a href="{{ route('search.create') }}" class="btn btn-primary btn-lg mb-4">Начать поиск</a>
             @if(Auth::user())
                 @forelse($searches as $search)

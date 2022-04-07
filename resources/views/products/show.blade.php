@@ -1,16 +1,16 @@
 @extends('layouts.main')
 @section('title')
-    @parent {{ $product->title }}
+    @parent | {{ $product->title }}
 @endsection
 @section('content')
-    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
+    <div class="position-relative overflow-hidden p-3 p-md-5 text-center bg-light">
         <div class="card w-100">
             <h5 class="card-header">{{$product->title}}
                 <a href="{{ route('products.brand', $brand->slug) }}" class="badge bg-secondary" title="Все покрытия {{Str::upper($brand->title)}}">{{Str::upper($brand->title)}}</a>
                 <span class="badge bg-secondary">{{Str::ucfirst($catalog->title)}}</span>
+                @if($product->pds)
                 <a href="@if(str_starts_with($product->pds, 'http')){{$product->pds}}@else{{Storage::disk('public')->url($product->pds)}}@endif" class="badge bg-secondary">PDS</a>
-
-
+                @endif
             </h5>
             <div class="card-body">
                 <h5 class="card-title">{{Str::ucfirst($product->description)}}</h5>
