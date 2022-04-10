@@ -54,6 +54,7 @@
 
 {{--<!-- Latest compiled and minified JavaScript -->--}}
 <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
+
 @stack('js')
 </body>
 </html>

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Comments\CreateRequest;
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 
 class CommentController extends Controller
 {
@@ -15,7 +17,13 @@ class CommentController extends Controller
      */
     public function index()
     {
-        //
+        return view('comments.index', [
+            'comments' => Comment::query()
+                ->where('sender_id', Auth::user()->id ?? null)
+                ->orderBy('updated_at', 'desc')
+                ->paginate(Config::get('constants.ITEMS_PER_PAGE')),
+        ]);
+
     }
 
     /**
@@ -41,7 +49,7 @@ class CommentController extends Controller
         $created = Comment::create($data);
         if($created){
 
-            return redirect()->route('home')->with('success', __('messages.comments.created.success'));
+            return redirect()->route('comment.index')->with('success', __('messages.comments.created.success'));
         }
         return back()->with('error', __('messages.comments.created.error'))->withInput();
     }

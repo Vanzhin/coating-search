@@ -83,7 +83,7 @@ Route::resources([
     '/comment' => CommentController::class,
 ]);
 Route::group(['as' => 'comment.', 'prefix' => 'comment'], function(){
-    Route::get('/index', [CommentController::class, 'index'])
+    Route::get('/', [CommentController::class, 'index'])
         ->name('index');
 
 });
