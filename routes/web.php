@@ -8,7 +8,7 @@ use App\Http\Controllers\{Auth\LoginController,
     SearchController,
     HomeController,
     LikeController,
-    MessageController};
+    CommentController};
 use App\Http\Controllers\Account\AccountController as AccountController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -78,20 +78,17 @@ Route::post('/search/quick/{content}', [SearchController::class, 'quickProductSe
     ->where('content', '\w+')
     ->name('search.quick');
 
-//message
+//comments
 Route::resources([
-    '/message' => MessageController::class,
+    '/comment' => CommentController::class,
 ]);
-Route::group(['as' => 'message.', 'prefix' => 'message'], function(){
-    Route::get('/index', [MessageController::class, 'index'])
+Route::group(['as' => 'comment.', 'prefix' => 'comment'], function(){
+    Route::get('/index', [CommentController::class, 'index'])
         ->name('index');
 
-
 });
-
-Route::get('/message', [MessageController::class, 'index'])
-    ->name('message');
-
+//Route::post('/comment/quick', [CommentController::class, 'quickStore'])
+//    ->name('comment.quick');
 
 // session
 Route::get('/products/compare/{product}', [ProductController::class, 'addToCompare'])
