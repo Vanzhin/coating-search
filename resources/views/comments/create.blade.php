@@ -11,7 +11,7 @@
 @section('content')
     <div class="album py-5 bg-light">
         <div class="modal-body">
-            <form method="post" action="{{route('comment.store')}}" class="row g-2 text-secondary needs-validation" id="message-form">
+            <form method="post" action="{{route('comment.store')}}" class="row g-2 text-secondary needs-validation" id="message-form" onsubmit="buttonDisable()">
                 @csrf
                 <div class="col-md-4">
                     @error('sender_name')
@@ -85,6 +85,13 @@
 @endsection
 @push('js')
     <script>
+        function buttonDisable()
+        {
+            const buttonSubmit = document.getElementById('send-button');
+            buttonSubmit.innerHTML = '<div class="spinner-border" role="status"></div>';
+            buttonSubmit.classList.add('disabled')
+        }
+
         // Example starter JavaScript for disabling form submissions if there are invalid fields
         (function () {
             'use strict'

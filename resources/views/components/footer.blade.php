@@ -87,94 +87,94 @@
 {{--    </div>--}}
 {{--</header>--}}
 
-@push('js')
-    <script>
+{{--@push('js')--}}
+{{--    <script>--}}
 
-        let email = document.getElementById('validationCustomEmail');
-        let name = document.getElementById('validationCustomName');
-        let message = document.getElementById('validationCustomMessage');
-        const sendButton = document.getElementById('send-button');
-        function validate() {
-            if ((name.value.length >= 6 && name.value.length <= 200)
-            && (email.value.match(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/))
-            && (message.value.length >= 10 && message.value.length <= 500)){
-                sendButton.classList.remove('disabled');
-            } else {
-                sendButton.classList.add('disabled');
-            }
-        }
+{{--        let email = document.getElementById('validationCustomEmail');--}}
+{{--        let name = document.getElementById('validationCustomName');--}}
+{{--        let message = document.getElementById('validationCustomMessage');--}}
+{{--        const sendButton = document.getElementById('send-button');--}}
+{{--        function validate() {--}}
+{{--            if ((name.value.length >= 6 && name.value.length <= 200)--}}
+{{--            && (email.value.match(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/))--}}
+{{--            && (message.value.length >= 10 && message.value.length <= 500)){--}}
+{{--                sendButton.classList.remove('disabled');--}}
+{{--            } else {--}}
+{{--                sendButton.classList.add('disabled');--}}
+{{--            }--}}
+{{--        }--}}
 
-        let modalMessage = document.getElementById('modalMessage');
-        modalMessage.addEventListener('show.bs.modal', function (event) {
-            // Button that triggered the modal
-            let button = event.relatedTarget;
-            // Extract info from data-bs-* attributes
-            let senderName = button.getAttribute('data-bs-name')
-            let senderEmail = button.getAttribute('data-bs-email')
+{{--        let modalMessage = document.getElementById('modalMessage');--}}
+{{--        modalMessage.addEventListener('show.bs.modal', function (event) {--}}
+{{--            // Button that triggered the modal--}}
+{{--            let button = event.relatedTarget;--}}
+{{--            // Extract info from data-bs-* attributes--}}
+{{--            let senderName = button.getAttribute('data-bs-name')--}}
+{{--            let senderEmail = button.getAttribute('data-bs-email')--}}
 
-            // If necessary, you could initiate an AJAX request here
-            // and then do the updating in a callback.
-            //
-            // Update the modal's content.
-            let modalName = modalMessage.querySelector('#validationCustomName')
-            let modalEmail = modalMessage.querySelector('#validationCustomEmail')
+{{--            // If necessary, you could initiate an AJAX request here--}}
+{{--            // and then do the updating in a callback.--}}
+{{--            //--}}
+{{--            // Update the modal's content.--}}
+{{--            let modalName = modalMessage.querySelector('#validationCustomName')--}}
+{{--            let modalEmail = modalMessage.querySelector('#validationCustomEmail')--}}
 
-            modalName.value = senderName;
-            modalEmail.value = senderEmail;
-        });
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
-        (function () {
-            'use strict'
+{{--            modalName.value = senderName;--}}
+{{--            modalEmail.value = senderEmail;--}}
+{{--        });--}}
+{{--        // Example starter JavaScript for disabling form submissions if there are invalid fields--}}
+{{--        (function () {--}}
+{{--            'use strict'--}}
 
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            let forms = document.querySelectorAll('.needs-validation')
+{{--            // Fetch all the forms we want to apply custom Bootstrap validation styles to--}}
+{{--            let forms = document.querySelectorAll('.needs-validation')--}}
 
-            // Loop over them and prevent submission
-            Array.prototype.slice.call(forms)
-                .forEach(function (form) {
-                    form.addEventListener('click', function (event) {
-                        if (!form.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                        }
+{{--            // Loop over them and prevent submission--}}
+{{--            Array.prototype.slice.call(forms)--}}
+{{--                .forEach(function (form) {--}}
+{{--                    form.addEventListener('click', function (event) {--}}
+{{--                        if (!form.checkValidity()) {--}}
+{{--                            event.preventDefault()--}}
+{{--                            event.stopPropagation()--}}
+{{--                        }--}}
 
-                        form.classList.add('was-validated')
-                    }, false)
-                })
-        })();
+{{--                        form.classList.add('was-validated')--}}
+{{--                    }, false)--}}
+{{--                })--}}
+{{--        })();--}}
 
-        function sendMessage() {
-            sendButton.innerHTML = '<div class="spinner-border" role="status"></div>';
-            const comment = [];
-            comment['sender_email'] = email.value;
-            comment['sender_name'] = name.value;
-            comment['message'] = message.value;
-            send('/comment/quick/').then((result) => {
-                    console.log(result)
-                });
+{{--        function sendMessage() {--}}
+{{--            sendButton.innerHTML = '<div class="spinner-border" role="status"></div>';--}}
+{{--            const comment = [];--}}
+{{--            comment['sender_email'] = email.value;--}}
+{{--            comment['sender_name'] = name.value;--}}
+{{--            comment['message'] = message.value;--}}
+{{--            send('/comment/quick/').then((result) => {--}}
+{{--                    console.log(result)--}}
+{{--                });--}}
 
-        }
-        async function send(url){
-            const comment = [];
-            comment['sender_email'] = email.value;
-            comment['sender_name'] = name.value;
-            comment['message'] = message.value;
-            console.log(comment, 'hello', )
-            let user = {
-                name: 'John',
-                surname: 'Smith'
-            };
+{{--        }--}}
+{{--        async function send(url){--}}
+{{--            const comment = [];--}}
+{{--            comment['sender_email'] = email.value;--}}
+{{--            comment['sender_name'] = name.value;--}}
+{{--            comment['message'] = message.value;--}}
+{{--            console.log(comment, 'hello', )--}}
+{{--            let user = {--}}
+{{--                name: 'John',--}}
+{{--                surname: 'Smith'--}}
+{{--            };--}}
 
-            let response = await fetch(url, {
-                method: 'PUT',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                        .getAttribute('content'),
-                    'Content-Type': 'application/json; charset=utf-8'
-                },
-                body: JSON.stringify(user),
-            });
-            return await response.json();
-        }
-    </script>
-@endpush
+{{--            let response = await fetch(url, {--}}
+{{--                method: 'PUT',--}}
+{{--                headers: {--}}
+{{--                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')--}}
+{{--                        .getAttribute('content'),--}}
+{{--                    'Content-Type': 'application/json; charset=utf-8'--}}
+{{--                },--}}
+{{--                body: JSON.stringify(user),--}}
+{{--            });--}}
+{{--            return await response.json();--}}
+{{--        }--}}
+{{--    </script>--}}
+{{--@endpush--}}
