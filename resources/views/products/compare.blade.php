@@ -105,14 +105,14 @@
                 const id = event.target.getAttribute('product-to-delete');
                 event.target.classList.toggle('disabled')
                 event.target.innerHTML= '<div class="spinner-border" role="status"></div>'
-                send('/products/compare/' + id).then(() => {
+                sendCompare('/products/compare/' + id).then(() => {
                     myModalEl.innerHTML='Удалено'
                     location.reload();
 
                 })
             })
 
-            async function send(url){
+            async function sendCompare(url){
 
                 let response = await fetch(url, {
                     method: 'GET',

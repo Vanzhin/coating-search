@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('title')
-    @parent | Подбор покрытий
+    @parent Подбор покрытий
 @endsection
 @section('header')
 {{--    если пользователь пытается просмотреть не свою запись, то выводу заглушку--}}
@@ -174,7 +174,7 @@
                 button.classList.toggle("disabled");
                 button.innerHTML = '<div class="spinner-border" role="status"></div>';
                 const id = this.getAttribute('compare');
-                send('/products/compare/' + id).then(() => {
+                sendProductToCompare('/products/compare/' + id).then(() => {
                     // location.reload();
                     button.classList.toggle("disabled");
 
@@ -182,7 +182,7 @@
             }));
         });
         //todo убрать отсюда и перенести в основной код выше
-async function send(url){
+async function sendProductToCompare(url){
 
     let response = await fetch(url, {
         method: 'GET',
