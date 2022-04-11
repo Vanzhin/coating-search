@@ -31,7 +31,7 @@ return new class extends Migration
             $table->string('pds')->nullable()->default(null);
             $table->timestamps();
             $table->string('slug',255);
-            $table->index(['title', 'slug']);
+//            $table->index(['title', 'slug']);
 
             $table->foreign('brand_id')
                 ->references('id')
