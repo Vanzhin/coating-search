@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Events\CreateCommentEvent;
 use App\Events\LoginEvent;
+use App\Listeners\CreateCommentListener;
 use App\Listeners\LastLoginUpdateListener;
+use App\Listeners\SendCommentNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -26,7 +29,9 @@ class EventServiceProvider extends ServiceProvider
 
         LoginEvent::class => [
             LastLoginUpdateListener::class,
-
+        ],
+        CreateCommentEvent::class => [
+            SendCommentNotification::class,
         ],
         SocialiteWasCalled::class => [
             VKontakteExtendSocialite::class.'@handle',

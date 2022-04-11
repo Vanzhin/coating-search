@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CreateCommentEvent;
 use App\Http\Requests\Comments\CreateRequest;
 use App\Models\Comment;
 use Illuminate\Http\Request;
@@ -48,6 +49,7 @@ class CommentController extends Controller
 
         $created = Comment::create($data);
         if($created){
+            event(new CreateCommentEvent(Comment::find($created->id)));
 
             return redirect()->route('comment.index')->with('success', __('messages.comments.created.success'));
         }
@@ -71,12 +73,14 @@ class CommentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Comment $comment
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Comment $comment)
     {
-        //
+        return view('comments.show', [
+            'comment' => $comment,
+        ]);
     }
 
     /**
