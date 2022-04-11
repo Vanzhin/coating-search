@@ -9,6 +9,7 @@ use App\Services\LikeService;
 use App\Services\OAuthService;
 use App\Services\ProductSearchService;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(LikeService::class);
         $this->app->bind(DbService::class);
         $this->app->bind( OAuth::class, OAuthService::class);
+        Schema::defaultStringLength(191);
 
 
     }
