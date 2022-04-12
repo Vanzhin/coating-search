@@ -20,8 +20,8 @@
                                         <i class="fa-xmark fa-solid fa-xl disabled"></i>
                                     </span>
                             </h5>
-                            <div class="card-body">
-                                <h5 class="card-title">{{Str::ucfirst($product->description)}}</h5>
+                            <div class="card-body d-flex flex-column flex-nowrap justify-content-between align-content-between">
+                                <h5 class="card-title flex-fill">{{Str::ucfirst($product->description)}}</h5>
                                 <table class="table">
                                     <thead>
                                     <tr>

@@ -8,13 +8,19 @@
         <section class="text-center container">
         <h1 class="fw-light">Подбор покрытий</h1>
         @include('inc.message')
-        <h3 class="fw-light">{!! $search->description!!}</h3>
+            <a class="btn btn-outline-secondary m-3" data-bs-toggle="collapse" href="#collapseTitle" role="button" aria-expanded="false" aria-controls="collapseTitle">
+                Параметры поиска
+            </a>
+            <div class="collapse" id="collapseTitle">
+                <div class="card card-body">
+                    <h3 class="fw-light">{!! $search->description!!}</h3>
+                </div>
+            </div>
     </section>
 @endsection
 @section('content')
-        <div class="container">
+        <div class="container vh-100">
             <div class="d-flex">
-
                 <form class="form-control d-flex flex-wrap align-items-stretch" method="post" action="{{ route('search.update', [$search]) }}">
                     @method('put')
                     @csrf
