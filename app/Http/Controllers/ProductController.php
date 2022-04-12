@@ -65,7 +65,10 @@ class ProductController extends Controller
 
     public function compare()
     {
-        $products = Product::query()->whereIn('id', session()->get('products.compare'))->get();
+        if (session()->exists('products.compare')){
+            $products = Product::query()->whereIn('id', session()->get('products.compare'))->get();
+
+        } else $products = [];
 
         return view('products.compare', [
             'products' => $products,

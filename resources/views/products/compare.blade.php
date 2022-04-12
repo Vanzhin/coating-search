@@ -18,7 +18,7 @@
                             <a href="{{route('products.show', $product)}}" class="text-light text-decoration-none">
                                 <h5 class="card-title text-center">{{$product->title}}</h5>
                             </a>
-                            <button type="button" class="btn btn-close" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                            <button type="button" class="btn btn-close" data-bs-toggle="modal" data-bs-target="#deleteModal"
                                     data-bs-product="{{$product->title}}"
                                     data-bs-id="{{$product->id}}">
                             </button>
@@ -63,11 +63,11 @@
         @endforeach
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <h5 class="modal-title" id="deleteModalLabel"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -81,8 +81,8 @@
     </div>
 @push('js')
     <script>
-        const exampleModal = document.getElementById('exampleModal');
-            exampleModal.addEventListener('show.bs.modal', function (event) {
+        const deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
                 // Button that triggered the modal
                 const button = event.relatedTarget;
                 // Extract info from data-bs-* attributes
@@ -93,8 +93,8 @@
                 // and then do the updating in a callback.
                 //
                 // Update the modal's content.
-                const modalTitle = exampleModal.querySelector('.modal-message');
-                const del = exampleModal.querySelector('#delete');
+                const modalTitle = deleteModal.querySelector('.modal-message');
+                const del = deleteModal.querySelector('#delete');
 
                 modalTitle.textContent = 'Удалить из сравнения ' + title + '?'
                 del.setAttribute('product-to-delete', prod_id)
