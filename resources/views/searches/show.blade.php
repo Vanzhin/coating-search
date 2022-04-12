@@ -55,7 +55,7 @@
                                     Мои поиски
                                 </a>
                             @else
-                                <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#saveSearchModal">
                                     <i class="fa-regular fa-floppy-disk"></i>
                                     Сохранить
                                 </a>
