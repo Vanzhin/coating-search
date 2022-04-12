@@ -22,7 +22,7 @@
                                 </div>
                                 <small class="opacity-50 text-nowrap">{{$search->updated_at}}</small>
                             </a>
-                            <span class="btn btn-close" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                            <span class="btn btn-close" data-bs-toggle="modal" data-bs-target="#searchDeleteModal"
                                     data-bs-item="{{$search->title ?? 'Без названия'}}"
                                     data-bs-id="{{$search->id}}">
                             </span>
@@ -37,11 +37,11 @@
         </div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="searchDeleteModal" tabindex="-1" aria-labelledby="searchDeleteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <h5 class="modal-title" id="searchDeleteModalLabel"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -57,8 +57,8 @@
 @endsection
 @push('js')
     <script>
-        const exampleModal = document.getElementById('exampleModal');
-        exampleModal.addEventListener('show.bs.modal', function (event) {
+        const searchDeleteModal = document.getElementById('searchDeleteModal');
+        searchDeleteModal.addEventListener('show.bs.modal', function (event) {
             // Button that triggered the modal
             // возвращаю кнопку #delete в первоначальное состояние
             const myModalEl = document.getElementById('delete');
@@ -79,8 +79,8 @@
             // and then do the updating in a callback.
             //
             // Update the modal's content.
-            const modalTitle = exampleModal.querySelector('.modal-message');
-            const item = exampleModal.querySelector('#delete');
+            const modalTitle = searchDeleteModal.querySelector('.modal-message');
+            const item = searchDeleteModal.querySelector('#delete');
 
             modalTitle.textContent = 'Удалить поиск "' + title + '"?'
             item.setAttribute('item-to-delete', item_id)
