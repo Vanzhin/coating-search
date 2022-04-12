@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('title')
-    @parent | Комментарий
+    @parent Комментарий
 @endsection
 @section('content')
     <div class="position-relative overflow-hidden p-3 p-md-5 text-center bg-light">

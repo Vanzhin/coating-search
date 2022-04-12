@@ -85,6 +85,10 @@ Route::resources([
 Route::group(['as' => 'comment.', 'prefix' => 'comment'], function(){
     Route::get('/', [CommentController::class, 'index'])
         ->name('index');
+    Route::get('/{comment}', [CommentController::class, 'show'])
+        ->where('comment', '\d+')
+        ->middleware('auth')
+        ->name('show');
 
 });
 //Route::post('/comment/quick', [CommentController::class, 'quickStore'])
@@ -99,7 +103,7 @@ Route::get('/products/compare/{product}', [ProductController::class, 'addToCompa
 Auth::routes(['verify' => true]);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-// todo сделать если не активный пользователь, то и не авторизовать его
+
 Route::group(['middleware' => ['auth']], function (){
     Route::group(['as' => 'account.', 'prefix' => 'account'], function (){
         Route::get('/', [AccountController::class, 'index'])
