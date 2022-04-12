@@ -67,7 +67,6 @@
                             </a>
                     </div>
                     </form>
-
             </div>
 
                 <div class="accordion" id="accordionPanelsStayOpenExample">
