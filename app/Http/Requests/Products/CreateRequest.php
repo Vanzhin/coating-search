@@ -33,7 +33,7 @@ class CreateRequest extends FormRequest
             'dry_to_touch' => ['required', 'numeric', 'min:0'],
             'dry_to_handle' => ['required', 'numeric', 'min:0'],
             'min_int' => ['required', 'numeric', 'min:0'],
-            'max_int' => ['required', 'min:-1', 'numeric'],
+            'max_int' => [ 'min:-1', 'numeric', 'nullable'],
             'min_temp' => ['required', 'integer', 'min:-20'],
             'max_service_temp' => ['required', 'integer', 'min:0'],
             'pds-link' => ['nullable', 'url'],

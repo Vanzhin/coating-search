@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('title')
-    @parent | Профиль
+    @parent Профиль
 @endsection
 @section('content')
     <div class="container min-vh-100">

@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('title')
-    @parent | Покрытия
+    @parent Покрытия
 @endsection
 @section('header')
     <section class="text-center container">

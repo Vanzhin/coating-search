@@ -1,4 +1,4 @@
-<nav class="navbar navbar-dark bg-dark sticky-md-top" aria-label="Fifth navbar example">
+<nav class="navbar navbar-dark bg-dark sticky-top" aria-label="Fifth navbar example">
     <div class="container">
         <a class="navbar-brand col" href="{{ route('home') }}">{{env('APP_NAME')}}</a>
         <a class="col btn btn-outline-secondary text-reset text-decoration-none" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"
@@ -100,16 +100,16 @@
                 send('/search/quick/' + input).then((result) => {
                     let links ='';
                     result.forEach(function(item, i) {
-                        links = links + '<a href="http://coating-search.test/products/' + item.id + '\"' + ' class="btn btn-outline-secondary col-12 col-md-4">' + item.title + '</a>';
+                        links = links + '<a href="https://coatsearch.ru/products/' + item.id + '\"' + ' class="btn btn-outline-secondary col-12 col-md-4">' + item.title + '</a>';
                     })
                     if(links){
                         products.innerHTML = links;
                     }else {
-                        products.innerHTML = '<p class="col" >Кажется, ничего не найдено ;(</p>' + '<a href="http://coating-search.test/search/create" class="btn col-12 btn-secondary btn-lg mb-4">Начать поиск по параметрам</a>';
+                        products.innerHTML = '<p class="col" >Кажется, ничего не найдено ;(</p>' + '<a href="https://coatsearch.ru/search/create" class="btn col-12 btn-secondary btn-lg mb-4">Начать поиск по параметрам</a>';
                     }
                 });
             } else {
-                products.innerHTML = '<p class="col">Похоже, задан пустой запрос</p>' + '<a href="http://coating-search.test/search/create" class="btn col-12 btn-secondary btn-lg mb-4">Начать поиск по параметрам</a>';
+                products.innerHTML = '<p class="col">Похоже, задан пустой запрос</p>' + '<a href="https://coatsearch.ru/search/create" class="btn col-12 btn-secondary btn-lg mb-4">Начать поиск по параметрам</a>';
             }
         }
         async function send(url){

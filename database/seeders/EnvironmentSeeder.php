@@ -25,6 +25,8 @@ class EnvironmentSeeder extends Seeder
             ['title' => 'атмосфера'],
             ['title' => 'погружение в воду'],
             ['title' => 'погружение в почву'],
+            ['title' => 'погружение'],
+
         ];
 
         for ($i = 0; $i < count($data); $i++){
