@@ -30,7 +30,7 @@ class CreateRequest extends FormRequest
             'catalog_id' => ['required', 'string'],
             'vs' => ['required', 'integer', 'max:100'],
             'dft' => ['required', 'integer', 'min:15'],
-            'dry_to_touch' => ['required', 'integer', 'min:0'],
+            'dry_to_touch' => ['required', 'numeric', 'min:0'],
             'dry_to_handle' => ['required', 'integer', 'min:0'],
             'min_int' => ['required', 'numeric', 'min:0'],
             'max_int' => ['required', 'min:-1', 'numeric'],
