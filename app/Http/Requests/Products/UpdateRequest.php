@@ -35,7 +35,7 @@ class UpdateRequest extends FormRequest
             'dry_to_touch' => ['required', 'integer', 'min:0'],
             'dry_to_handle' => ['required', 'integer', 'min:0'],
             'min_int' => ['required', 'integer', 'min:0'],
-            'max_int' => ['required', 'integer', 'min:-1'],
+            'max_int' => ['required', 'numeric', 'min:-1'],
             'min_temp' => ['required', 'integer', 'min:-20'],
             'max_service_temp' => ['required', 'integer', 'min:0'],
             'pds-link' => ['nullable', 'url'],

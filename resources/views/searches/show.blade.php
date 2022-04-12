@@ -75,7 +75,7 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header d-flex align-items-stretch" id="panelsStayOpen-headingOne">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse-{{ $product->id}}" aria-expanded="false" aria-controls="panelsStayOpen-collapse-{{ $product->id}}">
-                                    <h5 class="header">{{$product->title}}</h5>
+                                    <h5 class="header">{{ Str::upper($product->title) }}</h5>
                                 </button>
                                 <a href="javascript:;" id="prod-{{$product->id}}"  class="btn compare @if(isset($compareProduct) && in_array($product->id, $compareProduct)){{"add btn-secondary"}}@else {{"btn-warning"}}@endif" compare="{{$product->id}}"
                                 >@if(isset($compareProduct) && in_array($product->id, $compareProduct))Убрать из сравнения@elseДобавить в сравнение@endif</a>

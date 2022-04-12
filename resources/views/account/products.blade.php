@@ -15,7 +15,7 @@
                     <div id="{{$product->id}}" class="col card-group">
                         <div class="card">
                             <h5 class="card-header d-flex flex-nowrap justify-content-between align-items-center">
-                                <span>{{$product->title}}</span>
+                                <span>{{ Str::upper($product->title) }}</span>
                                     <span like="{{$product->id}}" onclick="likeRemove(this)">
                                         <i class="fa-xmark fa-solid fa-xl disabled"></i>
                                     </span>
