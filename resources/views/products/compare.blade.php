@@ -16,7 +16,7 @@
                     <div class="col bg-secondary " style="min-width: 50%;">
                         <div class="card-body d-flex justify-content-around">
                             <a href="{{route('products.show', $product)}}" class="text-light text-decoration-none">
-                                <h5 class="card-title text-center">{{$product->title}}</h5>
+                                <h5 class="card-title text-center">{{Str::upper($product->title)}}</h5>
                             </a>
                             <button type="button" class="btn btn-close" data-bs-toggle="modal" data-bs-target="#deleteModal"
                                     data-bs-product="{{$product->title}}"
