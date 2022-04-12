@@ -103,10 +103,10 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::group(['middleware' => ['auth']], function (){
     Route::group(['as' => 'account.', 'prefix' => 'account'], function (){
         Route::get('/', [AccountController::class, 'index'])
-//        ->middleware('verified')
+        ->middleware('verified')
             ->name('index');
         Route::get('/my/products', [AccountController::class, 'showFavoriteProducts'])
-//        ->middleware('verified')
+        ->middleware('verified')
             ->name('my');
     });
 
