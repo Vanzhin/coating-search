@@ -14,11 +14,11 @@
             </h5>
             <div class="card-body">
                 <h5 class="card-title">{{Str::ucfirst($product->description)}}</h5>
-                <table class="table table-striped">
+                <table class="table table-striped align-items-center text-center">
                     <thead>
                     </thead>
                     <tbody>
-                    <tr>
+                    <tr class="align-middle text-center">
                         <td>Основа</td>
                         <td>
                             @foreach($binders as $binder)
@@ -26,7 +26,7 @@
                             @endforeach
                         </td>
                     </tr>
-                    <tr>
+                    <tr class="align-middle text-center">
                         <td>Среда применения</td>
                         <td>
                             @foreach($environments as $environment)
@@ -34,7 +34,7 @@
                             @endforeach
                         </td>
                     </tr>
-                    <tr>
+                    <tr class="align-middle text-center">
                         <td>Применяется в качестве</td>
                         <td>
                             @foreach($numbers as $number)
@@ -42,7 +42,7 @@
                             @endforeach
                         </td>
                     </tr>
-                    <tr>
+                    <tr class="align-middle text-center">
                         <td>Стойкость</td>
                         <td>
                             @foreach($resistances as $resistance)
@@ -50,7 +50,7 @@
                             @endforeach
                         </td>
                     </tr>
-                    <tr>
+                    <tr class="align-middle text-center">
                         <td>Подложка</td>
                         <td>
                             @foreach($substrates as $substrate)
@@ -58,7 +58,7 @@
                             @endforeach
                         </td>
                     </tr>
-                    <tr>
+                    <tr class="align-middle text-center">
                         <td>Добавки</td>
                         <td>
                             @foreach($additives as $additive)
@@ -67,7 +67,7 @@
                         </td>
                     </tr>
                     @foreach($product->propertyToShow as $key => $value)
-                            <tr>
+                            <tr class="align-middle text-center">
                                 <td>{!! $value !!}</td>
                                 <td>@if($product->$key){{Str::ucfirst($product->$key)}}@else {{'нет'}} @endif</td>
                             </tr>
