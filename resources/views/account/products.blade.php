@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('title')
-    @parent | Мои покрытия
+    @parent Мои покрытия
 @endsection
 @section('header')
     <section class="text-center container">
@@ -58,7 +58,7 @@
             card.style.pointerEvents='none';
             card.style.opacity='0.5';
             like.innerHTML = '<i class="fa-regular fa-clock"></i>';
-            send('/like/' + id).then((result) => {
+            likeSend('/like/' + id).then((result) => {
                 if(result === 'dislike'){
                     like.innerHTML = '<i class="fa-duotone fa-triangle-exclamation"></i>';
                 } else{
@@ -67,7 +67,7 @@
             })
 
         }
-        async function send(url){
+        async function likeSend(url){
 
             let response = await fetch(url, {
                 method: 'GET',

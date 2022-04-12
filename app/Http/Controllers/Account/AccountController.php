@@ -21,7 +21,9 @@ class AccountController extends Controller
     public function index()
     {
         return view('account.index', [
-            'countSearches' => Search::query()->where('user_id', '=', Auth::user()->id)
+            'countSearches' => Search::query()
+                ->where('user_id', '=', Auth::user()->id)
+                ->where('status', '<>', 'deleted')
             ->count(),
             'countLikes' => count(app(LikeService::class)->getLikedProductsId()),
         ]);

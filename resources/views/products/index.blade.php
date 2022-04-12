@@ -67,7 +67,7 @@
             like.style.pointerEvents='none';
             like.firstElementChild.remove();
             like.innerHTML = '<i class="fa-regular fa-clock"></i>';
-            send('/like/' + id).then((result) => {
+            productLikeSend('/like/' + id).then((result) => {
                 like.firstElementChild.remove();
                 if(result === 'dislike'){
                     like.innerHTML = '<i class="fa-solid fa-star"></i>';
@@ -79,7 +79,7 @@
             })
 
         }
-        async function send(url){
+        async function productLikeSend(url){
 
             let response = await fetch(url, {
                 method: 'GET',
