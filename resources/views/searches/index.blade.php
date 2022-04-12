@@ -97,7 +97,7 @@
             const okButton = document.getElementById('ok-button')
             event.target.classList.toggle('disabled')
             event.target.innerHTML= '<div class="spinner-border" role="status"></div>'
-            send('/search/' + id).then(() => {
+            searchSend('/search/' + id).then(() => {
                 el.remove();
                 myModalEl.setAttribute('hidden', true);
                 okButton.removeAttribute('hidden');
@@ -107,7 +107,7 @@
             })
         })
 
-        async function send(url){
+        async function searchSend(url){
 
             let response = await fetch(url, {
                 method: 'DELETE',
