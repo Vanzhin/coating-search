@@ -19,7 +19,7 @@
     </section>
 @endsection
 @section('content')
-        <div class="container vh-100">
+        <div class="container min-vh-100 mb-4">
             <div class="d-flex">
                 <form class="form-control d-flex flex-wrap align-items-stretch" method="post" action="{{ route('search.update', [$search]) }}">
                     @method('put')
@@ -84,25 +84,29 @@
                             <div id="panelsStayOpen-collapse-{{ $product->id}}" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading-{{ $product->id}}">
                                 <div class="accordion-body ">
                                     <h5 class="card-title">{{Str::ucfirst($product->description)}}
-                                        <a class="badge bg-secondary" href="{{$product->pds}}">PDS</a>
+                                        @if($product->pds)
+                                            <a href="@if(str_starts_with($product->pds, 'http')){{$product->pds}}@else{{Storage::disk('public')->url($product->pds)}}@endif" class="badge bg-secondary">PDS</a>
+                                        @endif
                                     </h5>
 
                                     <div class="table-responsive">
                                         <table class="table table-sm w-auto">
                                             <thead class="table-light">
-                                            <tr>
+                                            <tr class="align-middle">
                                                 @foreach($fields as $key => $value)
                                                     @if(in_array($key, ['title', 'description', 'pds']))
                                                         @continue
                                                     @else
-                                                        <th scope="col"><span style="font-size: 14px;">{!! $value !!}</span></th>
+                                                        <th class="text-center" style="font-size: 14px;" scope="col">
+                                                            {!! $value !!}
+                                                        </th>
                                                     @endif
 
                                                 @endforeach
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
+                                            <tr class="align-middle text-center">
                                                 @foreach($fields as $key => $value)
                                                     @if(in_array($key, ['title', 'description', 'pds']))
                                                         @continue
@@ -118,7 +122,7 @@
                                                             @endforeach
                                                         </td>
                                                     @else
-                                                        <td>{{$product->$key}}</td>
+                                                        <td>@if($product->$key){{Str::ucfirst($product->$key)}}@else {{'нет'}} @endif</td>
                                                     @endif
 
                                                 @endforeach

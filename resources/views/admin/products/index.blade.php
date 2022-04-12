@@ -30,7 +30,7 @@
                 @forelse($products as $product)
 
                     <tr>
-                        @foreach($fields as $key =>$item)
+                        @foreach($fields as $key => $item)
                             <td >@if($product->$key){{Str::ucfirst($product->$key)}}@else {{'нет'}} @endif</td>
                         @endforeach
 

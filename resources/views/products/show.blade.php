@@ -67,12 +67,10 @@
                         </td>
                     </tr>
                     @foreach($product->propertyToShow as $key => $value)
-                        @if(isset($product->$key))
                             <tr>
                                 <td>{!! $value !!}</td>
                                 <td>@if($product->$key){{Str::ucfirst($product->$key)}}@else {{'нет'}} @endif</td>
                             </tr>
-                        @endif
                     @endforeach
                     </tbody>
                 </table>
