@@ -9,7 +9,7 @@
             <!-- Button trigger modal -->
             <button class="btn btn-outline-secondary mx-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <span>Поиск</span>
+                <span class="d-sm-none d-md-inline-flex">Поиск</span>
             </button>
             @if(Auth::guest())
                 <div class="text-center">
