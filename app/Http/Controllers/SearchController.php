@@ -17,6 +17,8 @@ use App\Models\Substrate;
 use App\Services\ProductSearchService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Http\Request;
+
 
 class SearchController extends Controller
 {
@@ -163,7 +165,6 @@ class SearchController extends Controller
             'searchData' => json_decode($search->data, true),
             'method' => 'update',
             'button' => 'Повторить поиск'
-
         ]);
     }
 
@@ -211,11 +212,7 @@ class SearchController extends Controller
      */
     public function destroy(Search $search)
     {
-//        $deleted = $search->delete();
-//        if($deleted){
-//            return redirect()->route('searches')->with('success', __('messages.searches.deleted.success',));
-//        }
-//        return back()->with('error', __('messages.searches.deleted.error'))->withInput();
+
         try {
             $search->status = 'deleted';
             $search->save();
@@ -226,10 +223,11 @@ class SearchController extends Controller
         }
     }
 
-    public function quickProductSearch(string $content)
+    public function quickProductSearch(Request $request)
     {
+        $request->get('text');
         try {
-            return response()->json(app(ProductSearchService::class)->quickSearch($content));
+            return response()->json(app(ProductSearchService::class)->quickSearch($request->get('text')));
 
         }catch(\Exception $e){
             return response()->json('error', 400);

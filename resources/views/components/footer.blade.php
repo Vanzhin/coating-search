@@ -3,7 +3,7 @@
         <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-2">
             <p class="col-md-4 mb-0 text-muted">© {{date('Y')}} {{env('APP_NAME')}}</p>
 
-            <ul class="nav col-md-5 justify-content-end d-flex flex-nowrap align-items-center">
+            <ul class="nav col-5 col-md-7 justify-content-end d-flex flex-nowrap align-items-center">
                 <li class="nav-item">
                     <a href="{{ route('products.index') }}" class="nav-link px-2 text-muted d-flex justify-content-center align-items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-layers-fill" viewBox="0 0 16 16">

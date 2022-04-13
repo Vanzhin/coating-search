@@ -4,8 +4,10 @@ namespace App\Services;
 
 use App\Models\Product;
 use App\Models\Search;
+use Cocur\Slugify\Slugify;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ProductSearchService
 {
@@ -132,8 +134,14 @@ class ProductSearchService
     }
     public function quickSearch(string $content)
     {
-        return DB::table('products')->where('title','like', "%$content%")
+        $data = DB::table('products')->where('title','like', "%$content%")
             ->get(['id', 'title'])->toArray();
+        if(!count($data)){
+            $content = str_replace(['k', 'K'],'c', Str::transliterate($content));
+            $data = DB::table('products')->where('title','like', "%$content%")
+                ->get(['id', 'title'])->toArray();
+        };
+        return $data;
     }
 
 }
