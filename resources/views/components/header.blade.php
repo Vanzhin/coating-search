@@ -53,6 +53,7 @@
                 <li class="nav-item">
                     <a class="link-secondary nav-link @if(request()->routeIs('products*')) link-dark text-decoration-underline @endif" href="{{ route('products.index') }}">
                         Покрытия
+                        <span class="badge bg-light text-secondary">{{$links['products']}}</span>
                     </a>
                 </li>
                 <li class="nav-item">
