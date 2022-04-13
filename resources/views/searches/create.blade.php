@@ -9,8 +9,8 @@
     </section>
 @endsection
 @section('content')
-    <div class="album py-5 bg-light">
-        <div class="container">
+    <div class="album py-5 bg-light container">
+        <div class="mw-100">
             @if(isset($method))
                 <form method="post" action="{{ route('search.update', [$search]) }}">
                 @method('put')
@@ -21,7 +21,6 @@
 
                 @include('inc.message')
                 <div class="form-group row-cols-auto">
-
                     @foreach ($linkedFields as  $key => $item)
                     @error($key)
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
