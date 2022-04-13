@@ -1,6 +1,9 @@
 <nav class="navbar navbar-dark bg-dark sticky-top" aria-label="Fifth navbar example">
     <div class="container">
-        <a class="navbar-brand col" href="{{ route('home') }}">{{env('APP_NAME')}}</a>
+        <a class="navbar-brand col" href="{{ route('home') }}">
+            <i class="fa-solid fa-layer-group"></i>
+            {{env('APP_NAME')}}
+        </a>
         <a class="col btn btn-outline-secondary text-reset text-decoration-none" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"
         style="max-width: 50px;">
             <span class="navbar-toggler-icon"></span>
@@ -13,7 +16,10 @@
             </button>
             @if(Auth::guest())
                 <div class="text-center">
-                    <a href="{{ route('login') }}"  class="btn btn-outline-primary me-auto">Вход</a>
+                    <a href="{{ route('login') }}"  class="btn btn-outline-primary me-auto">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                        <span class="d-none d-md-inline-flex">Вход</span>
+                    </a>
                 </div>
             @else
                 <div class="dropdown">
@@ -35,14 +41,19 @@
 </nav>
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasExampleLabel">{{env('APP_NAME')}}</h5>
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">
+            <i class="fa-solid fa-layer-group"></i>
+            {{env('APP_NAME')}}
+        </h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
         <div>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="link-secondary nav-link @if(request()->routeIs('products*')) link-dark text-decoration-underline @endif" href="{{ route('products.index') }}">Покрытия</a>
+                    <a class="link-secondary nav-link @if(request()->routeIs('products*')) link-dark text-decoration-underline @endif" href="{{ route('products.index') }}">
+                        Покрытия
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a class="link-secondary nav-link  @if(request()->routeIs('search*')) link-dark text-decoration-underline @endif" href="{{ route('search') }}">Подбор</a>
