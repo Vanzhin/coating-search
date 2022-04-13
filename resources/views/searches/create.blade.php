@@ -28,7 +28,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                     @enderror
-                <div class="card col">
+                <div class="card col my-2">
                     <label for="{{$key}}"><h5 class="card-header">{{$item}}:</h5></label>
                     <select multiple name = "{{$key}}[]" id = "{{$key}}" class="form-control selectpicker"
                             data-live-search="true"
@@ -57,7 +57,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                     @enderror
-                    <div class="card col">
+                    <div class="card col my-2">
                         @if($key === 'brand_id')
                             <label for="{{ $key }}"><h5 class="card-header">{!! $item !!}:
                                 </h5>
@@ -159,8 +159,15 @@
         </div>
     </div>
 
-            <button type="submit"  class="btn btn-success">{{$button}}</button>
+    <div class="col my-3 d-flex justify-content-center align-items-center">
 
+        <button type="submit"  class="btn btn-success flex-fill flex-xl-grow-0 d-flex justify-content-center align-items-center"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-list-nested" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M4.5 11.5A.5.5 0 0 1 5 11h10a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm-2-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm-2-4A.5.5 0 0 1 1 3h10a.5.5 0 0 1 0 1H1a.5.5 0 0 1-.5-.5z"/>
+            </svg>
+            <span class="mx-2">{{$button}}</span>
+
+        </button>
+    </div>
         </form>
     </div>
 </div>
