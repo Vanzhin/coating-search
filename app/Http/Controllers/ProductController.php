@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Services\LikeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -82,6 +83,10 @@ class ProductController extends Controller
         $brand = Brand::where('slug', $slug)->first();
         return view('products.index', [
             'products' => Brand::find($brand->id)->products()->paginate(10),
+            'likes' => app(LikeService::class)->getLikedProductsId(),
+            'param' => '(бренд - ' . Str::upper($slug) . ')'
+
+
         ]);
     }
 

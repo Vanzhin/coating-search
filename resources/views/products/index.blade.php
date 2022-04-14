@@ -1,12 +1,12 @@
 @extends('layouts.main')
 @section('title')
-    @parent Покрытия
+    @parent Покрытия {{$param ?? null}}
 @endsection
 @section('header')
     <section class="text-center container">
         <h1 class="fw-light">
             Все покрытия
-            <span class="badge bg-secondary">{{$products->count()}}</span>
+            {{$param ?? null}}
         </h1>
     </section>
 @endsection
