@@ -15,12 +15,6 @@
     <link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/all.min.css') }}" rel="stylesheet">
 
-
-
-
-
-
-
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -55,8 +49,6 @@
             <div class="justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 @yield('content')
             </div>
-
-
         </main>
     </div>
 </div>
@@ -71,8 +63,6 @@
 {{--<!-- Latest compiled and minified JavaScript -->--}}
 <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
 <script src="{{ asset('js/all.min.js') }}"></script>
-
-
 
 @stack('js')
 </html>

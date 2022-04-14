@@ -1,12 +1,15 @@
 @extends('layouts.main')
 @section('title')
-    @parent Подбор покрытий
+    @parent Результаты поиска покрытий
 @endsection
 @section('header')
 {{--    если пользователь пытается просмотреть не свою запись, то выводу заглушку--}}
     @if(Auth::check() ? Auth::user()->getAuthIdentifier() : false === $search->user_id or $search->session_token === session()->get('_token'))
-        <section class="text-center container">
-        <h1 class="fw-light">Подбор покрытий</h1>
+        <section class="text-center container my-3">
+        <h1 class="fw-light d-flex justify-content-center align-items-center">
+            <span>Результаты поиска покрытий</span>
+            <span class="badge bg-secondary mx-3">{{ $products->count() }}</span>
+        </h1>
         @include('inc.message')
             <a class="btn btn-outline-secondary m-3" data-bs-toggle="collapse" href="#collapseTitle" role="button" aria-expanded="false" aria-controls="collapseTitle">
                 Параметры поиска
@@ -31,42 +34,39 @@
                                  title="Выберите параметр сортировки"
                         >
                             @foreach($fieldsToOrderBy as $key => $field)
-
                                 <option value="{{$key}}@asc" @if(isset($searchData['order-by']) && $searchData['order-by'] === $key.'@asc') selected @endif>{{Str::ucfirst($field)}} - по возрастанию</option>
                                 <option value="{{$key}}@desc" @if(isset($searchData['order-by']) && $searchData['order-by'] === $key.'@desc') selected @endif>{{Str::ucfirst($field)}} - по убыванию</option>
-
-
                             @endforeach
                         </select>
                     </div>
                     <div class="d-flex flex-fill">
-                        <button type="submit"  class="btn btn-success p-2 flex-fill">
+                        <button type="submit"  class="w-25 btn btn-success p-2 flex-fill mx-1 d-flex justify-content-evenly align-items-center">
                             <i class="fa-solid fa-arrow-down-short-wide"></i>
-                            Сортировать
+                            <span class="d-none d-md-inline-flex">Сортировать</span>
                         </button>
-                        <a href="{{ route('search.edit', ['search' => $search]) }}" class="btn btn-primary p-2 flex-fill">
+                        <a href="{{ route('search.edit', ['search' => $search]) }}" class="w-25 d-flex justify-content-evenly align-items-center btn btn-primary p-2 flex-fill">
                             <i class="fa-solid fa-arrow-rotate-left"></i>
-                            Обновить
+                            <span class="d-none d-md-inline-flex">Обновить</span>
                         </a>
                         @if(Auth::user())
                             @if($search->status === 'saved')
-                                <a href="{{route('search')}}" class="btn btn-info">
+                                <a href="{{route('search')}}" class="w-25 btn btn-info mx-1 d-flex justify-content-evenly align-items-center">
                                     <i class="fa-solid fa-magnifying-glass"></i>
-                                    Мои поиски
+                                    <span class="d-none d-md-inline-flex">Мои поиски</span>
                                 </a>
                             @else
-                                <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#saveSearchModal">
+                                <a class="w-25 btn btn-info mx-1 d-flex justify-content-evenly align-items-center" data-bs-toggle="modal" data-bs-target="#saveSearchModal">
                                     <i class="fa-regular fa-floppy-disk"></i>
-                                    Сохранить
+                                    <span class="d-none d-md-inline-flex">Сохранить</span>
                                 </a>
                             @endif
                         @endif
-                        <a  href="{{ route('products.compare') }}" id = "compare-btn" class="btn bg-secondary p-2 flex-fill @if(count($compareProduct) > 1){{''}}@else disabled @endif">
+                        <a  href="{{ route('products.compare') }}" id = "compare-btn" class="w-25 btn bg-secondary p-2 flex-fill @if(count($compareProduct) > 1){{''}}@else disabled @endif">
                             <i class="fa-solid fa-chart-simple"></i>
                             <span id = "product-to-compare" class="badge btn-warning">@if($compareProduct){{count($compareProduct)}}@else{{''}}@endif</span>
                             </a>
                     </div>
-                    </form>
+                </form>
             </div>
 
                 <div class="accordion" id="accordionPanelsStayOpenExample">
@@ -77,8 +77,15 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse-{{ $product->id}}" aria-expanded="false" aria-controls="panelsStayOpen-collapse-{{ $product->id}}">
                                     <h5 class="header">{{ Str::upper($product->title) }}</h5>
                                 </button>
-                                <a href="javascript:;" id="prod-{{$product->id}}"  class="btn compare @if(isset($compareProduct) && in_array($product->id, $compareProduct)){{"add btn-secondary"}}@else {{"btn-warning"}}@endif" compare="{{$product->id}}"
-                                >@if(isset($compareProduct) && in_array($product->id, $compareProduct))Убрать из сравнения@elseДобавить в сравнение@endif</a>
+                                <a href="javascript:;" id="prod-{{$product->id}}" style="width: 20%;" class="d-flex justify-content-evenly align-items-center btn compare @if(isset($compareProduct) && in_array($product->id, $compareProduct)){{"add btn-secondary"}}@else {{"btn-warning"}}@endif" compare="{{$product->id}}">
+                                    @if(isset($compareProduct) && in_array($product->id, $compareProduct))
+                                        <i class="fa-solid fa-minus"></i>
+                                        <span class="d-none d-md-inline-flex">Убрать из сравнения</span>
+                                    @else
+                                        <i class="fa-solid fa-plus"></i>
+                                        <span class="d-none d-md-inline-flex">Добавить в сравнение</span>
+                                    @endif
+                                </a>
 
                             </h2>
                             <div id="panelsStayOpen-collapse-{{ $product->id}}" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading-{{ $product->id}}">
@@ -88,7 +95,6 @@
                                             <a href="@if(str_starts_with($product->pds, 'http')){{$product->pds}}@else{{Storage::disk('public')->url($product->pds)}}@endif" class="badge bg-secondary">PDS</a>
                                         @endif
                                     </h5>
-
                                     <div class="table-responsive">
                                         <table class="table table-sm w-auto">
                                             <thead class="table-light">
@@ -214,10 +220,10 @@ async function sendProductToCompare(url){
         compare_btn.classList.add('disabled')
     }
     if(btn.classList.contains('add')){
-        btn.innerHTML = 'Убрать из сравнения';
+        btn.innerHTML = '<i class="fa-solid fa-minus"></i><span class="d-none d-md-inline-flex">Убрать из сравнения</span>';
 
     } else {
-        btn.innerHTML = 'Добавить в сравнение';
+        btn.innerHTML = '<i class="fa-solid fa-plus"></i><span class="d-none d-md-inline-flex">Добавить в сравнение</span>';
     }
     btn.classList.toggle('btn-warning');
     btn.classList.toggle('btn-secondary');

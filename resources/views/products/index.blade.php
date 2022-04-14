@@ -4,8 +4,10 @@
 @endsection
 @section('header')
     <section class="text-center container">
-        <h1 class="fw-light">Все покрытия</h1>
-
+        <h1 class="fw-light">
+            Все покрытия
+            <span class="badge bg-secondary">{{$products->count()}}</span>
+        </h1>
     </section>
 @endsection
 @section('content')

@@ -42,14 +42,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paginator::useBootstrapFive();
-        View::composer(['components.admin.sidebar', 'components.header'], function ($view) {
-//todo убрать отсюда https://laravel.com/docs/9.x/views#sharing-data-with-all-views
-            $links = [];
-            $links['products'] = Product::all()->count();
-            $links['users'] = User::all()->count();
-
-            return $view->with('links', $links);
-        });
 
     }
 }

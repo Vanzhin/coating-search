@@ -8,18 +8,18 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link @if(request()->routeIs('admin.products*')) active @endif" href="{{ route('admin.products') }}">
+                <a class=" nav-link @if(request()->routeIs('admin.products*')) active @endif" href="{{ route('admin.products') }}">
                     <span data-feather="layers"></span>
                     Покрытия
-                    <span class="badge bg-secondary">{{$links['products']}}</span>
+                    <span class="badge bg-secondary">{{$counts['products']}}</span>
 
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link @if(request()->routeIs('admin.users*')) active @endif" href="{{ route('admin.users') }}">
+                <a class=" nav-link @if(request()->routeIs('admin.users*')) active @endif" href="{{ route('admin.users') }}">
                     <span data-feather="users"></span>
                     Пользователи
-                    <span class="badge bg-secondary">{{$links['users']}}</span>
+                    <span class="badge bg-secondary">{{$counts['users']}}</span>
 
                 </a>
             </li>

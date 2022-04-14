@@ -28,11 +28,29 @@
                     </a>
                     <ul class="dropdown-menu text-small shadow text-small dropdown-menu-dark" data-popper-placement="bottom-end" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(0px, 34px, 0px);">
                         <li><a class="dropdown-item" href="{{ route('account.index') }}">Профиль</a></li>
-                        <li><a class="dropdown-item" href="{{ route('search') }}">Мои поиски</a></li>
-                        <li><a class="dropdown-item" href="{{ route('account.my') }}">Мои покрытия</a></li>
+                        <li>
+                            <a class="d-flex justify-content-between align-items-center dropdown-item" href="{{ route('search') }}">
+                                <span>Мои поиски</span>
+                                <span class="badge bg-light text-dark ms-1">{{ $counts['userSearches']  ?? null}}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="d-flex justify-content-between align-items-center dropdown-item" href="{{ route('account.my') }}">
+                                <span>Мои покрытия</span>
+                                <span class="badge bg-light text-dark ms-1">{{ $counts['userProducts']  ?? null}}</span>
+                            </a>
+                        </li>
                         <li><a class="dropdown-item disabled" href="#">Настройки</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{{ route('logout') }}">Выйти</a></li>
+                        <li>
+                            <a class="dropdown-item d-flex justify-content-between align-items-center" href="{{ route('logout') }}">
+                                <span>Выйти</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+                                    <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                                </svg>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             @endif
@@ -51,13 +69,13 @@
         <div>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="link-secondary nav-link @if(request()->routeIs('products*')) link-dark text-decoration-underline @endif" href="{{ route('products.index') }}">
+                    <a class="d-flex justify-content-between link-secondary nav-link @if(request()->routeIs('products*')) navbar-brand @endif" href="{{ route('products.index') }}">
                         Покрытия
-                        <span class="badge bg-light text-secondary">{{$links['products']}}</span>
+                        <span class="badge bg-light text-secondary">{{$counts['products']}}</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="link-secondary nav-link  @if(request()->routeIs('search*')) link-dark text-decoration-underline @endif" href="{{ route('search') }}">Подбор</a>
+                    <a class="link-secondary nav-link  @if(request()->routeIs('search*')) navbar-brand @endif" href="{{ route('search') }}">Подбор</a>
                 </li>
                 <li class="nav-item">
                     <a class="link-secondary nav-link disabled" href="#" >Вопросы</a>
@@ -81,7 +99,7 @@
 </div>
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">
