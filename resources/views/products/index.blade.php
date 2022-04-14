@@ -58,7 +58,9 @@
                     <h2>Записей нет</h2>
                 @endforelse
             </div>
-            {{ $products->onEachSide(0)->links() }}
+            <div class="mt-2">
+                {{ $products->onEachSide(0)->links() }}
+            </div>
         </div>
     </div>
 @endsection
