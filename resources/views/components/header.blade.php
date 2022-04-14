@@ -131,7 +131,7 @@
                     console.log(result)
                     let links ='';
                     result.forEach(function(item) {
-                        links = links + '<a href="https://coatsearch.ru/products/' + item.id + '\"' + ' class="btn btn-outline-secondary col-12 col-md-5 m-1">' + item.title + '</a>';
+                        links = links + '<a href="https://coatsearch.ru/products/' + item.id + '\"' + ' class="btn btn-outline-secondary col-12 col-md-5 m-1">' + item.title.toUpperCase() + '</a>';
                     })
                     if(links){
                         products.innerHTML = links;
