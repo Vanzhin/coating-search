@@ -8,7 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -21,6 +22,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'status',
+        'role',
+        'avatar',
     ];
 
     /**
@@ -41,4 +45,37 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public static function getFieldsToShow(): array
+    {
+        return [
+            'avatar' => 'Фото',
+            'name' => 'Имя',
+            'email' => 'Почта',
+            'last_login_at' => 'Дата последнего входа',
+            'email_verified_at' => 'Дата верификации почты',
+            'role' => 'Роль',
+            'status' => 'Статус',
+        ];
+    }
+
+    public static function getFieldsToCreate(): array
+    {
+        return [
+            'name' => 'Имя',
+            'email' => 'Почта',
+            'role' => 'Роль',
+            'status' => 'Статус',
+            'password' => 'Пароль'
+        ];
+    }
+    public static function getFieldsToUpdate(): array
+    {
+        return [
+            'name' => 'Имя',
+            'email' => 'Почта',
+            'role' => 'Роль',
+            'status' => 'Статус',
+        ];
+    }
 }
