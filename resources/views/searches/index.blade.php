@@ -15,7 +15,7 @@
                 @forelse($searches as $search)
                     <div id ="{{$search->id}}" class="list-group m-1 mw-100">
                         <div  class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
-                            <a href="{{route('search.show', [$search])}}" class="text-decoration-none text-reset d-flex gap-2 w-100 justify-content-between">
+                            <a href="{{route('search.show', [$search])}}" class="text-decoration-none text-reset d-flex gap-2 w-100 flex-column ">
                                 <div>
                                     <h6 class="mb-0">{{$search->title ?? 'Без названия'}}</h6>
                                     <p class="mb-0 opacity-75">{{ $search->description }}</p>
@@ -31,8 +31,9 @@
                 @empty
                     <h2>Записей нет</h2>
                 @endforelse
-                    {{ $searches->onEachSide(0)->links() }}
-
+            <div class="my-2">
+                {{ $searches->onEachSide(0)->links() }}
+            </div>
             @endif
         </div>
     </div>
