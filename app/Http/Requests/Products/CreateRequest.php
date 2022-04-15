@@ -41,7 +41,7 @@ class CreateRequest extends FormRequest
             'binders' => ['required', 'array', 'min:1'],
             'environments' => ['required', 'array', 'min:1'],
             'numbers' => ['required', 'array', 'min:1'],
-            'resistances' => ['required', 'array', 'min:1'],
+            'resistances' => ['nullable', 'array', 'min:1'],
             'substrates' => ['required', 'array', 'min:1'],
             'tolerance' =>['string'],
         ];

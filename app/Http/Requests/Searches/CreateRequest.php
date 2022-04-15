@@ -30,7 +30,7 @@ class CreateRequest extends FormRequest
             'dft' => ['integer', 'min:1'],
             'dry_to_touch' => ['numeric', 'min:-1'],
             'dry_to_handle' => ['numeric', 'min:-1'],
-            'min_int' => ['numeric', 'min:0'],
+            'min_int' => ['numeric', 'min:-1'],
             'max_int' => ['numeric', 'min:-2'],
             'min_temp' => ['numeric', 'min:-20'],
             'max_service_temp' => ['integer', 'min:0'],
