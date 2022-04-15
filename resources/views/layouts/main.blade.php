@@ -9,8 +9,8 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('/favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('/favicon-16x16.png') }}">
     <link rel="manifest" href="{{ asset('/site.webmanifest') }}">
-    <link rel="mask-icon" href="{{ asset('/safari-pinned-tab.svg') }}" color="#5bbad5">
-    <meta name="msapplication-TileColor" content="#da532c">
+    <link rel="mask-icon" href="{{ asset('/safari-pinned-tab.svg') }}" color="#424361">
+    <meta name="msapplication-TileColor" content="#424361">
     <meta name="theme-color" content="#ffffff">
 
     <title>@section('title') {{env('APP_NAME')}} |@show</title>
