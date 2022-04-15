@@ -9,7 +9,7 @@
                 <a href="{{ route('products.brand', $brand->slug) }}" class="badge bg-secondary" title="Все покрытия {{Str::upper($brand->title)}}">{{Str::upper($brand->title)}}</a>
                 <span class="badge bg-secondary">{{Str::ucfirst($catalog->title)}}</span>
                 @if($product->pds)
-                <a href="@if(str_starts_with($product->pds, 'http')){{$product->pds}}@else{{Storage::disk('public')->url($product->pds)}}@endif" class="badge bg-secondary">PDS</a>
+                <a href="@if(str_starts_with($product->pds, 'http')){{$product->pds}}@else{{Storage::disk('public')->url($product->pds)}}@endif" class="badge bg-secondary" target="_blank">PDS</a>
                 @endif
             </h5>
             <div class="card-body">
