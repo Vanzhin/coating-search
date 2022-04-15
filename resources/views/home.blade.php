@@ -19,7 +19,7 @@
                     <div class="carousel-caption text-start">
                         <h1>О проекте</h1>
                         <p>Краткий обзор и основные сведения, необходимые для работы</p>
-                        <p><a class="btn btn-lg btn-primary" href="#">Подробнее</a></p>
+                        <p><a class="btn btn-lg btn-primary" href="{{ route('about') }}">Подробнее</a></p>
                     </div>
                 </div>
             </div>

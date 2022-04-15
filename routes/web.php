@@ -36,7 +36,7 @@ use App\Http\Controllers\Admin\SubstarteController as AdminSubstrateController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+//welcome
 Route::get('/', function () {
     return view('welcome');
 });
@@ -44,6 +44,9 @@ Route::get('/home', function () {
     return view('home');
 })->name('home');
 
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
 //products
 
 Route::group(['as' => 'products.', 'prefix' => 'products'], function(){
