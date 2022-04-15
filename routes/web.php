@@ -47,6 +47,9 @@ Route::get('/home', function () {
 Route::get('/about', function () {
     return view('about');
 })->name('about');
+Route::get('/info', function () {
+    return view('info');
+})->name('info');
 //products
 
 Route::group(['as' => 'products.', 'prefix' => 'products'], function(){

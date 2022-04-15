@@ -1,8 +1,7 @@
-<header class="p-3 bg-dark text-white">
+<header class="p-1 bg-dark text-white">
     <div class="container">
-        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-2">
+        <footer class="d-flex flex-wrap justify-content-between align-items-center py-1 my-1">
             <p class="col-md-4 mb-0 text-muted">© {{date('Y')}} {{env('APP_NAME')}}</p>
-
             <ul class="nav col-5 col-md-7 justify-content-end d-flex flex-nowrap align-items-center">
                 <li class="nav-item">
                     <a href="{{ route('products.index') }}" class="nav-link px-2 text-muted d-flex justify-content-center align-items-center">
