@@ -4,7 +4,11 @@
 @endif
 
 @if(session()->has('success'))
-    @component('components.alert',['type' => 'success', 'message' => session()->get('success')])
+    @component('components.alert',[
+    'type' => 'success',
+    'message' => session()->get('success'),
+    'item' => session()->get('item')
+    ])
     @endcomponent
 @endif
 

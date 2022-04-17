@@ -88,9 +88,15 @@ class ProductController extends Controller
                 $created->$key()->attach($request->input($key));
             }
 
-            return redirect()->route('admin.products')->with('success', __('messages.admin.products.created.success'));
+            return redirect()->route('admin.products')->with([
+                'success' => __('messages.admin.products.created.success'),
+                'item' => $created->title
+            ]);
         }
-        return back()->with('error', __('messages.admin.products.created.error'))->withInput();
+        return back()->with([
+            'error'=> __('messages.admin.products.created.error'),
+            'item' => $created->title
+        ])->withInput();
 
     }
 
@@ -154,6 +160,11 @@ class ProductController extends Controller
             $data['pds'] = $data['pds-link'];
         };
         unset($data['pds-link'],$data['pds-local']);
+        if(key_exists('tolerance', $data)){
+            $data['tolerance'] = 1;
+        } else{
+            $data['tolerance'] = 0;
+        }
         $product->slug = null;
         $updated = $product->fill($data)->save();
         if($updated){
@@ -164,9 +175,16 @@ class ProductController extends Controller
                 $product->$key()->attach($request->input($key));
             }
 
-            return redirect()->route('admin.products')->with('success', __('messages.admin.products.updated.success'));
+            return redirect()->route('admin.products')->with([
+                'success' => __('messages.admin.products.updated.success'),
+                'item' => $product->title
+
+            ]);
         }
-        return back()->with('error',__('messages.admin.products.updated.error'))->withInput();
+        return back()->with([
+            'error' => __('messages.admin.products.updated.error'),
+            'item' => $product->title
+        ])->withInput();
     }
 
     /**
@@ -179,8 +197,15 @@ class ProductController extends Controller
     {
         $deleted = $product->delete();
         if($deleted){
-            return redirect()->route('admin.products')->with('success', __('messages.admin.products.deleted.success',));
+            return redirect()->route('admin.products')->with([
+                'success'=> __('messages.admin.products.deleted.success'),
+                'item' => $product->title
+
+            ]);
         }
-        return back()->with('error', __('messages.admin.products.deleted.error'))->withInput();
+        return back()->with([
+            'error' => __('messages.admin.products.deleted.error'),
+            'item' => $product->title
+        ])->withInput();
     }
 }
