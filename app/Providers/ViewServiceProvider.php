@@ -33,6 +33,8 @@ class ViewServiceProvider extends ServiceProvider
 // https://laravel.com/docs/9.x/views#sharing-data-with-all-views
             $counts['products'] = Product::all()->count();
             $counts['users'] = User::all()->count();
+            $counts['searches'] = Search::all()->count();
+
             if(Auth::check()){
                 $counts['userSearches'] = Search::query()
                     ->where('user_id', Auth::user()->id)

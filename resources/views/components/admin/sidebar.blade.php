@@ -24,6 +24,13 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link @if(request()->routeIs('admin.searches*')) active @endif" href="{{ route('admin.searches') }}">
+                    <span data-feather="file-text"></span>
+                    Поиски
+                    <span class="badge bg-secondary">{{$counts['searches']}}</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link @if(request()->routeIs('admin.binders*')) active @endif" href="{{ route('admin.binders') }}">
                     <span data-feather="file-text"></span>
                     Основания
@@ -71,6 +78,7 @@
                     Стойкость
                 </a>
             </li>
+
 {{--            <li class="nav-item">--}}
 {{--                <a class="nav-link @if(request()->routeIs('admin.users*')) active @endif" href="{{ route('admin.users') }}">--}}
 {{--                    <span data-feather="users"></span>--}}

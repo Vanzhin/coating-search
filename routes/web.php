@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\EnvironmentController as AdminEnvironmentControll
 use App\Http\Controllers\Admin\NumberController as AdminNumberController;
 use App\Http\Controllers\Admin\ResistanceController as AdminResistanceController;
 use App\Http\Controllers\Admin\SubstarteController as AdminSubstrateController;
+use App\Http\Controllers\Admin\SearchController as AdminSearchController;
 
 
 
@@ -137,7 +138,8 @@ Route::group(['middleware' => ['auth']], function (){
             '/numbers' => AdminNumberController::class,
             '/resistances' => AdminResistanceController::class,
             '/substrates' => AdminSubstrateController::class,
-            '/users' => AdminUserController::class
+            '/users' => AdminUserController::class,
+            '/searches' => AdminSearchController::class,
 
         ]);
         Route::get('/products', [AdminProductController::class, 'index'])
@@ -160,6 +162,8 @@ Route::group(['middleware' => ['auth']], function (){
             ->name('substrates');
         Route::get('/users', [AdminUserController::class, 'index'])
             ->name('users');
+        Route::get('/searches', [AdminSearchController::class, 'index'])
+            ->name('searches');
     });
 });
 Route::group(['middleware' => 'guest'], function(){

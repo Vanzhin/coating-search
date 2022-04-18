@@ -18,4 +18,17 @@ class Search extends Model
         'description',
         'status',
     ];
+    public static function getFieldsToShow(): array
+    {
+        return [
+            'title' => 'название',
+            'description' => 'описание',
+//            'session_token' => 'id сессии',
+            'status' => 'статус',
+            'user_id' => 'пользователь',
+            'created_at' => 'создан',
+            'updated_at' => 'обновлен'
+
+        ];
+    }
 }
