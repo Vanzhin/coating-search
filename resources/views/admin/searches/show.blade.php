@@ -8,7 +8,7 @@
         <section class="text-center container my-3">
         <h1 class="fw-light d-flex justify-content-center align-items-center">
             <span>Результаты поиска покрытий</span>
-            <span class="badge bg-secondary mx-3">{{ $products->count() }}</span>
+            <span class="badge bg-secondary mx-3">{{ $productCount }}</span>
         </h1>
         @include('inc.message')
             <a class="btn btn-outline-secondary m-3" data-bs-toggle="collapse" href="#collapseTitle" role="button" aria-expanded="false" aria-controls="collapseTitle">

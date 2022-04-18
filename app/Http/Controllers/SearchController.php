@@ -133,6 +133,10 @@ class SearchController extends Controller
             'linkedFields' => Product::getLinkedFields(),
             //если есть данные по сравнению в сессии выдаю их, если нет, то пустой массив
             'compareProduct' => session()->get('products.compare') ?? [],
+            'productCount' => app(ProductSearchService::class)
+                ->getProducts($searchData)
+                ->get()
+                ->count(),
 
 
         ]);
