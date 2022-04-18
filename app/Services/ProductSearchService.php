@@ -42,7 +42,6 @@ class ProductSearchService
             $orderParam = explode('@', $searchData['order-by']);
             $products = $products->orderBy($orderParam[0], $orderParam[1]);
         }
-
         return $products;
 
     }
