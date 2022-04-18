@@ -40,31 +40,31 @@
                         </select>
                     </div>
                     <div class="d-flex flex-fill">
-                        <button type="submit"  class="w-25 btn btn-success p-2 flex-fill mx-1 d-flex justify-content-evenly align-items-center">
+                        <button type="submit"  class="w-25 btn btn-success p-2 flex-fill ms-lg-1 d-flex justify-content-evenly align-items-center">
                             <i class="fa-solid fa-arrow-down-short-wide"></i>
                             <span class="d-none d-md-inline-flex">Сортировать</span>
                         </button>
-                        <a href="{{ route('search.edit', ['search' => $search]) }}" class="w-25 d-flex justify-content-evenly align-items-center btn btn-primary p-2 flex-fill">
+                        <a href="{{ route('search.edit', ['search' => $search]) }}" class="w-25 d-flex justify-content-evenly align-items-center btn btn-primary p-2 flex-fill ms-1">
                             <i class="fa-solid fa-arrow-rotate-left"></i>
                             <span class="d-none d-md-inline-flex">Обновить</span>
                         </a>
                         @if(Auth::user())
                             @if($search->status === 'saved')
-                                <a href="{{route('search')}}" class="w-25 btn btn-info mx-1 d-flex justify-content-evenly align-items-center">
+                                <a href="{{route('search')}}" class="w-25 btn btn-info ms-1 d-flex justify-content-evenly align-items-center">
                                     <i class="fa-solid fa-magnifying-glass"></i>
                                     <span class="d-none d-md-inline-flex">Мои поиски</span>
                                 </a>
                             @else
-                                <a class="w-25 btn btn-info mx-1 d-flex justify-content-evenly align-items-center" data-bs-toggle="modal" data-bs-target="#saveSearchModal">
+                                <a class="w-25 btn btn-info ms-1 d-flex justify-content-evenly align-items-center" data-bs-toggle="modal" data-bs-target="#saveSearchModal">
                                     <i class="fa-regular fa-floppy-disk"></i>
                                     <span class="d-none d-md-inline-flex">Сохранить</span>
                                 </a>
                             @endif
                         @endif
-                        <a  href="{{ route('products.compare') }}" id = "compare-btn" class="w-25 btn bg-secondary p-2 flex-fill @if(count($compareProduct) > 1){{''}}@else disabled @endif">
+                        <a  href="{{ route('products.compare') }}" id = "compare-btn" class=" ms-1 w-25 btn bg-secondary p-2 flex-fill d-flex justify-content-center align-items-center flex-nowrap @if(count($compareProduct) > 1){{''}}@else disabled @endif">
                             <i class="fa-solid fa-chart-simple"></i>
-                            <span id = "product-to-compare" class="badge btn-warning">@if($compareProduct){{count($compareProduct)}}@else{{''}}@endif</span>
-                            </a>
+                            <span id = "product-to-compare" class="badge btn-warning ms-1">@if($compareProduct){{count($compareProduct)}}@else{{''}}@endif</span>
+                        </a>
                     </div>
                 </form>
             </div>
