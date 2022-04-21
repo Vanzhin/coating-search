@@ -62,7 +62,7 @@
 
 
 {{--<!-- Latest compiled and minified JavaScript -->--}}
-<script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap-select.min.js') }}" defer></script>
 
 @stack('js')
 </body>
