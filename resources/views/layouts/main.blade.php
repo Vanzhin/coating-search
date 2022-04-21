@@ -58,11 +58,14 @@
 @endcomponent
 <script src="{{ asset('js/bootstrap.bundle.min.js') }}" defer></script>
 <script src="{{ asset('js/jquery.min.js') }}" defer></script>
-<script src="{{ asset('js/all.min.js') }}" defer></script>
-
 
 {{--<!-- Latest compiled and minified JavaScript -->--}}
 <script src="{{ asset('js/bootstrap-select.min.js') }}" defer></script>
+
+<script src="{{ asset('js/all.min.js') }}" defer></script>
+
+
+
 
 @stack('js')
 </body>
