@@ -56,9 +56,9 @@
 </main>
 @component('components.footer')
 @endcomponent
-<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ asset('js/jquery.min.js') }}"></script>
-<script src="{{ asset('js/all.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap.bundle.min.js') }}" defer></script>
+<script src="{{ asset('js/jquery.min.js') }}" defer></script>
+<script src="{{ asset('js/all.min.js') }}" defer></script>
 
 
 {{--<!-- Latest compiled and minified JavaScript -->--}}
