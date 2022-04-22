@@ -37,7 +37,13 @@
                 @foreach($products as $product)
                     <div class="col bg-light" style="min-width: 50%;">
                         <div class="card-body">
-                            <h5 class="card-title text-center">{{$product->$key}}</h5>
+                            <h5 class="card-title text-center">
+                                @if($product->$key)
+                                {{ $product->$key === true ? 'Да' : $product->$key }}
+                                @else
+                                    Нет
+                                @endif
+                            </h5>
                         </div>
                     </div>
                 @endforeach
@@ -51,9 +57,9 @@
             <div class="row flex-nowrap">
                 @foreach($products as $product)
                     <div class="col bg-light" style="min-width: 50%;">
-                        <div class="card-body ">
+                        <div class="card-body text-center">
                             @foreach($product->$key as $item)
-                                <span>{{Str::ucfirst($item->title)}}</span><br>
+                                <span>{{Str::ucfirst($item->title) ?? 'нет'}}</span><br>
                             @endforeach
                         </div>
                     </div>
