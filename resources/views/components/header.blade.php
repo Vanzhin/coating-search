@@ -31,13 +31,13 @@
                         <li>
                             <a class="d-flex justify-content-between align-items-center dropdown-item" href="{{ route('search') }}">
                                 <span>Мои поиски</span>
-                                <span class="badge bg-light text-dark ms-1">{{ $counts['userSearches']  ?? null}}</span>
+                                <span class="badge bg-light text-dark ms-1">{{ $counts['userSearches'] !== 0 ? $counts['userSearches'] : null }}</span>
                             </a>
                         </li>
                         <li>
                             <a class="d-flex justify-content-between align-items-center dropdown-item" href="{{ route('account.my') }}">
                                 <span>Мои покрытия</span>
-                                <span class="badge bg-light text-dark ms-1">{{ $counts['userProducts']  ?? null}}</span>
+                                <span class="badge bg-light text-dark ms-1">{{ $counts['userProducts'] !== 0 ? $counts['userProducts'] : null }}</span>
                             </a>
                         </li>
                         <li><a class="dropdown-item disabled" href="#">Настройки</a></li>
