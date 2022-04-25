@@ -3,8 +3,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <title>Coating Search - Welcome</title>
+    <meta name="description" content="Поиск ЛКМ по параметрам, поиск краски по параметрам, поиск промышленных защитных покрытий по параметрам">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ asset('/site.webmanifest') }}">
+    <link rel="mask-icon" href="{{ asset('/safari-pinned-tab.svg') }}" color="#424361">
+    <meta name="msapplication-TileColor" content="#424361">
+    <meta name="theme-color" content="#ffffff">
+    <title>{{env('APP_NAME')}} | Приветствие</title>
 
 
     <!-- Bootstrap core CSS -->
@@ -36,11 +43,15 @@
 <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
     <header class="mb-auto">
         <div>
-            <h3 class="float-md-start mb-0">Coating Search</h3>
+            <h3 class="float-md-start mb-0">{{ env('APP_NAME') }}</h3>
             <nav class="nav nav-masthead justify-content-center float-md-end">
-{{--                <a class="nav-link active" aria-current="page" href="#">Главная</a>--}}
-                <a class="nav-link" href="#">Вход</a>
-                <a class="nav-link" href="#">Регистрация</a>
+                @if(Auth::check())
+                    <a class="nav-link" href="{{ route('account.index') }}">Мой профиль</a>
+                @else
+                    <a class="nav-link" href="{{ route('login') }}">Вход</a>
+                    <a class="nav-link" href="{{ route('register') }}">Регистрация</a>
+                @endif
+
             </nav>
         </div>
     </header>

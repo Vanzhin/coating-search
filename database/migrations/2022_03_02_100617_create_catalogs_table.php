@@ -16,7 +16,9 @@ return new class extends Migration
         Schema::create('catalogs', function (Blueprint $table) {
             $table->id();
             $table->char('title', 100)->unique();
+            $table->string('slug',255);
             $table->timestamps();
+
         });
     }
 

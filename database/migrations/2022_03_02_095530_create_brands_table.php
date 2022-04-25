@@ -16,7 +16,11 @@ return new class extends Migration
         Schema::create('brands', function (Blueprint $table) {
             $table->id();
             $table->char('title', 50)->unique();
+            $table->string('image')->nullable()->default(null);
+            $table->string('slug',255);
             $table->timestamps();
+//            $table->index(['title', 'slug']);
+
         });
     }
 
