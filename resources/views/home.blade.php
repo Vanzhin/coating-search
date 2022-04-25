@@ -38,7 +38,7 @@
             <div class="carousel-item carousel-item bg-secondary position-relative">
                 <picture class="container d-flex align-items-end position-absolute">
                     <source srcset="{!!Storage::disk('public')->url('images/pages/carousel_2_min.png')!!}" media="(max-width: 720px)">
-                    <img  src="{!!Storage::disk('public')->url('images/pages/carousel_2.png')!!}" alt="info"
+                    <img  src="{!! Storage::disk('public')->url('images/pages/carousel_2.png') !!}" alt="info"
                     style="width: 100vw;">
                 </picture>
                 <div class="container">
