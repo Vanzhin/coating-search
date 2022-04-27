@@ -24,7 +24,7 @@
 @section('content')
         <div class="container min-vh-100 mb-4">
             <div class="d-flex">
-                <form class="form-control d-flex flex-wrap align-items-stretch" method="post" action="{{ route('search.update', [$search]) }}">
+                <form class="form-control d-flex flex-wrap align-items-stretch gap-2" method="post" action="{{ route('search.update', [$search]) }}">
                     @method('put')
                     @csrf
                     <div class="card flex-fill">
