@@ -130,17 +130,18 @@
                 sendPost('/search/quick', search).then((result) => {
                     console.log(result)
                     let links ='';
+                    const url = "{{env('APP_URL')}}";
                     result.forEach(function(item) {
-                        links = links + '<a href="https://coatsearch.ru/products/' + item.id + '\"' + ' class="btn btn-outline-secondary col-12 col-md-5 m-1">' + item.title.toUpperCase() + '</a>';
+                        links = links + '<a href="' + url + '/products/' + item.id + '\"' + ' class="btn btn-outline-secondary col-12 col-md-5 m-1">' + item.title.toUpperCase() + '</a>';
                     })
                     if(links){
                         products.innerHTML = links;
                     }else {
-                        products.innerHTML = '<p class="col" >Кажется, ничего не найдено ;(</p>' + '<a href="https://coatsearch.ru/search/create" class="btn col-12 btn-secondary btn-lg mb-4">Начать поиск по параметрам</a>';
+                        products.innerHTML = '<p class="col" >Кажется, ничего не найдено ;(</p>' + '<a href="' + url + '/search/create"' +  'class="btn col-12 btn-secondary btn-lg mb-4">Начать поиск по параметрам</a>';
                     }
                 });
             } else {
-                products.innerHTML = '<p class="col">Похоже, задан пустой запрос</p>' + '<a href="https://coatsearch.ru/search/create" class="btn col-12 btn-secondary btn-lg mb-4">Начать поиск по параметрам</a>';
+                products.innerHTML = '<p class="col">Похоже, задан пустой запрос</p>' + '<a href="' + url + '/search/create"' +  'class="btn col-12 btn-secondary btn-lg mb-4">Начать поиск по параметрам</a>';
             }
         }
         async function sendPost(url, data){
