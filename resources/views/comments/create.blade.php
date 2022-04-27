@@ -25,6 +25,8 @@
                            required
                            minlength="6"
                            maxlength="50"
+                           value="{{Auth::user()->name ?? null}}"
+
                     >
                     <div class="valid-feedback">
                         Отлично!
@@ -43,6 +45,7 @@
                     <label for="validationCustomEmail" class="form-label">Ваша почта</label>
                     <input type="email" class="form-control" id="validationCustomEmail" name="sender_email"
                            required
+                           value="{{Auth::user()->email ?? null}}"
                     >
                     <div class="valid-feedback">
                         Отлично!
