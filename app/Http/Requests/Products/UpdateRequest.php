@@ -27,7 +27,7 @@ class UpdateRequest extends FormRequest
         return [
             'title'=>['min:5', 'required', 'string',
                 Rule::unique('products')->ignore($this->product->id, 'id')],
-            'description' => ['min:50', 'required', 'string'],
+            'description' => ['min:30', 'required', 'string'],
             'brand_id' => ['required', 'string'],
             'catalog_id' => ['required', 'string'],
             'vs' => ['required', 'integer', 'max:100'],
