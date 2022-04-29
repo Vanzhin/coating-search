@@ -181,18 +181,18 @@ class SearchController extends Controller
      */
     public function update(UpdateRequest $request, Search $search)
     {
+//        dd($request->validated(), $search);
         $data = app(ProductSearchService::class)->getSearchData($request->validated());
 
         if (count($data) == 1 && isset($data['order-by'])){
             $data = array_merge(json_decode($search->data, 1), $data);
         }
 
-        $updatedData = app(ProductSearchService::class)->getUpdatedData($search, $data);
-
+//        $updatedData = app(ProductSearchService::class)->getUpdatedData($search, $data);
         $updated = $search->fill(
             [
-                'data' => json_encode($updatedData),
-                'description' => app(ProductSearchService::class)->getSearchDescription($updatedData),
+                'data' => json_encode($data),
+                'description' => app(ProductSearchService::class)->getSearchDescription($data),
                 'session_token' => $request->session()->get('_token'),
                 'title' => $data['search_title'] ?? $search->title ?? null,
                 'status' => $data['status'] ?? $search->status ?? 'active',

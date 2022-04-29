@@ -122,6 +122,7 @@ class ProductSearchService
     public function getUpdatedData(Search $search, $requestedData): array
     {
         $updatedData = json_decode($search->data, 1);
+       dd($search, $requestedData, $updatedData);
         foreach ($requestedData as $key => $value){
             if (key_exists($key, $updatedData) && $updatedData[$key] === $value or in_array($key, ['status', 'search_title'])){
                 continue;
@@ -129,6 +130,8 @@ class ProductSearchService
                 $updatedData[$key] = $value;
             }
         }
+//        dd($search, $requestedData, $updatedData);
+
         return $updatedData;
     }
     public function quickSearch(string $content)

@@ -56,13 +56,13 @@
 </main>
 @component('components.footer')
 @endcomponent
-<script src="{{ asset('js/bootstrap.bundle.min.js') }}" defer></script>
-<script src="{{ asset('js/jquery.min.js') }}" defer></script>
-<script src="{{ asset('js/all.min.js') }}" defer></script>
+<script src="{{ asset('js/jquery.min.js') }}"></script>
+<script src="{{ asset('js/all.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 
 
 {{--<!-- Latest compiled and minified JavaScript -->--}}
-<script src="{{ asset('js/bootstrap-select.min.js') }}" defer></script>
+<script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
 
 @stack('js')
 </body>
