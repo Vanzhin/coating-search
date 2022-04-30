@@ -28,6 +28,8 @@
                                             <i class="fa-star fa-regular"></i>
                                         @endif
                                     </span>
+                                @endif
+
                                     <span id="{{$product->id}}" class="text compare">
                                         @if(isset($compareProduct) && in_array($product->id, $compareProduct))
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bar-chart-fill" viewBox="0 0 16 16">
@@ -39,7 +41,6 @@
                                             </svg>
                                         @endif
                                     </span>
-                                @endif
                             </h5>
 
                             <div class="card-body d-flex flex-column flex-nowrap justify-content-between align-content-between">
