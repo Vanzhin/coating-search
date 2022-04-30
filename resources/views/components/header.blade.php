@@ -4,13 +4,18 @@
             <i class="fa-solid fa-layer-group"></i>
             {{env('APP_NAME')}}
         </a>
-        <a class="col btn btn-outline-secondary text-reset text-decoration-none" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"
+        <a class="mx-md-2 col btn btn-outline-secondary text-reset text-decoration-none" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"
         style="max-width: 50px;">
             <span class="navbar-toggler-icon"></span>
         </a>
-        <div class="col offset d-flex justify-content-end align-items-center flex-nowrap" id="navbarsExample05" style="">
+        <div class="col-md gap-2 offset d-flex flex-fill-1 justify-content-md-between align-items-center flex-nowrap" id="navbarsExample05" style="">
             <!-- Button trigger modal -->
-            <button class="btn btn-outline-secondary mx-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <a href="{{route('products.compare')}}"  class="compare-btn btn btn-outline-secondary @if((is_null(session()->get('products.compare')) or count(session()->get('products.compare')) < 2) or request()->routeIs('products.compare')) disabled @endif">
+                <i class="fa-solid fa-chart-simple"></i>
+                <span class="d-none d-md-inline-flex">Сравнение</span>
+                <span class="product-to-compare badge btn-warning ms-1">{{ !is_null(session()->get('products.compare')) ? count(session()->get('products.compare')) : null}}</span>
+            </a>
+            <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <span class="d-none d-md-inline-flex">Поиск</span>
             </button>
@@ -76,6 +81,12 @@
                 </li>
                 <li class="nav-item">
                     <a class="link-secondary nav-link  @if(request()->routeIs('search*')) navbar-brand @endif" href="{{ route('search') }}">Подбор</a>
+                </li>
+                <li class="nav-item">
+                    <a class="d-flex justify-content-between link-secondary nav-link @if((is_null(session()->get('products.compare')) or count(session()->get('products.compare')) < 2) or request()->routeIs('products.compare')) disabled @endif" href="{{ route('products.compare') }}">
+                        Сравнение
+                        <span class="product-to-compare badge bg-light text-secondary">{{ !is_null(session()->get('products.compare')) ? count(session()->get('products.compare')) : '' }}</span>
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a class="link-secondary nav-link disabled" href="#" >Вопросы</a>

@@ -61,9 +61,9 @@
                                 </a>
                             @endif
                         @endif
-                        <a  href="{{ route('products.compare') }}" id = "compare-btn" class=" ms-1 w-25 btn bg-secondary p-2 flex-fill d-flex justify-content-center align-items-center flex-nowrap @if(count($compareProduct) > 1){{''}}@else disabled @endif">
+                        <a  href="{{ route('products.compare') }}" class="compare-btn ms-1 w-25 btn bg-secondary p-2 flex-fill d-flex justify-content-center align-items-center flex-nowrap @if(count($compareProduct) > 1){{''}}@else disabled @endif">
                             <i class="fa-solid fa-chart-simple"></i>
-                            <span id = "product-to-compare" class="badge btn-warning ms-1">@if($compareProduct){{count($compareProduct)}}@else{{''}}@endif</span>
+                            <span class="product-to-compare badge btn-warning ms-1">@if($compareProduct){{count($compareProduct)}}@else{{''}}@endif</span>
                         </a>
                     </div>
                 </form>
@@ -182,56 +182,7 @@
     @endif
 @endsection
 @push('js')
-    <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', () => {
-            const buttons = document.querySelectorAll("a.compare");
-            buttons.forEach(button => button.addEventListener("click", function() {
-                button.classList.toggle("disabled");
-                button.innerHTML = '<div class="spinner-border" role="status"></div>';
-                const id = this.getAttribute('compare');
-                sendProductToCompare('/products/compare/' + id).then(() => {
-                    // location.reload();
-                    button.classList.toggle("disabled");
-
-                })
-            }));
-        });
-        //todo убрать отсюда и перенести в основной код выше
-async function sendProductToCompare(url){
-
-    let response = await fetch(url, {
-        method: 'GET',
-    });
-    let result = await response.json();
-    const prod_id = result.product_id;
-    const badge = document.getElementById('product-to-compare');
-    const compare_btn = document.getElementById('compare-btn');
-    const btn = document.getElementById('prod-'+ prod_id);
-    btn.classList.toggle("add");
-
-    if(result.total > 1){
-        badge.innerText = result.total;
-        compare_btn.classList.remove('disabled')
-    } else if(result.total === 0){
-        badge.innerText = '';
-        compare_btn.classList.add('disabled')
-    } else{
-        badge.innerText = result.total;
-        compare_btn.classList.add('disabled')
-    }
-    if(btn.classList.contains('add')){
-        btn.innerHTML = '<i class="fa-solid fa-minus"></i><span class="d-none d-md-inline-flex">Убрать из сравнения</span>';
-
-    } else {
-        btn.innerHTML = '<i class="fa-solid fa-plus"></i><span class="d-none d-md-inline-flex">Добавить в сравнение</span>';
-    }
-    btn.classList.toggle('btn-warning');
-    btn.classList.toggle('btn-secondary');
-    return result.ok;
-}
-
-    </script>
-
+    <script type="text/javascript" src="{{asset('js/compare-main.js')}}"></script>
 @endpush
 
 

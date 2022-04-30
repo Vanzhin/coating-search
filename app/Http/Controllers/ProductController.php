@@ -20,6 +20,8 @@ class ProductController extends Controller
         return view('products.index', [
             'products' => $products,
             'likes' => app(LikeService::class)->getLikedProductsId(),
+            'compareProduct' => session()->get('products.compare') ?? [],
+
 
         ]);
     }

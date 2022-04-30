@@ -28,6 +28,17 @@
                                             <i class="fa-star fa-regular"></i>
                                         @endif
                                     </span>
+                                    <span id="{{$product->id}}" class="text compare">
+                                        @if(isset($compareProduct) && in_array($product->id, $compareProduct))
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bar-chart-fill" viewBox="0 0 16 16">
+                                                <path d="M1 11a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-3zm5-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V2z"/>
+                                            </svg>
+                                        @else
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bar-chart" viewBox="0 0 16 16">
+                                                <path d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5v12h-2V2h2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1h-2zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-3z"/>
+                                            </svg>
+                                        @endif
+                                    </span>
                                 @endif
                             </h5>
 
@@ -65,30 +76,8 @@
     </div>
 @endsection
 @push('js')
-    <script>function likeHandle(like) {
-            const id = like.getAttribute('like');
-            like.style.pointerEvents='none';
-            like.firstElementChild.remove();
-            like.innerHTML = '<i class="fa-regular fa-clock"></i>';
-            productLikeSend('/like/' + id).then((result) => {
-                like.firstElementChild.remove();
-                if(result === 'dislike'){
-                    like.innerHTML = '<i class="fa-solid fa-star"></i>';
+    <script src="{{ asset('js/likeHandle.js')}}"></script>
+    <script src="{{ asset('js/compare-general.js')}}"></script>
 
-                } else{
-                    like.innerHTML = '<i class="fa-regular fa-star"></i>';
-                }
-                like.style.pointerEvents='auto';
-            })
-
-        }
-        async function productLikeSend(url){
-
-            let response = await fetch(url, {
-                method: 'GET',
-            });
-            return await response.json();
-        }
-    </script>
 @endpush
 
