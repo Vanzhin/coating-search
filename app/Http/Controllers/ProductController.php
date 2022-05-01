@@ -85,7 +85,7 @@ class ProductController extends Controller
         $brand = Brand::where('slug', $slug)->first();
         return view('products.index', [
             'products' => Brand::find($brand->id)->products()->paginate(10),
-            'param' => '(бренд - ' . Str::upper($slug) . ')',
+            'param' => '(Бренд: ' . Str::upper($slug) . ')',
             'likes' => app(LikeService::class)->getLikedProductsId(),
             'compareProduct' => session()->get('products.compare') ?? [],
 

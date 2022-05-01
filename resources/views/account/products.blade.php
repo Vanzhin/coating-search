@@ -12,36 +12,8 @@
         <div class="container">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 @forelse($products as $product)
-                    <div id="{{$product->id}}" class="col card-group">
-                        <div class="card">
-                            <h5 class="card-header d-flex flex-nowrap justify-content-between align-items-center">
-                                <span>{{ Str::upper($product->title) }}</span>
-                                    <span like="{{$product->id}}" onclick="likeRemove(this)">
-                                        <i class="fa-xmark fa-solid fa-xl disabled"></i>
-                                    </span>
-                            </h5>
-                            <div class="card-body d-flex flex-column flex-nowrap justify-content-between align-content-between">
-                                <h5 class="card-title flex-fill">{{Str::ucfirst($product->description)}}</h5>
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">VS</th>
-                                        <th scope="col">На отлип, ч</th>
-                                        <th scope="col">Мин Т, &#176;C</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>{{$product->vs}}</td>
-                                        <td>{{$product->dry_to_touch}}</td>
-                                        <td>{{$product->min_temp}}</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <a href="{{route('products.show', $product)}}" class="btn btn-primary">Подробнее</a>
-                            </div>
-                        </div>
-                    </div>
+                    <x-products.card :product="$product" :likes="$likes" :compareProduct="$compareProduct"/>
+
                 @empty
                     <h2 class="text-center w-100 vh-100">Записей нет</h2>
                 @endforelse

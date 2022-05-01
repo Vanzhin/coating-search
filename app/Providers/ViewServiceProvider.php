@@ -34,7 +34,7 @@ class ViewServiceProvider extends ServiceProvider
             $counts['products'] = Product::all()->count();
             $counts['users'] = User::all()->count();
             $counts['searches'] = Search::all()->count();
-            $counts['compare'] = Search::all()->count();
+            $counts['compare'] = is_array(session()->get('products.compare')) ? count(session()->get('products.compare')) : 0;
 
 
             if(Auth::check()){

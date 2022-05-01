@@ -4,21 +4,21 @@
             <i class="fa-solid fa-layer-group"></i>
             {{env('APP_NAME')}}
         </a>
-        <a class="mx-md-2 col btn btn-outline-secondary text-reset text-decoration-none" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"
+        <a class="me-1 col btn btn-outline-secondary text-reset text-decoration-none" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"
         style="max-width: 50px;">
             <span class="navbar-toggler-icon"></span>
         </a>
         <div class="col-md gap-2 offset d-flex flex-fill-1 justify-content-md-between align-items-center flex-nowrap" id="navbarsExample05" style="">
             <!-- Button trigger modal -->
-            <a href="{{route('products.compare')}}"  class="compare-btn btn btn-outline-secondary @if((is_null(session()->get('products.compare')) or count(session()->get('products.compare')) < 2) or request()->routeIs('products.compare')) disabled @endif">
-                <i class="fa-solid fa-chart-simple"></i>
-                <span class="d-none d-md-inline-flex">Сравнение</span>
-                <span class="product-to-compare badge btn-warning ms-1">{{ !is_null(session()->get('products.compare')) ? count(session()->get('products.compare')) : null}}</span>
-            </a>
             <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <span class="d-none d-md-inline-flex">Поиск</span>
             </button>
+            <a href="{{route('products.compare')}}"  class="compare-btn btn btn-outline-secondary @if($counts['compare'] < 2  or request()->routeIs('products.compare')) disabled @endif">
+                <i class="fa-solid fa-chart-simple"></i>
+                <span class="d-none d-md-inline-flex">Сравнение</span>
+                <span class="product-to-compare badge btn-warning ms-1">{{ $counts['compare'] > 0 ? $counts['compare'] :null }}</span>
+            </a>
             @if(Auth::guest())
                 <div class="text-center">
                     <a href="{{ route('login') }}"  class="btn btn-outline-primary me-auto">
@@ -29,7 +29,7 @@
             @else
                 <div class="dropdown">
                     <a href="{{ route('account.index') }}" class="d-block link-dark text-warning text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="true">
-                        <img src="@if(Auth::user()->avatar){!!Auth::user()->avatar!!}@else{!!Storage::disk('public')->url('images/users/default.png')!!}@endif" width="32" height="32" class="rounded-circle">
+                        <img src="@if(Auth::user()->avatar){!!Auth::user()->avatar!!}@else{!!Storage::disk('public')->url('images/users/default.png')!!}@endif" width="38" height="38" class="rounded">
                     </a>
                     <ul class="dropdown-menu text-small shadow text-small dropdown-menu-dark" data-popper-placement="bottom-end" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(0px, 34px, 0px);">
                         <li><a class="dropdown-item" href="{{ route('account.index') }}">Профиль</a></li>
@@ -81,12 +81,6 @@
                 </li>
                 <li class="nav-item">
                     <a class="link-secondary nav-link  @if(request()->routeIs('search*')) navbar-brand @endif" href="{{ route('search') }}">Подбор</a>
-                </li>
-                <li class="nav-item">
-                    <a class="d-flex justify-content-between link-secondary nav-link @if((is_null(session()->get('products.compare')) or count(session()->get('products.compare')) < 2) or request()->routeIs('products.compare')) disabled @endif" href="{{ route('products.compare') }}">
-                        Сравнение
-                        <span class="product-to-compare badge bg-light text-secondary">{{ !is_null(session()->get('products.compare')) ? count(session()->get('products.compare')) : '' }}</span>
-                    </a>
                 </li>
                 <li class="nav-item">
                     <a class="link-secondary nav-link disabled" href="#" >Вопросы</a>

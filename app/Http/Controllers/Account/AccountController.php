@@ -35,6 +35,8 @@ class AccountController extends Controller
             'products' => Product::query()
                 ->whereIn('id', app(LikeService::class)->getLikedProductsId())
                 ->paginate(10),
+            'likes' => app(LikeService::class)->getLikedProductsId(),
+            'compareProduct' => session()->get('products.compare') ?? [],
         ]);
     }
 }
