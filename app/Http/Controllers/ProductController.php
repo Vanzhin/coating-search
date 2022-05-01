@@ -85,8 +85,9 @@ class ProductController extends Controller
         $brand = Brand::where('slug', $slug)->first();
         return view('products.index', [
             'products' => Brand::find($brand->id)->products()->paginate(10),
+            'param' => '(бренд - ' . Str::upper($slug) . ')',
             'likes' => app(LikeService::class)->getLikedProductsId(),
-            'param' => '(бренд - ' . Str::upper($slug) . ')'
+            'compareProduct' => session()->get('products.compare') ?? [],
 
 
         ]);
@@ -96,6 +97,10 @@ class ProductController extends Controller
     {
         return view('products.index', [
             'products' => Environment::find($environment->id)->products()->paginate(10),
+            'likes' => app(LikeService::class)->getLikedProductsId(),
+            'compareProduct' => session()->get('products.compare') ?? [],
+            'param' => '(Cреда: ' . Str::ucfirst($environment->title) . ')',
+
         ]);
     }
 
