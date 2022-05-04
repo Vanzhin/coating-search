@@ -11,7 +11,6 @@
 })
 }));
 });
-    //todo убрать отсюда и перенести в основной код выше
     async function sendProductToCompare(url){
 
     let response = await fetch(url, {

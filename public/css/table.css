@@ -1,0 +1,49 @@
+.wrap {
+    height: 80vh;
+    position: relative;
+    overflow: scroll;
+    /*max-width: 960px;*/
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+}
+
+.scenes {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.track {
+    flex: 1 0 calc(22% + 7px);
+    scroll-snap-align: start;
+}
+
+.track + .track {
+    margin-left: -1px;
+}
+
+.heading {
+    height: 4em;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    border: solid #fff;
+    border-width: 0 1px;
+    z-index: 1;
+    font-weight: 700;
+    text-overflow: fade;
+}
+
+.entry {
+    border: 1px solid #ebebeb;
+    border-top: 0;
+    background: #fff;
+    height: 7em;
+    padding: 0.5em;
+    overflow-wrap: break-word;
+}
+.large {
+    overflow: scroll;
+    height: 12em;
+
+}

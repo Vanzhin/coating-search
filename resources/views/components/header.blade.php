@@ -31,7 +31,7 @@
                     <a href="{{ route('account.index') }}" class="d-block link-dark text-warning text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="true">
                         <img src="@if(Auth::user()->avatar){!!Auth::user()->avatar!!}@else{!!Storage::disk('public')->url('images/users/default.png')!!}@endif" width="38" height="38" class="rounded">
                     </a>
-                    <ul class="dropdown-menu text-small shadow text-small dropdown-menu-dark" data-popper-placement="bottom-end" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(0px, 34px, 0px);">
+                    <ul class="dropdown-menu text-small shadow text-small dropdown-menu-dark" data-popper-placement="bottom-end" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(0px, 34px, 0px); z-index: 1021;">
                         <li><a class="dropdown-item" href="{{ route('account.index') }}">Профиль</a></li>
                         <li>
                             <a class="d-flex justify-content-between align-items-center dropdown-item" href="{{ route('search') }}">
@@ -125,43 +125,6 @@
     </div>
 </div>
 @push('js')
-    <script>
-        function quickSearch(content) {
-            const input = content.value;
-            const products = document.getElementById('products');
-            products.innerHTML = '<div class="spinner-border" role="status"></div>';
-            let search = { text : content.value }
-            if (input){
-                sendPost('/search/quick', search).then((result) => {
-                    console.log(result)
-                    let links ='';
-                    const url = "{{env('APP_URL')}}";
-                    result.forEach(function(item) {
-                        links = links + '<a href="' + url + '/products/' + item.id + '\"' + ' class="btn btn-outline-secondary col-12 col-md-5 m-1">' + item.title.toUpperCase() + '</a>';
-                    })
-                    if(links){
-                        products.innerHTML = links;
-                    }else {
-                        products.innerHTML = '<p class="col" >Кажется, ничего не найдено ;(</p>' + '<a href="' + url + '/search/create"' +  'class="btn col-12 btn-secondary btn-lg mb-4">Начать поиск по параметрам</a>';
-                    }
-                });
-            } else {
-                products.innerHTML = '<p class="col">Похоже, задан пустой запрос</p>' + '<a href="' + url + '/search/create"' +  'class="btn col-12 btn-secondary btn-lg mb-4">Начать поиск по параметрам</a>';
-            }
-        }
-        async function sendPost(url, data){
-
-            let response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                        .getAttribute('content'),
-                    'Content-Type': 'application/json; charset=utf-8',
-                },
-                body: JSON.stringify(data)
-            });
-            return await response.json();
-        }
-    </script>
+    <script src="{{asset('js/quick-search.js')}}"></script>
 @endpush
 

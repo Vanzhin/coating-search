@@ -22,30 +22,5 @@
         </div>
     </div>
 @endsection
-@push('js')
-    <script>function likeRemove(like) {
-            const id = like.getAttribute('like');
-            const card = document.getElementById(id);
-            console.log(card);
-            card.style.pointerEvents='none';
-            card.style.opacity='0.5';
-            like.innerHTML = '<i class="fa-regular fa-clock"></i>';
-            likeSend('/like/' + id).then((result) => {
-                if(result === 'dislike'){
-                    like.innerHTML = '<i class="fa-duotone fa-triangle-exclamation"></i>';
-                } else{
-                    card.remove();
-                }
-            })
 
-        }
-        async function likeSend(url){
-
-            let response = await fetch(url, {
-                method: 'GET',
-            });
-            return await response.json();
-        }
-    </script>
-@endpush
 
