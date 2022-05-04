@@ -18,7 +18,7 @@
                                 <h5 class="p-0 m-0">{{Str::upper($product->title)}}</h5>
                             </a>
                             <button id="del-{{$product->id}}"type="button" class="btn btn-close" data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                    data-bs-product="{{$product->title}}"
+                                    data-bs-product="{{Str::upper($product->title)}}"
                                     data-bs-id="{{$product->id}}">
                             </button>
                         </div>
