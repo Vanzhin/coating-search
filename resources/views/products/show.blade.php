@@ -69,7 +69,7 @@
                     @foreach($product->propertyToShow as $key => $value)
                             <tr class="align-middle text-center">
                                 <td>{!! $value !!}</td>
-                                <td>@if($product->$key){{Str::ucfirst($product->$key)}}@else {{'нет'}} @endif</td>
+                                <td>@if($product->$key){{Str::ucfirst($product->$key)}}@else {{'Нет'}} @endif</td>
                             </tr>
                     @endforeach
                     </tbody>

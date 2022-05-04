@@ -128,7 +128,7 @@
                                                             @endforeach
                                                         </td>
                                                     @else
-                                                        <td>@if($product->$key){{Str::ucfirst($product->$key)}}@else {{'нет'}} @endif</td>
+                                                        <td>@if($product->$key === true){{'Да'}}@elseif($product->$key) {{Str::ucfirst($product->$key)}} @else {{'Нет'}} @endif</td>
                                                     @endif
 
                                                 @endforeach
