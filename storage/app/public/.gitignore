@@ -2,4 +2,7 @@
 !images
 !images/pages
 !images/pages/*.*
+!products
+!products/pds
+!products/pds/*.*
 !.gitignore
