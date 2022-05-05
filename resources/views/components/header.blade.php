@@ -126,7 +126,7 @@
 </div>
 @push('js')
     <script src="{{asset('js/quick-search.js')}}"></script>
-{{--    <script>--}}
+    <script>
         // fetch('www.google.com').then(response => {console.log(response.status)})
         // const a =/asd/
         // console.log(typeof (a+1))
@@ -140,7 +140,7 @@
         // console.log(e)
 
 
-{{--    </script>--}}
+    </script>
 
 @endpush
 
