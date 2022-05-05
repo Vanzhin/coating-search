@@ -3,7 +3,7 @@
     const products = document.getElementById('products');
     products.innerHTML = '<div class="spinner-border" role="status"></div>';
     let search = { text : content.value }
-    const url = "{{env('APP_URL')}}";
+    const url = document.querySelector('#name').getAttribute('data-appname');
 
         if (input){
             sendPost('/search/quick', search).then((result) => {

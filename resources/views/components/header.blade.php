@@ -1,6 +1,6 @@
 <nav class="navbar navbar-dark bg-dark sticky-top" aria-label="Fifth navbar example">
     <div class="container">
-        <a class="navbar-brand col" href="{{ route('home') }}">
+        <a id="name" data-appname="{{env('APP_URL')}}" class="navbar-brand col" href="{{ route('home') }}">
             <i class="fa-solid fa-layer-group"></i>
             {{env('APP_NAME')}}
         </a>
@@ -126,5 +126,21 @@
 </div>
 @push('js')
     <script src="{{asset('js/quick-search.js')}}"></script>
+{{--    <script>--}}
+        // fetch('www.google.com').then(response => {console.log(response.status)})
+        // const a =/asd/
+        // console.log(typeof (a+1))
+        // const as = null;
+        // console.log(as==undefined, as === null, as == null, as===undefined);
+        // const q = [1,2,3,4,5,6,7,8]
+        // console.log([...q.slice(0,5),6,...q.slice(5)])
+        // console.log(q.map((el,ind)=> ind !==5))
+        // const w = 5;
+        // const e = w =>w;
+        // console.log(e)
+
+
+{{--    </script>--}}
+
 @endpush
 
