@@ -33,6 +33,9 @@
     font-weight: 700;
     text-overflow: ellipsis;
 }
+.heading h5{
+    font-size: 100%;
+}
 
 .entry {
     border: 1px solid #ebebeb;

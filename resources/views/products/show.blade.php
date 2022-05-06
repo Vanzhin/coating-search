@@ -5,11 +5,34 @@
 @section('content')
     <div class="position-relative overflow-hidden p-3 p-md-5 text-center bg-light">
         <div class="card w-100">
-            <h5 class="card-header">{{ Str::upper($product->title) }}
-                <a href="{{ route('products.brand', $brand->slug) }}" class="badge bg-secondary" title="Все покрытия {{Str::upper($brand->title)}}">{{Str::upper($brand->title)}}</a>
-                <span class="badge bg-secondary">{{Str::ucfirst($catalog->title)}}</span>
+            <h5 class="card-header d-flex justify-content-between align-items-center gap-2 text-secondary">
+                <span class="flex-fill text-dark">{{ Str::upper($product->title) }}</span>
                 @if($product->pds)
-                <a href="@if(str_starts_with($product->pds, 'http')){{$product->pds}}@else{{Storage::disk('public')->url($product->pds)}}@endif" class="badge bg-secondary" target="_blank">PDS</a>
+                    <a href="@if(str_starts_with($product->pds, 'http')){{$product->pds}}@else{{Storage::disk('public')->url($product->pds)}}@endif" class="text-secondary" target="_blank">
+                        <i class="fa-solid fa-file-pdf"></i>
+                    </a>
+                @endif
+                @if(Auth::check())
+                    <span like="{{$product->id}}" onclick="likeHandle(this)">
+                    @if(in_array($product->id, $likes))
+                            <i class="fa-star fa-solid"></i>
+                        @else
+                            <i class="fa-star fa-regular"></i>
+                        @endif
+                </span>
+                @endif
+                @if(isset($compareProduct) && in_array($product->id, $compareProduct))
+                    <span id="{{$product->id}}" class="text compare add">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bar-chart-fill" viewBox="0 0 16 16">
+                        <path d="M1 11a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-3zm5-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V2z"/>
+                    </svg>
+                </span>
+                @else
+                    <span id="{{$product->id}}" class="text compare">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bar-chart" viewBox="0 0 16 16">
+                        <path d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5v12h-2V2h2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1h-2zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-3z"/>
+                    </svg>
+                </span>
                 @endif
             </h5>
             <div class="card-body">
@@ -19,10 +42,22 @@
                     </thead>
                     <tbody>
                     <tr class="align-middle text-center">
+                        <td>Бренд</td>
+                        <td>
+                            <a href="{{ route('products.brand', $brand->slug) }}" title="Все покрытия {{Str::upper($brand->title)}}">{{Str::upper($brand->title)}}</a>
+                        </td>
+                    </tr>
+                    <tr class="align-middle text-center">
+                        <td>Каталог</td>
+                        <td>
+                            <span>{{Str::ucfirst($catalog->title)}}</span>
+                        </td>
+                    </tr>
+                    <tr class="align-middle text-center">
                         <td>Основа</td>
                         <td>
                             @foreach($binders as $binder)
-                                <span>{{Str::ucfirst($binder->title)}}</span>
+                                <a class="link" href="{{ route('products.binder', $binder->slug) }}" title="Все покрытия {{Str::ucfirst($binder->title)}}">{{Str::ucfirst($binder->title)}}</a>
                             @endforeach
                         </td>
                     </tr>
@@ -80,3 +115,9 @@
         <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
     </div>
 @endsection
+@once
+    @push('js')
+        <script src="{{ asset('js/likeHandle.js')}}"></script>
+        <script src="{{ asset('js/compare-general.js')}}"></script>
+    @endpush
+@endonce

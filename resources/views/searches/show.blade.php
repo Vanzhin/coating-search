@@ -61,10 +61,10 @@
                                 </a>
                             @endif
                         @endif
-                        <a  href="{{ route('products.compare') }}" class="compare-btn ms-1 w-25 btn bg-secondary p-2 flex-fill d-flex justify-content-center align-items-center flex-nowrap @if(count($compareProduct) > 1){{''}}@else disabled @endif">
-                            <i class="fa-solid fa-chart-simple"></i>
-                            <span class="product-to-compare badge btn-warning ms-1">@if($compareProduct){{count($compareProduct)}}@else{{''}}@endif</span>
-                        </a>
+{{--                        <a  href="{{ route('products.compare') }}" class="compare-btn ms-1 w-25 btn bg-secondary p-2 flex-fill d-flex justify-content-center align-items-center flex-nowrap @if(count($compareProduct) > 1){{''}}@else disabled @endif">--}}
+{{--                            <i class="fa-solid fa-chart-simple"></i>--}}
+{{--                            <span class="product-to-compare badge btn-warning ms-1">@if($compareProduct){{count($compareProduct)}}@else{{''}}@endif</span>--}}
+{{--                        </a>--}}
                     </div>
                 </form>
             </div>

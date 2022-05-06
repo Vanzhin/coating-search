@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Binder;
 use App\Models\Brand;
 use App\Models\Environment;
 use App\Models\Product;
@@ -38,6 +39,10 @@ class ProductController extends Controller
             'resistances' => $product->resistances,
             'substrates' => $product->substrates,
             'additives' => $product->additives,
+            'likes' => app(LikeService::class)->getLikedProductsId(),
+            'compareProduct' => session()->get('products.compare') ?? [],
+
+
 
         ]);
     }
@@ -79,7 +84,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function brand( $slug)
+    public function brand($slug)
     {
         //сделал со слагом, чтобы был красивый адрес типа http://coating-search.test/products/brand/ppg
         $brand = Brand::where('slug', $slug)->first();
@@ -100,6 +105,19 @@ class ProductController extends Controller
             'likes' => app(LikeService::class)->getLikedProductsId(),
             'compareProduct' => session()->get('products.compare') ?? [],
             'param' => '(Cреда: ' . Str::ucfirst($environment->title) . ')',
+
+        ]);
+    }
+
+    public function binder($slug)
+    {
+        $binder = Binder::where('slug', $slug)->first();
+
+        return view('products.index', [
+            'products' => Binder::find($binder->id)->products()->paginate(10),
+            'likes' => app(LikeService::class)->getLikedProductsId(),
+            'compareProduct' => session()->get('products.compare') ?? [],
+            'param' => '(Основа: ' . Str::ucfirst($binder->title) . ')',
 
         ]);
     }

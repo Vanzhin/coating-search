@@ -14,7 +14,7 @@
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <span class="d-none d-md-inline-flex">Поиск</span>
             </button>
-            <a href="{{route('products.compare')}}"  class="compare-btn btn btn-outline-secondary @if($counts['compare'] < 2  or request()->routeIs('products.compare')) disabled @endif">
+            <a href="{{route('products.compare')}}"  class="position-relative compare-btn btn btn-outline-secondary @if($counts['compare'] < 2  or request()->routeIs('products.compare')) disabled @endif">
                 <i class="fa-solid fa-chart-simple"></i>
                 <span class="d-none d-md-inline-flex">Сравнение</span>
                 <span class="product-to-compare badge btn-warning ms-1">{{ $counts['compare'] > 0 ? $counts['compare'] :null }}</span>
@@ -31,7 +31,7 @@
                     <a href="{{ route('account.index') }}" class="d-block link-dark text-warning text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="true">
                         <img src="@if(Auth::user()->avatar){!!Auth::user()->avatar!!}@else{!!Storage::disk('public')->url('images/users/default.png')!!}@endif" width="38" height="38" class="rounded">
                     </a>
-                    <ul class="dropdown-menu text-small shadow text-small dropdown-menu-dark" data-popper-placement="bottom-end" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(0px, 34px, 0px); z-index: 1021;">
+                    <ul class="dropdown-menu text-small shadow text-small dropdown-menu-dark" data-popper-placement="bottom-end" style="position: absolute; inset: 0px 0px auto auto; margin-top: 10px; transform: translate3d(0px, 34px, 0px); z-index: 1021;">
                         <li><a class="dropdown-item" href="{{ route('account.index') }}">Профиль</a></li>
                         <li>
                             <a class="d-flex justify-content-between align-items-center dropdown-item" href="{{ route('search') }}">
@@ -129,11 +129,23 @@
     <script>
         // fetch('www.google.com').then(response => {console.log(response.status)})
         // const a =/asd/
+        // const b =/def/
+        // console.log(a +b);
+
         // console.log(typeof (a+1))
         // const as = null;
         // console.log(as==undefined, as === null, as == null, as===undefined);
-        // const q = [1,2,3,4,5,6,7,8]
+        // const q = [1,2,3,4,5,6,7,8,]
+        // console.log(q.forEach((el,ind) => {
+        //     el += 1
+        // }))
+        // const p = 5;
+        // const l = prompt('число');
+        // console.log(p==l)
+        // console.log(typeof (()=>()=>2))
+        //
         // console.log([...q.slice(0,5),6,...q.slice(5)])
+        // console.log(new Date(1543990506864).getTime())
         // console.log(q.map((el,ind)=> ind !==5))
         // const w = 5;
         // const e = w =>w;

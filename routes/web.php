@@ -62,11 +62,14 @@ Route::group(['as' => 'products.', 'prefix' => 'products'], function(){
     Route::get('/brand/{slug}', [ProductController::class, 'brand'])
         ->where('slug', '\w+')
         ->name('brand');
+    Route::get('/binder/{slug}', [ProductController::class, 'binder'])
+        ->name('binder');
     Route::get('/environment/{environment}', [ProductController::class, 'environment'])
         ->where('environment', '\d+')
         ->name('environment');
     Route::get('/compare', [ProductController::class, 'compare'])
         ->name('compare');
+
 
     });
 //likes
