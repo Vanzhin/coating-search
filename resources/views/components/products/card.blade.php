@@ -29,14 +29,14 @@
             <h5 class="card-title flex-fill">{{Str::ucfirst($product->description)}}</h5>
             <table class="table">
                 <thead>
-                <tr>
-                    <th scope="col">VS</th>
+                <tr class="text-center">
+                    <th scope="col">VS, %</th>
                     <th scope="col">На отлип, ч</th>
                     <th scope="col">Мин Т, &#176;C</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
+                <tr class="text-center">
                     <td>{{$product->vs}}</td>
                     <td>{{$product->dry_to_touch}}</td>
                     <td>{{$product->min_temp}}</td>
