@@ -42,70 +42,52 @@
                     </thead>
                     <tbody>
                     <tr class="align-middle text-center">
-                        <td>Бренд</td>
+                        <td> Бренд </td>
                         <td>
-                            <a href="{{ route('products.brand', $brand->slug) }}" title="Все покрытия {{Str::upper($brand->title)}}">{{Str::upper($brand->title)}}</a>
+                            <div class="d-flex justify-content-center align-items-center flex-column gap-1">
+                                <a class="link btn-sm btn-secondary text-decoration-none" href="{{ route('products.indexByParam', ['param' => 'brand', 'slug' => $brand->slug]) }}" title="Все покрытия {{Str::ucfirst($brand->title)}}">{{Str::upper($brand->title)}}</a>
+                            </div>
+
                         </td>
                     </tr>
+
                     <tr class="align-middle text-center">
-                        <td>Каталог</td>
+                        <td> Каталог </td>
                         <td>
-                            <span>{{Str::ucfirst($catalog->title)}}</span>
+                            <div class="d-flex justify-content-center align-items-center flex-column gap-1">
+                                    <a class="link btn-sm btn-secondary text-decoration-none" href="{{ route('products.indexByParam', ['param' => 'catalog', 'slug' => $catalog->slug]) }}" title="Все покрытия {{Str::ucfirst($catalog->title)}}">{{Str::ucfirst($catalog->title)}}</a>
+                            </div>
+
                         </td>
                     </tr>
-                    <tr class="align-middle text-center">
-                        <td>Основа</td>
-                        <td>
-                            @foreach($binders as $binder)
-                                <a class="link" href="{{ route('products.binder', $binder->slug) }}" title="Все покрытия {{Str::ucfirst($binder->title)}}">{{Str::ucfirst($binder->title)}}</a>
-                            @endforeach
-                        </td>
-                    </tr>
-                    <tr class="align-middle text-center">
-                        <td>Среда применения</td>
-                        <td>
-                            @foreach($environments as $environment)
-                                <a class="link" href="{{route('products.environment', $environment)}}">{{Str::ucfirst($environment->title)}}</a><br>
-                            @endforeach
-                        </td>
-                    </tr>
-                    <tr class="align-middle text-center">
-                        <td>Применяется в качестве</td>
-                        <td>
-                            @foreach($numbers as $number)
-                                <span>{{Str::ucfirst($number->title)}}</span><br>
-                            @endforeach
-                        </td>
-                    </tr>
-                    <tr class="align-middle text-center">
-                        <td>Стойкость</td>
-                        <td>
-                            @foreach($resistances as $resistance)
-                                <span>{{Str::ucfirst($resistance->title)}}</span><br>
-                            @endforeach
-                        </td>
-                    </tr>
-                    <tr class="align-middle text-center">
-                        <td>Подложка</td>
-                        <td>
-                            @foreach($substrates as $substrate)
-                                <span>{{Str::ucfirst($substrate->title)}}</span><br>
-                            @endforeach
-                        </td>
-                    </tr>
-                    <tr class="align-middle text-center">
-                        <td>Добавки</td>
-                        <td>
-                            @foreach($additives as $additive)
-                                <span>{{Str::ucfirst($additive->title)}}</span><br>
-                            @endforeach
-                        </td>
-                    </tr>
+{{--                    <a href="#" class="text-secondary" target="_blank">--}}
+{{--                        {{ $catalog->title}}--}}
+                        {{--                    <i class="fa-solid fa-anchor"></i>--}}
+                        {{--                    <i class="fa-solid fa-shield"></i>--}}
+                        {{--                    <i class="fa-solid fa-fire"></i>--}}
+                        {{--                    <i class="fa-solid fa-flask-vial"></i>--}}
+
+
+{{--                    </a>--}}
                     @foreach($product->propertyToShow as $key => $value)
-                            <tr class="align-middle text-center">
-                                <td>{!! $value !!}</td>
-                                <td>@if($product->$key){{Str::ucfirst($product->$key)}}@else {{'Нет'}} @endif</td>
-                            </tr>
+                        <tr class="align-middle text-center">
+                            <td>{!! $value !!}</td>
+                            <td>@if($product->$key){{Str::ucfirst($product->$key)}}@else {{'Нет'}} @endif</td>
+                        </tr>
+                    @endforeach
+
+                    @foreach($product->getLinkedFields() as $key => $value)
+                    <tr class="align-middle text-center">
+                        <td>{!! $value !!}</td>
+                        <td>
+                            <div class="d-flex justify-content-center align-items-center flex-column gap-1">
+                                @foreach($product->$key as $param)
+                                    <a class="link btn-sm btn-secondary text-decoration-none" href="{{ route('products.indexByParam', ['param' => $param->name, 'slug' => $param->slug]) }}" title="Все покрытия {{Str::ucfirst($param->title)}}">{{Str::ucfirst($param->title)}}</a>
+                                @endforeach
+                            </div>
+
+                        </td>
+                    </tr>
                     @endforeach
                     </tbody>
                 </table>

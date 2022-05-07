@@ -16,6 +16,7 @@ class Brand extends Model implements IModel
     protected $fillable = [
         'title'
     ];
+    public string $name = 'brand';
 
     public function products()
     {

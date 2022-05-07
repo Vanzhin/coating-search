@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Additive;
 use App\Models\Binder;
 use App\Models\Brand;
+use App\Models\Catalog;
 use App\Models\Environment;
+use App\Models\Number;
 use App\Models\Product;
+use App\Models\Resistance;
+use App\Models\Substrate;
 use App\Services\LikeService;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -47,7 +53,7 @@ class ProductController extends Controller
         ]);
     }
     //todo убрать отсюда
-    public function addToCompare( int $productId){
+    public function addToCompare(int $productId){
         try {
             if (session()->has('products.compare') && in_array($productId, session()->get('products.compare'))){
                 session()->pull('products.compare.' . array_search($productId, session()->get('products.compare')));
@@ -109,15 +115,73 @@ class ProductController extends Controller
         ]);
     }
 
-    public function binder($slug)
+//    public function binder($slug)
+//    {
+//        $binder = Binder::where('slug', $slug)->first();
+//
+//        return view('products.index', [
+//            'products' => Binder::find($binder->id)->products()->paginate(10),
+//            'likes' => app(LikeService::class)->getLikedProductsId(),
+//            'compareProduct' => session()->get('products.compare') ?? [],
+//            'param' => '(Основа: ' . Str::ucfirst($binder->title) . ')',
+//
+//        ]);
+//    }
+    public function indexByParam($param, $slug)
     {
-        $binder = Binder::where('slug', $slug)->first();
+        //todo очень костыльно - доделать
+        switch ($param) {
+            case 'additive':
+                $model = Additive::where('slug', $slug)->first();
+                $products = Additive::find($model->id)->products()->paginate(10);
+                break;
+            case 'brand':
+                $model = Brand::where('slug', $slug)->first();
+                $products = Product::where('brand_id',$model->id)->paginate(10);
+                break;
+            case 'catalog':
+                $model = Catalog::where('slug', $slug)->first();
+                $products = Product::where('catalog_id',$model->id)->paginate(10);
+                break;
+            case 'binder':
+                $model = Binder::where('slug', $slug)->first();
+                $products = Binder::find($model->id)->products()->paginate(10);
+                break;
+            case 'environment':
+                $model = Environment::where('slug', $slug)->first();
+                $products = Environment::find($model->id)->products()->paginate(10);
+
+                break;
+            case 'number':
+                $model = Number::where('slug', $slug)->first();
+                $products = Number::find($model->id)->products()->paginate(10);
+
+                break;
+            case 'resistance':
+                $model = Resistance::where('slug', $slug)->first();
+                $products = Resistance::find($model->id)->products()->paginate(10);
+
+                break;
+            case 'substrate':
+                $model = Substrate::where('slug', $slug)->first();
+                $products = Substrate::find($model->id)->products()->paginate(10);
+
+                break;
+            default:
+                $products = Product::query()->paginate(10);
+                return view('products.index', [
+                    'products' => $products,
+                    'likes' => app(LikeService::class)->getLikedProductsId(),
+                    'compareProduct' => session()->get('products.compare') ?? [],
+
+
+                ]);        }
 
         return view('products.index', [
-            'products' => Binder::find($binder->id)->products()->paginate(10),
+            'products' => $products,
             'likes' => app(LikeService::class)->getLikedProductsId(),
             'compareProduct' => session()->get('products.compare') ?? [],
-            'param' => '(Основа: ' . Str::ucfirst($binder->title) . ')',
+            'param' => '(' . Str::ucfirst($model->name) .': ' . Str::ucfirst($model->title) . ')',
 
         ]);
     }

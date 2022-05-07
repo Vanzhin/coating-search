@@ -16,6 +16,8 @@ class Binder extends Model implements IModel
     protected $fillable = [
         'title'
     ];
+    public string $name = 'binder';
+
 
     public function products(): BelongsToMany
     {

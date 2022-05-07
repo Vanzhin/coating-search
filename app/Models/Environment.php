@@ -15,6 +15,8 @@ class Environment extends Model
     protected $fillable = [
         'title'
     ];
+    public string $name = 'environment';
+
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'product_environments',
