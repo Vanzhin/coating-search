@@ -27,22 +27,25 @@
         </h5>
         <div class="card-body d-flex flex-column flex-nowrap justify-content-between align-content-between">
             <h5 class="card-title flex-fill">{{Str::ucfirst($product->description)}}</h5>
-            <table class="table">
-                <thead>
-                <tr class="text-center">
-                    <th scope="col">VS, %</th>
-                    <th scope="col">На отлип, ч</th>
-                    <th scope="col">Мин Т, &#176;C</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="text-center">
-                    <td>{{$product->vs}}</td>
-                    <td>{{$product->dry_to_touch}}</td>
-                    <td>{{$product->min_temp}}</td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="table-responsive rounded-1">
+                <table class="table">
+                    <thead>
+                    <tr class="text-center align-middle bg-light " style="font-size: smaller;">
+                        @foreach($product->propertyToShow as $field)
+                            <th scope="col">{!! $field !!}</th>
+                        @endforeach
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="text-center">
+                        @foreach($product->propertyToShow as $key => $field)
+
+                            <th scope="col">@if($product->$key === true){{'Да'}}@elseif($product->$key){{$product->$key}}@else {{'Нет'}} @endif</th>
+                        @endforeach
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
             <a href="{{route('products.show', $product)}}" class="btn btn-primary">Подробнее</a>
         </div>
     </div>
