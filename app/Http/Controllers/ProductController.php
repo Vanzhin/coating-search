@@ -90,30 +90,30 @@ class ProductController extends Controller
         ]);
     }
 
-    public function brand($slug)
-    {
-        //сделал со слагом, чтобы был красивый адрес типа http://coating-search.test/products/brand/ppg
-        $brand = Brand::where('slug', $slug)->first();
-        return view('products.index', [
-            'products' => Brand::find($brand->id)->products()->paginate(10),
-            'param' => '(Бренд: ' . Str::upper($slug) . ')',
-            'likes' => app(LikeService::class)->getLikedProductsId(),
-            'compareProduct' => session()->get('products.compare') ?? [],
+//    public function brand($slug)
+//    {
+//        //сделал со слагом, чтобы был красивый адрес типа http://coating-search.test/products/brand/ppg
+//        $brand = Brand::where('slug', $slug)->first();
+//        return view('products.index', [
+//            'products' => Brand::find($brand->id)->products()->paginate(10),
+//            'param' => '(Бренд: ' . Str::upper($slug) . ')',
+//            'likes' => app(LikeService::class)->getLikedProductsId(),
+//            'compareProduct' => session()->get('products.compare') ?? [],
+//
+//
+//        ]);
+//    }
 
-
-        ]);
-    }
-
-    public function environment(Environment $environment)
-    {
-        return view('products.index', [
-            'products' => Environment::find($environment->id)->products()->paginate(10),
-            'likes' => app(LikeService::class)->getLikedProductsId(),
-            'compareProduct' => session()->get('products.compare') ?? [],
-            'param' => '(Cреда: ' . Str::ucfirst($environment->title) . ')',
-
-        ]);
-    }
+//    public function environment(Environment $environment)
+//    {
+//        return view('products.index', [
+//            'products' => Environment::find($environment->id)->products()->paginate(10),
+//            'likes' => app(LikeService::class)->getLikedProductsId(),
+//            'compareProduct' => session()->get('products.compare') ?? [],
+//            'param' => '(Cреда: ' . Str::ucfirst($environment->title) . ')',
+//
+//        ]);
+//    }
 
 //    public function binder($slug)
 //    {
@@ -127,7 +127,7 @@ class ProductController extends Controller
 //
 //        ]);
 //    }
-    public function indexByParam($param, $slug)
+    public function indexBySlug($param, $slug)
     {
         //todo очень костыльно - доделать
         switch ($param) {
@@ -168,7 +168,9 @@ class ProductController extends Controller
 
                 break;
             default:
-                $products = Product::query()->paginate(10);
+                //todo сделать, чтобы редиректил на все покрытия если что-то не так с запросом
+
+            $products = Product::query()->paginate(10);
                 return view('products.index', [
                     'products' => $products,
                     'likes' => app(LikeService::class)->getLikedProductsId(),
@@ -182,6 +184,31 @@ class ProductController extends Controller
             'likes' => app(LikeService::class)->getLikedProductsId(),
             'compareProduct' => session()->get('products.compare') ?? [],
             'param' => '(' . Str::ucfirst($model->name) .': ' . Str::ucfirst($model->title) . ')',
+
+        ]);
+    }
+    public function indexByParam($param, $value)
+    {
+        //todo очень костыльно - доделать
+        $factor = 0.1;
+        switch ($param) {
+
+            case 'tolerance':
+                $products = Product::query()->where($param, $value !== 0 ? $value : null)->paginate(10);
+                $info = '(' . Str::ucfirst($param) .': ' . $value .')';
+
+                break;
+            default:
+                $products = Product::query()->whereBetween($param,[$value - $value * $factor, $value + $value * $factor])->paginate(10);
+                $info = '(' . Str::ucfirst($param) .': ' . $value . ' ± ' . $value * $factor .')';
+
+        }
+
+        return view('products.index', [
+            'products' => $products,
+            'likes' => app(LikeService::class)->getLikedProductsId(),
+            'compareProduct' => session()->get('products.compare') ?? [],
+            'param' => $info,
 
         ]);
     }

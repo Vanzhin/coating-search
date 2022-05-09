@@ -61,7 +61,10 @@ Route::group(['as' => 'products.', 'prefix' => 'products'], function(){
     ->name('show');
     Route::get('/compare', [ProductController::class, 'compare'])
         ->name('compare');
-    Route::get('/by/{param}/{slug}', [ProductController::class, 'indexByParam'])
+    Route::get('/by/{param}/{slug}', [ProductController::class, 'indexBySlug'])
+        ->where('param', '\w+')
+        ->name('indexBySlug');
+    Route::get('/for/{param}/{value}', [ProductController::class, 'indexByParam'])
         ->where('param', '\w+')
         ->name('indexByParam');
     });
