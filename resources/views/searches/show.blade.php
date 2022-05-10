@@ -176,7 +176,7 @@
             </div>
         </div>
     @else
-        <div class="container text-center py-5">
+        <div class="container text-center py-5 vh-100">
             <h5>Запись не найдена</h5>
         </div>
     @endif
