@@ -12,7 +12,10 @@
                         <i class="fa-solid fa-file-pdf"></i>
                     </a>
                 @endif
-                @if(Auth::check())
+                @auth
+                   @if(Auth::user()->role === 'admin')
+                       <a href="{{ route('admin.products.edit',['product' => $product]) }}" class="text-warning"><i class="fa-solid fa-gear"></i></a>
+                    @endif
                     <span like="{{$product->id}}" onclick="likeHandle(this)">
                     @if(in_array($product->id, $likes))
                             <i class="fa-star fa-solid"></i>
@@ -20,7 +23,7 @@
                             <i class="fa-star fa-regular"></i>
                         @endif
                 </span>
-                @endif
+                @endauth
                 @if(isset($compareProduct) && in_array($product->id, $compareProduct))
                     <span id="{{$product->id}}" class="text compare add">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bar-chart-fill" viewBox="0 0 16 16">
