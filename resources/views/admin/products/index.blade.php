@@ -52,6 +52,6 @@
             </table>
 
         </div>
-        {{$products->links()}}
     </div>
+    {{$products->links()}}
 @endsection
