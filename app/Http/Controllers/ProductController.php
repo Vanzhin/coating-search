@@ -203,8 +203,8 @@ class ProductController extends Controller
 
                 break;
             default:
-                $products = Product::query()->whereBetween($param,[$value - $value * $factor, $value + $value * $factor])->paginate(10);
-                $value = $value != 0 ? $value . ' ± ' . $value * $factor :'Нет';
+                $products = Product::query()->whereBetween($param,[$value - abs($value) * $factor, $value + abs($value) * $factor])->paginate(10);
+                $value = $value != 0 ? $value . ' ± ' . abs($value) * $factor :'Нет';
 
         }
         $info = '(' . Str::ucfirst(Product::getFieldsToShow()[$param]) .': ' . $value .')';
