@@ -129,40 +129,44 @@ class ProductController extends Controller
 //    }
     public function indexBySlug($param, $slug)
     {
+        $info = array_key_exists($param, Product::getLinkedFields()) ? Str::ucfirst(Product::getLinkedFields()[$param]) : null;
         //todo очень костыльно - доделать
         switch ($param) {
-            case 'additive':
+            case 'additives':
                 $model = Additive::where('slug', $slug)->first();
                 $products = Additive::find($model->id)->products()->paginate(10);
                 break;
             case 'brand':
                 $model = Brand::where('slug', $slug)->first();
                 $products = Product::where('brand_id',$model->id)->paginate(10);
+                $info = 'Производитель';
                 break;
             case 'catalog':
                 $model = Catalog::where('slug', $slug)->first();
                 $products = Product::where('catalog_id',$model->id)->paginate(10);
+                $info = 'Каталог';
+
                 break;
-            case 'binder':
+            case 'binders':
                 $model = Binder::where('slug', $slug)->first();
                 $products = Binder::find($model->id)->products()->paginate(10);
                 break;
-            case 'environment':
+            case 'environments':
                 $model = Environment::where('slug', $slug)->first();
                 $products = Environment::find($model->id)->products()->paginate(10);
 
                 break;
-            case 'number':
+            case 'numbers':
                 $model = Number::where('slug', $slug)->first();
                 $products = Number::find($model->id)->products()->paginate(10);
 
                 break;
-            case 'resistance':
+            case 'resistances':
                 $model = Resistance::where('slug', $slug)->first();
                 $products = Resistance::find($model->id)->products()->paginate(10);
 
                 break;
-            case 'substrate':
+            case 'substrates':
                 $model = Substrate::where('slug', $slug)->first();
                 $products = Substrate::find($model->id)->products()->paginate(10);
 
@@ -177,13 +181,13 @@ class ProductController extends Controller
                     'compareProduct' => session()->get('products.compare') ?? [],
 
 
-                ]);        }
-
+                ]);
+        }
         return view('products.index', [
             'products' => $products,
             'likes' => app(LikeService::class)->getLikedProductsId(),
             'compareProduct' => session()->get('products.compare') ?? [],
-            'param' => '(' . Str::ucfirst($model->name) .': ' . Str::ucfirst($model->title) . ')',
+            'param' => '(' . $info .': ' . Str::ucfirst($model->title) . ')',
 
         ]);
     }
@@ -196,15 +200,14 @@ class ProductController extends Controller
             case 'tolerance':
                 $products = Product::query()->where($param, $value !== 0 ? $value : null)->paginate(10);
                 $value = $value ? "Да" : 'Нет';
-                $info = '(' . Str::ucfirst(Product::getFieldsToShow()[$param]) .': ' . $value .')';
 
                 break;
             default:
                 $products = Product::query()->whereBetween($param,[$value - $value * $factor, $value + $value * $factor])->paginate(10);
                 $value = $value != 0 ? $value . ' ± ' . $value * $factor :'Нет';
-                $info = '(' . Str::ucfirst(Product::getFieldsToShow()[$param]) .': ' . $value . ')';
 
         }
+        $info = '(' . Str::ucfirst(Product::getFieldsToShow()[$param]) .': ' . $value .')';
 
         return view('products.index', [
             'products' => $products,

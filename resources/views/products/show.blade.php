@@ -84,8 +84,11 @@
                         <td>
                             <div class="d-flex justify-content-center align-items-center flex-column gap-1">
                                 @foreach($product->$key as $param)
-                                    <a class="link btn-sm btn-outline-secondary text-decoration-none" href="{{ route('products.indexBySlug', ['param' => $param->name, 'slug' => $param->slug]) }}" title="Все покрытия {{Str::ucfirst($param->title)}}">{{Str::ucfirst($param->title)}}</a>
+                                    <a class="link btn-sm btn-outline-secondary text-decoration-none text-decoration-underline" href="{{ route('products.indexBySlug', ['param' => $key, 'slug' => $param->slug]) }}" title="Все покрытия {{Str::ucfirst($param->title)}}">{{Str::ucfirst($param->title)}}</a>
                                 @endforeach
+                                @if(!count($product->$key))
+                                    Нет
+                                @endif
                             </div>
 
                         </td>
