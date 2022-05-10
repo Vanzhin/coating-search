@@ -126,6 +126,29 @@
 </div>
 @push('js')
     <script src="{{asset('js/quick-search.js')}}"></script>
+    <script>
+        // let a = [1,2,3,4,5,5,4,3,2,1];
+        // const b = new Set(a);
+        // console.log(b.join(''));
 
+        // console.log([...a.slice(0,5),...a.slice(6)]);
+        // a.forEach((el, ind) => {a[ind] =el + 1});
+        // console.log(a);
+        // const person ={name: 'Иван', age: 23};
+        // person = {...person, age:25,job: 'web'}
+        // const q =/qwe/;
+        // const w =/wer/;
+        // console.log(q+w);
+        // console.log([...a.slice(-6)])
+
+        // let t = setInterval(()=>{
+        //     setTimeout(()=>{
+        //         clearInterval(t);
+        //     }, 3000)
+        //     console.log('hello');
+        // }, 1000);
+        // console.log(/\d+/.exec("У Вани было 5 яблок, а у Пети 4.").index);
+        // console.log(+!null)
+    </script>
 @endpush
 

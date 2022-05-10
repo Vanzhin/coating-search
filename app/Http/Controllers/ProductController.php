@@ -195,12 +195,14 @@ class ProductController extends Controller
 
             case 'tolerance':
                 $products = Product::query()->where($param, $value !== 0 ? $value : null)->paginate(10);
-                $info = '(' . Str::ucfirst($param) .': ' . $value .')';
+                $value = $value ? "Да" : 'Нет';
+                $info = '(' . Str::ucfirst(Product::getFieldsToShow()[$param]) .': ' . $value .')';
 
                 break;
             default:
                 $products = Product::query()->whereBetween($param,[$value - $value * $factor, $value + $value * $factor])->paginate(10);
-                $info = '(' . Str::ucfirst($param) .': ' . $value . ' ± ' . $value * $factor .')';
+                $value = $value != 0 ? $value . ' ± ' . $value * $factor :'Нет';
+                $info = '(' . Str::ucfirst(Product::getFieldsToShow()[$param]) .': ' . $value . ')';
 
         }
 
