@@ -2,6 +2,8 @@
 !images
 !images/pages
 !images/pages/*.*
+!images/users
+!images/users/*.*
 !products
 !products/pds
 !products/pds/*.*
