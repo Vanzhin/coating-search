@@ -89,44 +89,6 @@ class ProductController extends Controller
             'linkedFields' => Product::getLinkedFields(),
         ]);
     }
-
-//    public function brand($slug)
-//    {
-//        //сделал со слагом, чтобы был красивый адрес типа http://coating-search.test/products/brand/ppg
-//        $brand = Brand::where('slug', $slug)->first();
-//        return view('products.index', [
-//            'products' => Brand::find($brand->id)->products()->paginate(10),
-//            'param' => '(Бренд: ' . Str::upper($slug) . ')',
-//            'likes' => app(LikeService::class)->getLikedProductsId(),
-//            'compareProduct' => session()->get('products.compare') ?? [],
-//
-//
-//        ]);
-//    }
-
-//    public function environment(Environment $environment)
-//    {
-//        return view('products.index', [
-//            'products' => Environment::find($environment->id)->products()->paginate(10),
-//            'likes' => app(LikeService::class)->getLikedProductsId(),
-//            'compareProduct' => session()->get('products.compare') ?? [],
-//            'param' => '(Cреда: ' . Str::ucfirst($environment->title) . ')',
-//
-//        ]);
-//    }
-
-//    public function binder($slug)
-//    {
-//        $binder = Binder::where('slug', $slug)->first();
-//
-//        return view('products.index', [
-//            'products' => Binder::find($binder->id)->products()->paginate(10),
-//            'likes' => app(LikeService::class)->getLikedProductsId(),
-//            'compareProduct' => session()->get('products.compare') ?? [],
-//            'param' => '(Основа: ' . Str::ucfirst($binder->title) . ')',
-//
-//        ]);
-//    }
     public function indexBySlug($param, $slug)
     {
         $info = array_key_exists($param, Product::getLinkedFields()) ? Str::ucfirst(Product::getLinkedFields()[$param]) : null;

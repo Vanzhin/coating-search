@@ -28,11 +28,11 @@
                 </div>
             @else
                 <div class="dropdown">
-                    <a href="{{ route('account.index') }}" class="d-block link-dark text-warning text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="true">
+                    <a href="{{ route('account.profile') }}" class="d-block link-dark text-warning text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="true">
                         <img src="@if(Auth::user()->avatar){!!Auth::user()->avatar!!}@else{!!Storage::disk('public')->url('images/users/default.png')!!}@endif" width="38" height="38" class="rounded">
                     </a>
                     <ul class="dropdown-menu text-small shadow text-small dropdown-menu-dark" data-popper-placement="bottom-end" style="position: absolute; inset: 0px 0px auto auto; margin-top: 10px; transform: translate3d(0px, 34px, 0px); z-index: 1021;">
-                        <li><a class="dropdown-item" href="{{ route('account.index') }}">Профиль</a></li>
+                        <li><a class="dropdown-item" href="{{ route('account.profile') }}">Профиль</a></li>
                         <li>
                             <a class="d-flex justify-content-between align-items-center dropdown-item" href="{{ route('search') }}">
                                 <span>Мои поиски</span>
@@ -40,9 +40,9 @@
                             </a>
                         </li>
                         <li>
-                            <a class="d-flex justify-content-between align-items-center dropdown-item" href="{{ route('account.my') }}">
+                            <a class="my-products-btn d-flex justify-content-between align-items-center dropdown-item" href="{{ route('account.products') }}">
                                 <span>Мои покрытия</span>
-                                <span class="badge bg-light text-dark ms-1">{{ $counts['userProducts'] !== 0 ? $counts['userProducts'] : null }}</span>
+                                <span class="my-products badge bg-light text-dark ms-1">{{ $counts['userProducts'] !== 0 ? $counts['userProducts'] : null }}</span>
                             </a>
                         </li>
                         <li><a class="dropdown-item disabled" href="#">Настройки</a></li>
@@ -126,29 +126,5 @@
 </div>
 @push('js')
     <script src="{{asset('js/quick-search.js')}}"></script>
-    <script>
-        // let a = [1,2,3,4,5,5,4,3,2,1];
-        // const b = new Set(a);
-        // console.log(b.join(''));
-
-        // console.log([...a.slice(0,5),...a.slice(6)]);
-        // a.forEach((el, ind) => {a[ind] =el + 1});
-        // console.log(a);
-        // const person ={name: 'Иван', age: 23};
-        // person = {...person, age:25,job: 'web'}
-        // const q =/qwe/;
-        // const w =/wer/;
-        // console.log(q+w);
-        // console.log([...a.slice(-6)])
-
-        // let t = setInterval(()=>{
-        //     setTimeout(()=>{
-        //         clearInterval(t);
-        //     }, 3000)
-        //     console.log('hello');
-        // }, 1000);
-        // console.log(/\d+/.exec("У Вани было 5 яблок, а у Пети 4.").index);
-        // console.log(+!null)
-    </script>
 @endpush
 

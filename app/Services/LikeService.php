@@ -28,15 +28,19 @@ class LikeService
                 ->where('user_id', '=', Auth::user()->getAuthIdentifier());
             if ($like->exists()){
                 $like->delete();
-                $response = 'like';
+                $response = [
+                    'state' => 'like',
+                ];
             } else{
                 DB::table('product_likes')->insert([
                     'product_id' => $product->id,
                     'user_id' => Auth::user()->getAuthIdentifier(),
                 ]);
-                $response = 'dislike';
-
+                $response = [
+                    'state' => 'dislike',
+                ];
             }
+            $response['total'] = count($this->getLikedProductsId());
             return response()->json($response);
 
         }catch(\Exception $e){

@@ -111,13 +111,13 @@ Auth::routes(['verify' => true]);
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::group(['middleware' => ['auth']], function (){
-    Route::group(['as' => 'account.', 'prefix' => 'account'], function (){
-        Route::get('/', [AccountController::class, 'index'])
+    Route::group(['as' => 'account.', 'prefix' => 'my'], function (){
+        Route::get('/profile', [AccountController::class, 'index'])
         ->middleware('verified')
-            ->name('index');
-        Route::get('/my/products', [AccountController::class, 'showFavoriteProducts'])
+            ->name('profile');
+        Route::get('/products', [AccountController::class, 'showFavoriteProducts'])
         ->middleware('verified')
-            ->name('my');
+            ->name('products');
     });
 
     Route::get('/logout', [LoginController::class, 'logout'])
