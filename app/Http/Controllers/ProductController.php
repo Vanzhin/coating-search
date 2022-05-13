@@ -163,10 +163,17 @@ class ProductController extends Controller
             case 'tolerance':
                 $products = Product::query()->where($param, $value !== 0 ? $value : null)->paginate(10);
                 $value = $value ? "Да" : 'Нет';
-
                 break;
             default:
-                $products = Product::query()->whereBetween($param,[$value - abs($value) * $factor, $value + abs($value) * $factor])->paginate(10);
+                if ($value == 0){
+                    $products = Product::query()
+                        ->where($param, $value)
+                        ->orWhere($param, null)
+                        ->paginate(10);
+                }else{
+                    $products = Product::query()->whereBetween($param,[$value - abs($value) * $factor, $value + abs($value) * $factor])->paginate(10);
+
+                }
                 $value = $value != 0 ? $value . ' ± ' . abs($value) * $factor :'Нет';
 
         }

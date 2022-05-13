@@ -211,7 +211,7 @@ public function binders(): BelongsToMany
     public function analogs()
     {
         $factorVs = 15;
-        $factorDft = 50;
+        $factorDft = 0.5;
         $factorTouch = 1.5;
         $factorHandle = 3;
 
@@ -228,14 +228,19 @@ public function binders(): BelongsToMany
         foreach ($binders as $binder){
             $binderAnalogs->push(...$binder->products);
         }
-        foreach ($analogs as $key => $analog){
-            $product = $binderAnalogs->unique()->firstWhere('id', $analog->id);
-            if ($product->id !== $analog->id){
-                $analogs->forget($key);
+//        dd($analogs->unique(), $binderAnalogs->unique());
+//        todo полный отстой - доработать
+        foreach ($binderAnalogs->unique() as $key => $analog){
+
+            if($analogs->unique()->firstWhere('id', $analog->id)){
+                continue;
+            }else{
+                $binderAnalogs->forget($key);
             }
+
         }
 
-        return $analogs->unique();
+        return $binderAnalogs->unique();
     }
 
     public function sluggable(): array
