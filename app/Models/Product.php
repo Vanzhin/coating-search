@@ -212,14 +212,14 @@ public function binders(): BelongsToMany
     {
         $factorVs = 15;
         $factorDft = 0.5;
-        $factorTouch = 1.5;
-        $factorHandle = 3;
+        $factorTouch = 0.5;
+        $factorHandle = 0.5;
 
 // прохожусь по основным параметрам
-        $analogs = Product::whereBetween('vs', [$this->vs - $factorVs, $this->vs + $factorVs])
+        $analogs = Product::query()->whereBetween('vs', [$this->vs - $factorVs, $this->vs + $factorVs])
             ->whereBetween('dft', [$this->dft - $this->dft * $factorDft, $this->dft + $this->dft * $factorDft])
-            ->whereBetween('dry_to_touch', [$this->dry_to_touch - $factorTouch, $this->dry_to_touch + $factorTouch])
-            ->whereBetween('dry_to_handle', [$this->dry_to_handle - $factorHandle, $this->dry_to_handle + $factorHandle])
+            ->whereBetween('dry_to_touch', [$this->dry_to_touch - $this->dry_to_touch * $factorTouch, $this->dry_to_touch + $this->dry_to_touch * $factorTouch])
+            ->whereBetween('dry_to_handle', [$this->dry_to_handle - $this->dry_to_handle * $factorHandle, $this->dry_to_handle + $this->dry_to_handle * $factorHandle])
             ->where('title', '<>', $this->title)
             ->get();
 

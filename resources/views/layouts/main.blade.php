@@ -13,7 +13,7 @@
     <meta name="msapplication-TileColor" content="#424361">
     <meta name="theme-color" content="#ffffff">
 
-    <title>@section('title') {{env('APP_NAME')}} |@show</title>
+    <title>@section('title') {{env('APP_NAME')}} | @show</title>
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/carousel.css') }}" rel="stylesheet">
