@@ -153,6 +153,7 @@ class ProductController extends Controller
 
         ]);
     }
+
     public function indexByParam($param, $value)
     {
         //todo очень костыльно - доделать

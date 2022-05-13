@@ -12,7 +12,7 @@
         <div class="container d-flex flex-column rounded-2">
             @include('inc.message')
             @if(Auth::user())
-                <div class="list-group mw-100 w-100 my-2">
+                <div class="list-group mw-100 w-100 my-2 gap-2">
                 @forelse($comments as $comment)
                     <a href="{{ route('comment.show', $comment) }}" class="list-group-item list-group-item-action">
                         <div class="d-flex w-100 justify-content-between">

@@ -208,6 +208,36 @@ public function binders(): BelongsToMany
         return $this->hasOne(Catalog::class, 'id', 'catalog_id');
     }
 
+    public function analogs()
+    {
+        $factorVs = 15;
+        $factorDft = 50;
+        $factorTouch = 1.5;
+        $factorHandle = 3;
+
+// прохожусь по основным параметрам
+        $analogs = Product::whereBetween('vs', [$this->vs - $factorVs, $this->vs + $factorVs])
+            ->whereBetween('dft', [$this->dft - $this->dft * $factorDft, $this->dft + $this->dft * $factorDft])
+            ->whereBetween('dry_to_touch', [$this->dry_to_touch - $factorTouch, $this->dry_to_touch + $factorTouch])
+            ->whereBetween('dry_to_handle', [$this->dry_to_handle - $factorHandle, $this->dry_to_handle + $factorHandle])
+            ->where('title', '<>', $this->title)
+            ->get();
+
+        $binders = $this->binders()->get();
+        $binderAnalogs = collect();
+        foreach ($binders as $binder){
+            $binderAnalogs->push(...$binder->products);
+        }
+        foreach ($analogs as $key => $analog){
+            $product = $binderAnalogs->unique()->firstWhere('id', $analog->id);
+            if ($product->id !== $analog->id){
+                $analogs->forget($key);
+            }
+        }
+
+        return $analogs->unique();
+    }
+
     public function sluggable(): array
     {
         return [
