@@ -87,22 +87,22 @@
                         </td>
                     </tr>
                     @endforeach
-                    <tr class="align-middle text-center">
-                        <td> Похожие материалы </td>
-                        <td>
-                            <div class="d-flex justify-content-center align-items-center flex-column gap-1">
-                                @forelse($product->analogs() as $analog)
-                                    @if($analog->title === $product->title)
-                                        @continue
-                                    @endif
-                                    <a class="link btn-sm btn-outline-secondary text-decoration-underline" href="{{ route('products.show', $analog) }}" title="{{Str::upper($analog->title)}}">{{Str::upper($analog->title)}}</a>
-                                @empty
-                                    -
-                                @endforelse
-                            </div>
+{{--                    <tr class="align-middle text-center">--}}
+{{--                        <td> Похожие материалы </td>--}}
+{{--                        <td>--}}
+{{--                            <div class="d-flex justify-content-center align-items-center flex-column gap-1">--}}
+{{--                                @forelse($product->analogs() as $analog)--}}
+{{--                                    @if($analog->title === $product->title)--}}
+{{--                                        @continue--}}
+{{--                                    @endif--}}
+{{--                                    <a class="link btn-sm btn-outline-secondary text-decoration-underline" href="{{ route('products.show', $analog) }}" title="{{Str::upper($analog->title)}}">{{Str::upper($analog->title)}}</a>--}}
+{{--                                @empty--}}
+{{--                                    ---}}
+{{--                                @endforelse--}}
+{{--                            </div>--}}
 
-                        </td>
-                    </tr>
+{{--                        </td>--}}
+{{--                    </tr>--}}
                     </tbody>
                 </table>
                 <a href="{{ route('search.create', $product) }}" class="btn btn-outline-success">Искать подобный материал</a>

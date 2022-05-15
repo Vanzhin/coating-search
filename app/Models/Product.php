@@ -250,7 +250,7 @@ public function binders(): BelongsToMany
             ->select('products.id')
             ->whereIn('binders.id', $bIds)
             ->whereIn('environments.id', $envIds)
-            ->whereIn('resistances.id', $resIds)
+//            ->whereIn('resistances.id', $resIds ?? [])
             ->distinct()
             ->get()->toArray();
 
