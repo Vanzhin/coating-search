@@ -4,8 +4,7 @@
 @endsection
 @section('header')
     <section class="text-center container">
-        <h1 class="fw-light">Подбор покрытий</h1>
-
+        <h1 class="fw-light">Подбор покрытий @if($product !== null) (Аналог: {{Str::upper($product->title)}} ) @endif</h1>
     </section>
 @endsection
 @section('content')
@@ -22,6 +21,7 @@
                 @include('inc.message')
                 <div class="form-group row-cols-auto">
                     @foreach ($linkedFields as  $key => $item)
+{{--                       @dd( $q = array_map(function ($ar){return $ar['id'];} ,$product->$key->toArray()))--}}
                     @error($key)
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
                         <strong>{{ $message }}</strong>
@@ -41,6 +41,8 @@
                                 <option value="{{$value->id}}" {{ in_array($value->id, old($key)) ? 'selected' : '' }}>{{Str::ucfirst($value->title)}}</option>
                             @elseif(isset($search) && array_key_exists($key, $searchData))
                                 <option value="{{$value->id}}" {{ in_array($value->id, $searchData[$key]) ? 'selected' : '' }}>{{Str::ucfirst($value->title)}}</option>
+                            @elseif($product)
+                                <option value="{{$value->id}}" {{ in_array($value->id, array_map(function ($ar){return $ar['id'];} ,$product->$key->toArray())) ? 'selected' : '' }}>{{Str::ucfirst($value->title)}}</option>
 
                             @else
                                 <option value="{{$value->id}}">{{Str::ucfirst($value->title)}}</option>
@@ -71,6 +73,8 @@
                                         <option value="{{ $brand->id }}" {{ in_array($brand->id, old($key)) ? 'selected' : '' }}>{{Str::upper($brand->title)}}</option>
                                     @elseif(isset($search) && array_key_exists($key, $searchData))
                                         <option value="{{$brand->id}}" {{ in_array($brand->id, $searchData[$key]) ? 'selected' : '' }}>{{Str::upper($brand->title)}}</option>
+                                    @elseif($product)
+                                        <option value="{{$brand->id}}" {{ $brand->id === $product->brand_id ? 'selected' : '' }}>{{Str::upper($brand->title)}}</option>
                                     @else
                                         <option value="{{ $brand->id }}" >{{ Str::upper($brand->title) }}</option>
                                     @endif
@@ -92,6 +96,8 @@
                                         <option value="{{ $catalog->id }}" {{ in_array($catalog->id, old($key)) ? 'selected' : '' }}>{{Str::ucfirst($catalog->title)}}</option>
                                     @elseif(isset($search) && array_key_exists($key, $searchData))
                                         <option value="{{$catalog->id}}" {{ in_array($catalog->id, $searchData[$key]) ? 'selected' : '' }}>{{Str::ucfirst($catalog->title)}}</option>
+                                    @elseif($product)
+                                        <option value="{{$catalog->id}}" {{ $catalog->id === $product->catalog_id ? 'selected' : '' }}>{{Str::ucfirst($catalog->title)}}</option>
                                     @else
                                         <option value="{{ $catalog->id }}">{{Str::ucfirst($catalog->title)}}</option>
                                     @endif
@@ -103,7 +109,7 @@
                         @if($key === 'tolerance')
                             <label for="{{ $key }}"><h5 class="card-header">{!! $item !!}:</h5></label>
                                 <div class="form-check form-switch ms-4 mb-2 mt-2">
-                                    <input class="form-check-input form-control" type="checkbox" role="switch" id="{{$key}}" name="{{$key}}" @if(isset($search) && array_key_exists($key, $searchData) or old($key)) checked @endif>
+                                    <input class="form-check-input form-control" type="checkbox" role="switch" id="{{$key}}" name="{{$key}}" @if(isset($search) && array_key_exists($key, $searchData) or old($key) or $product->tolerance ?? null) checked @endif>
                                 </div>
                     </div>
                             @continue
@@ -117,11 +123,11 @@
                         @endif
                         <label for="{{ $key }}">
                             <h5 class="card-header">{!! $item !!}:
-                                <span id="rangeval-{{$key}}"><strong>@if(isset($search) && array_key_exists($key, $searchData)){{$searchData[$key]}} @else не выбрано @endif</strong></span>
+                                <span id="rangeval-{{$key}}"><strong>@if(isset($search) && array_key_exists($key, $searchData)){{$searchData[$key]}}@elseif($product) {{ $product->$key }} @else не выбрано @endif</strong></span>
                                 <span>(от {{ round($selectionData[$key]['min']) }} до {{ round($selectionData[$key]['max']) }})</span>
                             </h5>
                         </label>
-                        <input value="@if(isset($search) && array_key_exists($key, $searchData)){{$searchData[$key]}}@else{{$selectionData[$key]['min']-1}}@endif" name="{{ $key }}" type="range" class="form-range form-control p-4" id="{{ $key }}" onInput="$('#rangeval-{{$key}}').html($(this).val())"
+                        <input value="@if(isset($search) && array_key_exists($key, $searchData)){{$searchData[$key]}}@elseif($product){{$product->$key}}@else{{$selectionData[$key]['min']-1}}@endif" name="{{ $key }}" type="range" class="form-range form-control p-4" id="{{ $key }}" onInput="$('#rangeval-{{$key}}').html($(this).val())"
                                min="{{ round($selectionData[$key]['min']-1) }}" max="{{ round($selectionData[$key]['max']) }}" step="1">
                     </div>
                 @endforeach

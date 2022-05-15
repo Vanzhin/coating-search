@@ -29,10 +29,9 @@
                                 <div class="entry text-center">
                                     <h6>{!! $value !!}</h6>
                                     <h4>
-                                        @if($product->$key)
-                                            {{ $product->$key === true ? 'Да' : $product->$key }}
-                                        @else
-                                            Нет
+                                        @if($product->$key === true){{'Да'}}
+                                        @elseif($product->$key or $product->$key === 0){{$product->$key}}
+                                        @else {{'Нет'}}
                                         @endif
                                     </h4>
                                 </div>

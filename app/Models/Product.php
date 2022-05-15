@@ -8,6 +8,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, BelongsToMany, HasOne};
+use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
@@ -85,11 +86,11 @@ public static function getFieldsToCreate(): array
 public static function getFieldsToSearch(): array
     {
         return [
+            'brand_id' => 'Производитель',
+            'catalog_id' => 'Сегмент',
             'vs' => 'Сухой остаток, не менее&nbsp;об %',
             'dft' => 'Стандартная ТСП, от&nbsp;мкм',
             'dry_to_touch' => 'Сухой на отлип, не более&nbsp;ч',
-            'brand_id' => 'Производитель',
-            'catalog_id' => 'Сегмент',
             'dry_to_handle' => 'Сухой до перемещения, не более&nbsp;ч',
             'min_int' => 'Минимальный интервал перекрытия, не более&nbsp;ч',
             'max_int' => 'Максимальный интервал перекрытия, не более&nbsp;д',
@@ -211,36 +212,62 @@ public function binders(): BelongsToMany
     public function analogs()
     {
         $factorVs = 15;
-        $factorDft = 0.5;
+        $factorDft = 200;
         $factorTouch = 0.5;
         $factorHandle = 0.5;
 
 // прохожусь по основным параметрам
-        $analogs = Product::query()->whereBetween('vs', [$this->vs - $factorVs, $this->vs + $factorVs])
-            ->whereBetween('dft', [$this->dft - $this->dft * $factorDft, $this->dft + $this->dft * $factorDft])
+        $propAnalogs = Product::query()->whereBetween('vs', [$this->vs - $factorVs, $this->vs + $factorVs])
+            ->whereBetween('dft', [$this->dft - $factorDft, $this->dft + $factorDft])
             ->whereBetween('dry_to_touch', [$this->dry_to_touch - $this->dry_to_touch * $factorTouch, $this->dry_to_touch + $this->dry_to_touch * $factorTouch])
             ->whereBetween('dry_to_handle', [$this->dry_to_handle - $this->dry_to_handle * $factorHandle, $this->dry_to_handle + $this->dry_to_handle * $factorHandle])
             ->where('title', '<>', $this->title)
             ->get();
 
         $binders = $this->binders()->get();
-        $binderAnalogs = collect();
         foreach ($binders as $binder){
-            $binderAnalogs->push(...$binder->products);
+            $bIds[] = $binder->getKey('id');
         }
-//        dd($analogs->unique(), $binderAnalogs->unique());
-//        todo полный отстой - доработать
-        foreach ($binderAnalogs->unique() as $key => $analog){
+        $environments = $this->environments()->get();
+        foreach ($environments as $environment){
+            $envIds[] = $environment->getKey('id');
+        }
+        $resistances = $this->resistances()->get();
+        foreach ($resistances as $resistance){
+            $resIds[] = $resistance->getKey('id');
+        }
+//        $binderAnalogs = collect();
+//        foreach ($binders as $binder){
+//            $binderAnalogs->push($binder->products);
+//        }
+        $linkedAnalogs = DB::table('products')
+            ->join('product_binders', 'products.id', '=', 'product_binders.product_id')
+            ->join('binders', 'binders.id', '=', 'product_binders.binder_id')
+            ->join('product_environments','products.id',  'product_environments.product_id')
+            ->join('environments', 'environments.id', '=', 'product_environments.environment_id')
+            ->join('product_resistances','products.id',  'product_resistances.product_id')
+            ->join('resistances', 'resistances.id', '=', 'product_resistances.resistance_id')
+            ->select('products.id')
+            ->whereIn('binders.id', $bIds)
+            ->whereIn('environments.id', $envIds)
+            ->whereIn('resistances.id', $resIds)
+            ->distinct()
+            ->get()->toArray();
 
-            if($analogs->unique()->firstWhere('id', $analog->id)){
-                continue;
-            }else{
-                $binderAnalogs->forget($key);
+
+//        todo полный отстой - доработать
+        $out = [];
+        foreach ($linkedAnalogs as $key => $item){
+            if($propAnalogs->firstWhere('id', $item->id)){
+                $out[] = $item->id;
             }
 
         }
+        return  Product::query()->whereIn('id', $out)
+            ->orderBy('title', 'desc')
+            ->orderBy('brand_id', 'desc')
 
-        return $binderAnalogs->unique();
+            ->get();
     }
 
     public function sluggable(): array

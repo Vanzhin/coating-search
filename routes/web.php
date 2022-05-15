@@ -80,6 +80,8 @@ Route::resources([
 ]);
 Route::get('/search', [SearchController::class, 'index'])
     ->name('search');
+Route::get('/search/create/{product?}', [SearchController::class, 'create'])
+    ->name('search.create');
 Route::post('/search/quick', [SearchController::class, 'quickProductSearch'])
 //    ->where('content', '\w+')
     ->name('search.quick');

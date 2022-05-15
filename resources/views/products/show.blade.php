@@ -66,7 +66,7 @@
                         <tr class="align-middle text-center">
                             <td>{!! $value !!}</td>
                             <td>
-                                <a class="link btn-sm btn-outline-secondary text-decoration-underline" href="{{ route('products.indexByParam', ['param' => $key, 'value' => $product->$key ? $product->$key : 0]) }}" title="Все покрытия {{$key}} = {{ $value }}">@if($product->$key === true){{'Да'}}@elseif($product->$key){{$product->$key}}@else {{'Нет'}} @endif</a>
+                                <a class="link btn-sm btn-outline-secondary text-decoration-underline" href="{{ route('products.indexByParam', ['param' => $key, 'value' => $product->$key ? $product->$key : 0]) }}" title="Все покрытия {{$key}} = {{ $value }}">@if($product->$key === true){{'Да'}}@elseif($product->$key or $product->$key === 0){{$product->$key}}@else {{'Нет'}} @endif</a>
                             </td>
                         </tr>
                     @endforeach
@@ -105,6 +105,8 @@
                     </tr>
                     </tbody>
                 </table>
+                <a href="{{ route('search.create', $product) }}" class="btn btn-outline-success">Искать подобный материал</a>
+
             </div>
         </div>
         <div class="product-device shadow-sm d-none d-md-block"></div>

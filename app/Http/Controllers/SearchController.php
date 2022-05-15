@@ -45,11 +45,12 @@ class SearchController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Product $product = null)
     {
         $selectionData = Product::getSelectionData();
 
         return view('searches.create', [
+            'product' => $product,
             'fields'=> Product::getFieldsToSearch(),
             'fieldsToOrderBy'=> Product::getFieldsToOrderBy(),
             'brands' => Brand::all(),
@@ -168,7 +169,8 @@ class SearchController extends Controller
             'search' => $search,
             'searchData' => json_decode($search->data, true),
             'method' => 'update',
-            'button' => 'Повторить поиск'
+            'button' => 'Повторить поиск',
+            'product' => null
         ]);
     }
 
