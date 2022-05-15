@@ -105,7 +105,9 @@
 {{--                    </tr>--}}
                     </tbody>
                 </table>
-                <a href="{{ route('search.create', $product) }}" class="btn btn-outline-success">Искать подобный материал</a>
+                <div class="col my-3 d-flex justify-content-center align-items-center">
+                    <a href="{{ route('search.create', $product) }}" class="btn flex-fill flex-xl-grow-0 d-flex justify-content-center align-items-center btn-outline-success">Искать подобный материал</a>
+                </div>
 
             </div>
         </div>

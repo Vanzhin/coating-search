@@ -123,11 +123,11 @@
                         @endif
                         <label for="{{ $key }}">
                             <h5 class="card-header">{!! $item !!}:
-                                <span id="rangeval-{{$key}}"><strong>@if(isset($search) && array_key_exists($key, $searchData)){{$searchData[$key]}}@elseif($product) {{ $product->$key }} @else не выбрано @endif</strong></span>
+                                <span id="rangeval-{{$key}}"><strong>@if(isset($search) && array_key_exists($key, $searchData)){{$searchData[$key]}}@elseif($product && $product->$key){{$product->$key}}@else не выбрано @endif</strong></span>
                                 <span>(от {{ round($selectionData[$key]['min']) }} до {{ round($selectionData[$key]['max']) }})</span>
                             </h5>
                         </label>
-                        <input value="@if(isset($search) && array_key_exists($key, $searchData)){{$searchData[$key]}}@elseif($product){{$product->$key}}@else{{$selectionData[$key]['min']-1}}@endif" name="{{ $key }}" type="range" class="form-range form-control p-4" id="{{ $key }}" onInput="$('#rangeval-{{$key}}').html($(this).val())"
+                        <input value="@if(isset($search) && array_key_exists($key, $searchData)){{$searchData[$key]}}@elseif($product && $product->$key){{$product->$key}}@else{{$selectionData[$key]['min']-1}}@endif" name="{{ $key }}" type="range" class="form-range form-control p-4" id="{{ $key }}" onInput="$('#rangeval-{{$key}}').html($(this).val())"
                                min="{{ round($selectionData[$key]['min']-1) }}" max="{{ round($selectionData[$key]['max']) }}" step="1">
                     </div>
                 @endforeach
