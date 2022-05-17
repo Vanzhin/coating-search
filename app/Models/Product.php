@@ -218,9 +218,9 @@ public function binders(): BelongsToMany
 
 // прохожусь по основным параметрам
 
-        $binders = $this->binders()->orderBy('title')->get();
+        $binders = $this->binders()->get();
         foreach ($binders as $binder){
-            $bTitles[] = $binder->title;
+            $bIds[] = $binder->id;
         }
         $substrates = $this->substrates()->get();
         foreach ($substrates as $substrate){
@@ -253,7 +253,7 @@ public function binders(): BelongsToMany
             ->where('environments.id', $envIds)
             ->selectRaw('products.*')
             ->groupBy('products.id')
-            ->havingRaw("group_concat(binders.title) like ?", [implode(',',$bTitles) . '%'])
+            ->havingRaw("group_concat(binders.id) like ?", [implode(',',$bIds) . '%'])
             ->get();
     }
 
