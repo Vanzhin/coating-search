@@ -251,7 +251,7 @@ public function binders(): BelongsToMany
             ->whereBetween('dft', [$this->dft - $factorDft, $this->dft + $factorDft])
             ->where('substrates.id', $substratesIds)
             ->where('environments.id', $envIds)
-            ->selectRaw('products.*, group_concat(binders.title)')
+            ->selectRaw('products.*')
             ->groupBy('products.id')
             ->havingRaw("group_concat(binders.title) like ?", [implode(',',$bTitles) . '%'])
             ->get();
