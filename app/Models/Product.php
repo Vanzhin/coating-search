@@ -211,23 +211,22 @@ public function binders(): BelongsToMany
 
     public function analogs()
     {
-        $factorVs = 15;
-        $factorDft = 200;
+        $factorVs = 10;
+        $this->dft < 100 ? $factorDft = 50 : ($this->dft <= 300 ? $factorDft = 200 : ($this->dft <= 1000 ? $factorDft = 500 : $factorDft = $this->dft));
         $factorTouch = 0.5;
         $factorHandle = 0.5;
 
 // прохожусь по основным параметрам
-        $propAnalogs = Product::query()->whereBetween('vs', [$this->vs - $factorVs, $this->vs + $factorVs])
-            ->whereBetween('dft', [$this->dft - $factorDft, $this->dft + $factorDft])
-            ->whereBetween('dry_to_touch', [$this->dry_to_touch - $this->dry_to_touch * $factorTouch, $this->dry_to_touch + $this->dry_to_touch * $factorTouch])
-            ->whereBetween('dry_to_handle', [$this->dry_to_handle - $this->dry_to_handle * $factorHandle, $this->dry_to_handle + $this->dry_to_handle * $factorHandle])
-            ->where('title', '<>', $this->title)
-            ->get();
 
-        $binders = $this->binders()->get();
+        $binders = $this->binders()->orderBy('title')->get();
         foreach ($binders as $binder){
-            $bIds[] = $binder->getKey('id');
+            $bTitles[] = $binder->title;
         }
+        $substrates = $this->substrates()->get();
+        foreach ($substrates as $substrate){
+            $substratesIds[] = $substrate->id;
+        }
+
         $environments = $this->environments()->get();
         foreach ($environments as $environment){
             $envIds[] = $environment->getKey('id');
@@ -236,37 +235,25 @@ public function binders(): BelongsToMany
         foreach ($resistances as $resistance){
             $resIds[] = $resistance->getKey('id');
         }
-//        $binderAnalogs = collect();
-//        foreach ($binders as $binder){
-//            $binderAnalogs->push($binder->products);
-//        }
-        $linkedAnalogs = DB::table('products')
-            ->join('product_binders', 'products.id', '=', 'product_binders.product_id')
-            ->join('binders', 'binders.id', '=', 'product_binders.binder_id')
-            ->join('product_environments','products.id',  'product_environments.product_id')
-            ->join('environments', 'environments.id', '=', 'product_environments.environment_id')
-            ->join('product_resistances','products.id',  'product_resistances.product_id')
-            ->join('resistances', 'resistances.id', '=', 'product_resistances.resistance_id')
-            ->select('products.id')
-            ->whereIn('binders.id', $bIds)
-            ->whereIn('environments.id', $envIds)
-//            ->whereIn('resistances.id', $resIds ?? [])
-            ->distinct()
-            ->get()->toArray();
-
 
 //        todo полный отстой - доработать
-        $out = [];
-        foreach ($linkedAnalogs as $key => $item){
-            if($propAnalogs->firstWhere('id', $item->id)){
-                $out[] = $item->id;
-            }
 
-        }
-        return  Product::query()->whereIn('id', $out)
-            ->orderBy('title', 'desc')
-            ->orderBy('brand_id', 'desc')
-
+        return
+            Product::query()
+            ->join('product_binders', 'products.id', '=', 'product_binders.product_id')
+            ->join('binders', 'binders.id', '=', 'product_binders.binder_id')
+            ->join('product_substrates', 'products.id', '=', 'product_substrates.product_id')
+            ->join('substrates', 'substrates.id', '=', 'product_substrates.substrate_id')
+            ->join('product_environments', 'products.id', '=', 'product_environments.product_id')
+            ->join('environments', 'environments.id', '=', 'product_environments.environment_id')
+            ->where('products.title', '<>', $this->title)
+            ->whereBetween('vs', [$this->vs - $factorVs, $this->vs + $factorVs])
+            ->whereBetween('dft', [$this->dft - $factorDft, $this->dft + $factorDft])
+            ->where('substrates.id', $substratesIds)
+            ->where('environments.id', $envIds)
+            ->selectRaw('products.*, group_concat(binders.title)')
+            ->groupBy('products.id')
+            ->havingRaw("group_concat(binders.title) like ?", [implode(',',$bTitles) . '%'])
             ->get();
     }
 

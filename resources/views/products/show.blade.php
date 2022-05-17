@@ -87,22 +87,23 @@
                         </td>
                     </tr>
                     @endforeach
-{{--                    <tr class="align-middle text-center">--}}
-{{--                        <td> Похожие материалы </td>--}}
-{{--                        <td>--}}
-{{--                            <div class="d-flex justify-content-center align-items-center flex-column gap-1">--}}
-{{--                                @forelse($product->analogs() as $analog)--}}
-{{--                                    @if($analog->title === $product->title)--}}
-{{--                                        @continue--}}
-{{--                                    @endif--}}
-{{--                                    <a class="link btn-sm btn-outline-secondary text-decoration-underline" href="{{ route('products.show', $analog) }}" title="{{Str::upper($analog->title)}}">{{Str::upper($analog->title)}}</a>--}}
-{{--                                @empty--}}
-{{--                                    ---}}
-{{--                                @endforelse--}}
-{{--                            </div>--}}
+{{--                    @dd($product->analogs())--}}
+                    <tr class="align-middle text-center">
+                        <td> Похожие материалы </td>
+                        <td>
+                            <div class="d-flex justify-content-center align-items-center flex-column gap-1">
+                                @forelse($product->analogs() as $analog)
+                                    @if($analog->title === $product->title)
+                                        @continue
+                                    @endif
+                                    <a class="link btn-sm btn-outline-secondary text-decoration-underline" href="{{ route('products.show', $analog) }}" title="{{Str::upper($analog->title)}}">{{Str::upper($analog->title)}}</a>
+                                @empty
+                                    -
+                                @endforelse
+                            </div>
 
-{{--                        </td>--}}
-{{--                    </tr>--}}
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
                 <div class="col my-3 d-flex justify-content-center align-items-center">
