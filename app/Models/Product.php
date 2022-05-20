@@ -218,7 +218,7 @@ public function binders(): BelongsToMany
 
 // прохожусь по основным параметрам
 
-        $binders = $this->binders()->get();
+        $binders = $this->binders()->orderBy('binders.id')->get();
         foreach ($binders as $binder){
             $bIds[] = $binder->id;
         }
