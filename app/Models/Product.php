@@ -253,7 +253,7 @@ public function binders(): BelongsToMany
             ->where('environments.id', $envIds)
             ->selectRaw('products.*')
             ->groupBy('products.id')
-            ->havingRaw("group_concat(binders.id) like ?", [implode(',',$bIds) . '%'])
+            ->havingRaw("group_concat(binders.id order by binders.id) like ?", [implode(',',$bIds) . '%'])
             ->get();
     }
 
