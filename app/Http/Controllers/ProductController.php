@@ -71,7 +71,7 @@ class ProductController extends Controller
             $string = '(' . Str::ucfirst(Product::getFieldsToShow()[$param]) . ': ' . $info . ')';
 
         } else if (method_exists(Product::class, $param)) {
-            $string = '\App\Models\\' . Str::singular($param);
+            $string = '\App\Models\\' . ucfirst(Str::singular($param));
             $instance = new $string();
             $model = $instance->where('slug', $value)->first();
 
