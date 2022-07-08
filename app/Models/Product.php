@@ -8,7 +8,6 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, BelongsToMany, HasOne};
-use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
@@ -153,6 +152,8 @@ public static function getSelectionData()
     }
     return $selectionData;
 }
+
+
 
 public function binders(): BelongsToMany
     {

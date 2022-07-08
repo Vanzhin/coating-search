@@ -15,6 +15,7 @@ use App\Models\Resistance;
 use App\Models\Search;
 use App\Models\Substrate;
 use App\Services\ProductSearchService;
+use Doctrine\DBAL\Schema\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Http\Request;
@@ -29,13 +30,13 @@ class SearchController extends Controller
      */
     public function index()
     {
-        if (Auth::check()){
+        if (Auth::check()) {
             $searches = Search::query()
                 ->where('user_id', Auth::user()->getAuthIdentifier())
                 ->whereIn('status', ['saved', 'active'])->orderByDesc('updated_at')
                 ->paginate(Config::get('constants.ITEMS_PER_PAGE'));
         } else $searches = [];
-        return view('searches.index',[
+        return view('searches.index', [
             'searches' => $searches
         ]);
     }
@@ -47,12 +48,13 @@ class SearchController extends Controller
      */
     public function create(Product $product = null)
     {
+        //продукт передается в метод при точном подборе аналога вручную
         $selectionData = Product::getSelectionData();
 
         return view('searches.create', [
             'product' => $product,
-            'fields'=> Product::getFieldsToSearch(),
-            'fieldsToOrderBy'=> Product::getFieldsToOrderBy(),
+            'fields' => Product::getFieldsToSearch(),
+            'fieldsToOrderBy' => Product::getFieldsToOrderBy(),
             'brands' => Brand::all(),
             'catalogs' => Catalog::all(),
             'linkedFields' => Product::getLinkedFields(),
@@ -64,7 +66,6 @@ class SearchController extends Controller
             'additives' => Additive::query()->orderBy('title', 'asc')->get(),
             'selectionData' => $selectionData,
             'button' => 'Поиск'
-
         ]);
     }
 
@@ -77,19 +78,19 @@ class SearchController extends Controller
     public function store(CreateRequest $request)
     {
         $data = app(ProductSearchService::class)->getSearchData($request->validated());
-        if (sizeof($data)){
+        if (sizeof($data)) {
             // если не зарегистрирован, то сохранять поиски нельзя
-            if (Auth::guest()){
+            if (Auth::guest()) {
                 $created = Search::updateOrCreate(
-                ['session_token' => $request->session()->get('_token')],
-                [
-                    'data' => json_encode($data),
-                    'description' => app(ProductSearchService::class)->getSearchDescription($data),
-                    'session_token' => $request->session()->get('_token')
-                ]
-            );
+                    ['session_token' => $request->session()->get('_token')],
+                    [
+                        'data' => json_encode($data),
+                        'description' => app(ProductSearchService::class)->getSearchDescription($data),
+                        'session_token' => $request->session()->get('_token')
+                    ]
+                );
 
-        } else {
+            } else {
                 $created = Search::updateOrCreate(
                     [
                         'status' => 'active',
@@ -100,13 +101,14 @@ class SearchController extends Controller
                         'description' => app(ProductSearchService::class)->getSearchDescription($data),
                         'session_token' => $request->session()->get('_token'),
                         'user_id' => Auth::user()->getAuthIdentifier()
-                    ]);
+                    ]
+                );
             }
-        }else {
+        } else {
             return back()->with('error', __('messages.searches.created.empty'))->withInput();
 
         }
-        if($created){
+        if ($created) {
 
             return redirect()->route('search.show', [$created])->with('success', __('messages.searches.created.success'));
         }
@@ -129,7 +131,7 @@ class SearchController extends Controller
                 ->paginate(Config::get('constants.ITEMS_PER_PAGE')),
             'search' => $search,
             'searchData' => $searchData,
-            'fieldsToOrderBy'=> Product::getFieldsToOrderBy(),
+            'fieldsToOrderBy' => Product::getFieldsToOrderBy(),
             'fields' => array_merge(Product::getFieldsToCreate(), Product::getLinkedFields()),
             'linkedFields' => Product::getLinkedFields(),
             //если есть данные по сравнению в сессии выдаю их, если нет, то пустой массив
@@ -138,8 +140,6 @@ class SearchController extends Controller
                 ->getProducts($searchData)
                 ->get()
                 ->count(),
-
-
         ]);
     }
 
@@ -154,8 +154,8 @@ class SearchController extends Controller
         $selectionData = Product::getSelectionData();
 
         return view('searches.create', [
-            'fields'=> Product::getFieldsToSearch(),
-            'fieldsToOrderBy'=> Product::getFieldsToOrderBy(),
+            'fields' => Product::getFieldsToSearch(),
+            'fieldsToOrderBy' => Product::getFieldsToOrderBy(),
             'brands' => Brand::all(),
             'catalogs' => Catalog::all(),
             'linkedFields' => Product::getLinkedFields(),
@@ -172,6 +172,7 @@ class SearchController extends Controller
             'button' => 'Повторить поиск',
             'product' => null
         ]);
+
     }
 
     /**
@@ -183,14 +184,12 @@ class SearchController extends Controller
      */
     public function update(UpdateRequest $request, Search $search)
     {
-//        dd($request->validated(), $search);
         $data = app(ProductSearchService::class)->getSearchData($request->validated());
 
-        if (count($data) == 1 && isset($data['order-by'])){
+        if (count($data) == 1 && isset($data['order-by'])) {
             $data = array_merge(json_decode($search->data, 1), $data);
         }
 
-//        $updatedData = app(ProductSearchService::class)->getUpdatedData($search, $data);
         $updated = $search->fill(
             [
                 'data' => json_encode($data),
@@ -202,7 +201,7 @@ class SearchController extends Controller
         )->save();
 
 
-        if($updated){
+        if ($updated) {
 
             return redirect()->route('search.show', [$search])->with('success', __('messages.searches.updated.success'));
         }
@@ -218,13 +217,12 @@ class SearchController extends Controller
      */
     public function destroy(Search $search)
     {
-
         try {
             $search->status = 'deleted';
             $search->save();
             return response()->json('ok');
 
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return response()->json('error', 400);
         }
     }
@@ -235,7 +233,8 @@ class SearchController extends Controller
         try {
             return response()->json(app(ProductSearchService::class)->quickSearch($request->get('text')));
 
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return response()->json('error', 400);
-        }    }
+        }
+    }
 }

@@ -48,7 +48,7 @@
                         <td> Бренд </td>
                         <td>
                             <div class="d-flex justify-content-center align-items-center flex-column gap-1">
-                                <a class="link btn-sm btn-outline-secondary text-decoration-underline" href="{{ route('products.indexBySlug', ['param' => 'brand', 'slug' => $brand->slug]) }}" title="Все покрытия {{Str::ucfirst($brand->title)}}">{{Str::upper($brand->title)}}</a>
+                                <a class="link btn-sm btn-outline-secondary text-decoration-underline" href="{{ route('products.indexBySlug', ['param' => 'brand', 'value' => $brand->slug]) }}" title="Все покрытия {{Str::ucfirst($brand->title)}}">{{Str::upper($brand->title)}}</a>
                             </div>
                         </td>
                     </tr>
@@ -57,7 +57,7 @@
                         <td> Каталог </td>
                         <td>
                             <div class="d-flex justify-content-center align-items-center flex-column gap-1">
-                                    <a class="link btn-sm btn-outline-secondary text-decoration-underline" href="{{ route('products.indexBySlug', ['param' => 'catalog', 'slug' => $catalog->slug]) }}" title="Все покрытия {{Str::ucfirst($catalog->title)}}">{{Str::ucfirst($catalog->title)}}</a>
+                                    <a class="link btn-sm btn-outline-secondary text-decoration-underline" href="{{ route('products.indexBySlug', ['param' => 'catalog', 'value' => $catalog->slug]) }}" title="Все покрытия {{Str::ucfirst($catalog->title)}}">{{Str::ucfirst($catalog->title)}}</a>
                             </div>
 
                         </td>
@@ -66,7 +66,7 @@
                         <tr class="align-middle text-center">
                             <td>{!! $value !!}</td>
                             <td>
-                                <a class="link btn-sm btn-outline-secondary text-decoration-underline" href="{{ route('products.indexByParam', ['param' => $key, 'value' => $product->$key ? $product->$key : 0]) }}" title="Все покрытия {{$key}} = {{ $value }}">@if($product->$key === true){{'Да'}}@elseif($product->$key or $product->$key === 0){{$product->$key}}@else {{'Нет'}} @endif</a>
+                                <a class="link btn-sm btn-outline-secondary text-decoration-underline" href="{{ route('products.indexBySlug', ['param' => $key, 'value' => $product->$key ? $product->$key : 0]) }}" title="Все покрытия {{$key}} = {{ $value }}">@if($product->$key === true){{'Да'}}@elseif($product->$key or $product->$key === 0){{$product->$key}}@else {{'Нет'}} @endif</a>
                             </td>
                         </tr>
                     @endforeach
@@ -77,7 +77,7 @@
                         <td>
                             <div class="d-flex justify-content-center align-items-center flex-column gap-1">
                                 @foreach($product->$key as $param)
-                                    <a class="link btn-sm btn-outline-secondary text-decoration-underline" href="{{ route('products.indexBySlug', ['param' => $key, 'slug' => $param->slug]) }}" title="Все покрытия {{Str::ucfirst($param->title)}}">{{Str::ucfirst($param->title)}}</a>
+                                    <a class="link btn-sm btn-outline-secondary text-decoration-underline" href="{{ route('products.indexBySlug', ['param' => $key, 'value' => $param->slug]) }}" title="Все покрытия {{Str::ucfirst($param->title)}}">{{Str::ucfirst($param->title)}}</a>
                                 @endforeach
                                 @if(!count($product->$key))
                                     Нет

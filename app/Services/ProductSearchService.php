@@ -67,7 +67,6 @@ class ProductSearchService
     public function getSearchData(array $request): array
     {
         $selectionData = $this->getSelectionData();
-
         //проверяю, если меньше меньшего или null, то удаляю из поиска
         $searchData = [];
         foreach ($request as $key => $value){
@@ -80,6 +79,7 @@ class ProductSearchService
                 $searchData[$key] = 1;
             }
         }
+
         return $searchData;
     }
 

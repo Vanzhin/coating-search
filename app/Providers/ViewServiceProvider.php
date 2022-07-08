@@ -32,15 +32,15 @@ class ViewServiceProvider extends ServiceProvider
         View::composer(['components.admin.sidebar', 'components.header'], function ($view) {
 // https://laravel.com/docs/9.x/views#sharing-data-with-all-views
             $counts['products'] = Product::all()->count();
-            $counts['users'] = User::all()->count();
-            $counts['searches'] = Search::all()->count();
+//            $counts['users'] = User::all()->count();
+//            $counts['searches'] = Search::all()->count();
             $counts['compare'] = is_array(session()->get('products.compare')) ? count(session()->get('products.compare')) : 0;
 
 
-            if(Auth::check()){
+            if (Auth::check()) {
                 $counts['userSearches'] = Search::query()
                     ->where('user_id', Auth::user()->id)
-                    ->where('status','<>', 'deleted')
+                    ->where('status', '<>', 'deleted')
                     ->get()->count();
                 $counts['userProducts'] = DB::table('product_likes')
                     ->where('user_id', Auth::user()->id)

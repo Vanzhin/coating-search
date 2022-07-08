@@ -2,38 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Additive;
-use App\Models\Binder;
-use App\Models\Brand;
-use App\Models\Catalog;
-use App\Models\Environment;
-use App\Models\Number;
 use App\Models\Product;
-use App\Models\Resistance;
-use App\Models\Substrate;
 use App\Services\LikeService;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::query()->paginate(10);
+        $products = Product::query()->paginate(config('constants.ITEMS_PER_PAGE'));
         return view('products.index', [
             'products' => $products,
             'likes' => app(LikeService::class)->getLikedProductsId(),
             'compareProduct' => session()->get('products.compare') ?? [],
-
-
         ]);
     }
 
-    public function show(Product $product) :object
+    public function show(Product $product): object
     {
         return view('products.show', [
             'product' => $product,
@@ -47,39 +32,12 @@ class ProductController extends Controller
             'additives' => $product->additives,
             'likes' => app(LikeService::class)->getLikedProductsId(),
             'compareProduct' => session()->get('products.compare') ?? [],
-
-
-
         ]);
-    }
-    //todo убрать отсюда
-    public function addToCompare(int $productId){
-        try {
-            if (session()->has('products.compare') && in_array($productId, session()->get('products.compare'))){
-                session()->pull('products.compare.' . array_search($productId, session()->get('products.compare')));
-            }else{
-                session()->push('products.compare', $productId);
-            }
-            return response()->json([
-                'total' => count(session()->get('products.compare')),
-                'product_id' => $productId,
-            ]);
-
-        }catch(\Exception $e){
-            return response()->json('error', 400);
-        } catch (NotFoundExceptionInterface $e) {
-            return response()->json('error', 401);
-
-        } catch (ContainerExceptionInterface $e) {
-            return response()->json('error', 402);
-
-        }
-
     }
 
     public function compare()
     {
-        if (session()->exists('products.compare')){
+        if (session()->exists('products.compare')) {
             $products = Product::query()->whereIn('id', session()->get('products.compare'))->get();
 
         } else $products = [];
@@ -89,103 +47,56 @@ class ProductController extends Controller
             'linkedFields' => Product::getLinkedFields(),
         ]);
     }
-    public function indexBySlug($param, $slug)
+
+    public function indexBySlug($param, $value)
     {
-        $info = array_key_exists($param, Product::getLinkedFields()) ? Str::ucfirst(Product::getLinkedFields()[$param]) : null;
-        //todo очень костыльно - доделать
-        switch ($param) {
-            case 'additives':
-                $model = Additive::where('slug', $slug)->first();
-                $products = Additive::find($model->id)->products()->paginate(10);
-                break;
-            case 'brand':
-                $model = Brand::where('slug', $slug)->first();
-                $products = Product::where('brand_id',$model->id)->paginate(10);
-                $info = 'Производитель';
-                break;
-            case 'catalog':
-                $model = Catalog::where('slug', $slug)->first();
-                $products = Product::where('catalog_id',$model->id)->paginate(10);
-                $info = 'Каталог';
+        //если связь или параметр есть, то вывожу данные, иначе показываю общую инфо
+        if (key_exists($param, Product::getFieldsToShow())) {
+            $factor = config('constants.FACTOR');
+            if ($value == 0) {
+                $products = Product::query()
+                    ->where($param, $value)
+                    ->orWhere($param, '=', null)
+                    ->paginate(config('constants.ITEMS_PER_PAGE'));
+            } else {
+                $products = Product::query()
+                    ->whereBetween($param, [$value - abs($value) * $factor, $value + abs($value) * $factor])
+                    ->paginate(config('constants.ITEMS_PER_PAGE'));
+            }
+            $info = $value != 0 ? $value . ' ± ' . abs($value) * $factor : 'Нет';
 
-                break;
-            case 'binders':
-                $model = Binder::where('slug', $slug)->first();
-                $products = Binder::find($model->id)->products()->paginate(10);
-                break;
-            case 'environments':
-                $model = Environment::where('slug', $slug)->first();
-                $products = Environment::find($model->id)->products()->paginate(10);
+            if ($param === 'tolerance') {
+                $info = $value ? 'Да' : 'Нет';
+            }
+            $string = '(' . Str::ucfirst(Product::getFieldsToShow()[$param]) . ': ' . $info . ')';
 
-                break;
-            case 'numbers':
-                $model = Number::where('slug', $slug)->first();
-                $products = Number::find($model->id)->products()->paginate(10);
+        } else if (method_exists(Product::class, $param)) {
+            $string = '\App\Models\\' . Str::singular($param);
+            $instance = new $string();
+            $model = $instance->where('slug', $value)->first();
 
-                break;
-            case 'resistances':
-                $model = Resistance::where('slug', $slug)->first();
-                $products = Resistance::find($model->id)->products()->paginate(10);
+            $products = $model->products()->paginate(config('constants.ITEMS_PER_PAGE'));
+            //todo подумать как сократить код и убрать это условие
+            if (in_array($param, ['brand', 'catalog'])) {
+                $info = match ($param) {
+                    'brand' => 'Производитель',
+                    'catalog' => 'Каталог',
+                };
+            } else {
 
-                break;
-            case 'substrates':
-                $model = Substrate::where('slug', $slug)->first();
-                $products = Substrate::find($model->id)->products()->paginate(10);
+                $info = array_key_exists($param, Product::getLinkedFields()) ? Product::getLinkedFields()[$param] : null;
+            }
+            $string = '(' . Str::ucfirst($info) . ': ' . Str::ucfirst($model->title) . ')';
 
-                break;
-            default:
-                //todo сделать, чтобы редиректил на все покрытия если что-то не так с запросом
-
-            $products = Product::query()->paginate(10);
-                return view('products.index', [
-                    'products' => $products,
-                    'likes' => app(LikeService::class)->getLikedProductsId(),
-                    'compareProduct' => session()->get('products.compare') ?? [],
-
-
-                ]);
+        } else {
+            $products = Product::query()->paginate(config('constants.ITEMS_PER_PAGE'));
         }
-        return view('products.index', [
-            'products' => $products,
-            'likes' => app(LikeService::class)->getLikedProductsId(),
-            'compareProduct' => session()->get('products.compare') ?? [],
-            'param' => '(' . $info .': ' . Str::ucfirst($model->title) . ')',
-
-        ]);
-    }
-
-    public function indexByParam($param, $value)
-    {
-        //todo очень костыльно - доделать
-        $factor = 0.1;
-        switch ($param) {
-
-            case 'tolerance':
-                $products = Product::query()->where($param, $value !== 0 ? $value : null)->paginate(10);
-                $value = $value ? "Да" : 'Нет';
-                break;
-            default:
-                if ($value == 0){
-                    $products = Product::query()
-                        ->where($param, $value)
-                        ->orWhere($param, null)
-                        ->paginate(10);
-                }else{
-                    $products = Product::query()->whereBetween($param,[$value - abs($value) * $factor, $value + abs($value) * $factor])->paginate(10);
-
-                }
-                $value = $value != 0 ? $value . ' ± ' . abs($value) * $factor :'Нет';
-
-        }
-        $info = '(' . Str::ucfirst(Product::getFieldsToShow()[$param]) .': ' . $value .')';
 
         return view('products.index', [
             'products' => $products,
             'likes' => app(LikeService::class)->getLikedProductsId(),
             'compareProduct' => session()->get('products.compare') ?? [],
-            'param' => $info,
-
+            'string' => $string,
         ]);
     }
-
 }
