@@ -6,7 +6,9 @@
     <section class="text-center container">
         <h1 class="fw-light">
             Все покрытия
-            {!! $string ?? null !!}
+            <div   >
+                {!! $string ?? null !!}
+            </div>
         </h1>
     </section>
 @endsection

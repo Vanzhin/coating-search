@@ -86,7 +86,7 @@ class ProductController extends Controller
 
                 $info = array_key_exists($param, Product::getLinkedFields()) ? Product::getLinkedFields()[$param] : null;
             }
-            $string = '(' . Str::ucfirst($info) . ': ' . Str::ucfirst($model->title) . ')';
+            $string = '(' . Str::upper($info) . ': ' . Str::upper($model->title) . ')';
 
         } else {
             $products = Product::query()->paginate(config('constants.ITEMS_PER_PAGE'));
