@@ -4,7 +4,8 @@
 @endsection
 @section('header')
 {{--    если пользователь пытается просмотреть не свою запись, то выводу заглушку--}}
-    @if(Auth::check() ? Auth::user()->getAuthIdentifier() : false === $search->user_id or $search->session_token === session()->get('_token'))
+{{--@dd(Auth::user()->getAuthIdentifier(), $search->user_id, $search->id,session('searchId') )--}}
+    @if(Auth::check() ? Auth::user()->getAuthIdentifier() : false === $search->user_id or $search->id === session('searchId'))
         <section class="text-center container my-3">
         <h1 class="fw-light d-flex justify-content-center align-items-center">
             <span>Результаты поиска покрытий</span>
@@ -49,7 +50,7 @@
                             <span class="d-none d-md-inline-flex">Обновить</span>
                         </a>
                         @if(Auth::user())
-                            @if($search->status === 'saved')
+                            @if($search->title)
                                 <a href="{{route('search')}}" class="w-25 btn btn-info ms-1 d-flex justify-content-evenly align-items-center">
                                     <i class="fa-solid fa-magnifying-glass"></i>
                                     <span class="d-none d-md-inline-flex">Мои поиски</span>
@@ -164,7 +165,6 @@
                             <div class="invalid-feedback">
                                 Пожалуйста, укажите название
                             </div>
-                            <input class="form-control" type="text"  id="status" name="status" value="saved" hidden>
                         </div>
                         <div class="modal-footer">
                             <button  class="btn btn-outline-secondary" data-bs-dismiss="modal">Отмена</button>

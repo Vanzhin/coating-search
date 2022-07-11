@@ -67,11 +67,11 @@ class ProductSearchService
     public function getSearchData(array $request): array
     {
         $selectionData = $this->getSelectionData();
+
         //проверяю, если меньше меньшего или null, то удаляю из поиска
         $searchData = [];
         foreach ($request as $key => $value){
-
-            if ((key_exists($key, $selectionData) && $value >= $selectionData[$key]['min'] or (in_array($key, ['title', 'order-by', 'search_title', 'status']) && !is_null($value)))){
+            if ((key_exists($key, $selectionData) && $value >= $selectionData[$key]['min'] or (in_array($key, ['title', 'order-by', 'search_title']) && !is_null($value)))){
                 $searchData[$key] = $value;
             }  elseif (is_array($value) ){
                 $searchData[$key] = $value;
@@ -86,36 +86,40 @@ class ProductSearchService
     public function getSearchDescription(array $request): string
     {
         $data = array_merge(Product::getFieldsToSearch(), Product::getLinkedFields());
-
         $data['order-by'] = 'Сортировка';
         //todo убрать костыль
+
         foreach ($request as $key => $item){
-            $this->title = $this->title . $data[$key] . ': ';
-            if (is_array($item)){
-                /* составляю строку для поля title в search, если не массив сразу подставляется значение,
-                если массив перебирается функцией array_map, поскольку brand_id и catalog_id находятся
-                в одной таблице с products, пришлось поставить костыль для них
-                */
-                $this->title = $this->title . implode(', ',
-                        array_map(function ($value) use ($key)
-                        {
-                            $tableParam = [
-                                'brand_id' => 'brands',
-                                'catalog_id' => 'catalogs'
-                            ];
-                            if (array_key_exists($key,$tableParam)) {
-                                $key = $tableParam[$key];
-                            }
+            if (key_exists($key,$data)){
+                $this->title = $this->title . $data[$key] . ': ';
+                if (is_array($item)){
+                    /* составляю строку для поля title в search, если не массив сразу подставляется значение,
+                    если массив перебирается функцией array_map, поскольку brand_id и catalog_id находятся
+                    в одной таблице с products, пришлось поставить костыль для них
+                    */
+                    $this->title = $this->title . implode(', ',
+                            array_map(function ($value) use ($key)
+                            {
+                                $tableParam = [
+                                    'brand_id' => 'brands',
+                                    'catalog_id' => 'catalogs'
+                                ];
+                                if (array_key_exists($key,$tableParam)) {
+                                    $key = $tableParam[$key];
+                                }
 
-                            return DB::table($key)->where('id', $value)->value('title');}, $item)) . '; ';
+                                return DB::table($key)->where('id', $value)->value('title');}, $item)) . '; ';
 
-            } elseif ($key === 'tolerance'){
-                $this->title = $this->title . 'да; ';
-            }
+                } elseif ($key === 'tolerance'){
+                    $this->title = $this->title . 'да; ';
+                }
 //            elseif ($key === 'order-by'){
 //                $this->title = $this->title . 'выполнена; ';
 //            }
-            else $this->title = $this->title . $item . '; ';
+                else $this->title = $this->title . $item . '; ';
+
+            }
+
         }
         return $this->title;
     }

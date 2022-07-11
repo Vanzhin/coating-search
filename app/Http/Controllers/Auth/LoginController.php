@@ -52,7 +52,7 @@ class LoginController extends Controller
 
     protected function loggedOut(Request $request)
     {
-        session()->flash('products.compare');
+        session()->forget(['products.compare', 'searchId']);
         return redirect()->route('home');
 
     }

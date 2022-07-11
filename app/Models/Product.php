@@ -8,12 +8,13 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, BelongsToMany, HasOne};
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
     use HasFactory, Sluggable, TModel;
 
-    protected  $table = 'products';
+    protected $table = 'products';
     protected $fillable = [
         'title',
         'description',
@@ -36,21 +37,6 @@ class Product extends Model
 
 
     public array $propertyToShow = [
-    'vs' => 'Сухой остаток,&nbsp;об %',
-    'dft' => 'Стандартная ТСП,&nbsp;мкм',
-    'dry_to_touch' => 'Сухой на отлип,&nbsp;ч',
-    'dry_to_handle' => 'Сухой до перемещения,&nbsp;ч',
-    'min_int' => 'Минимальный интервал перекрытия,&nbsp;ч',
-    'max_int' => 'Максимальный интервал перекрытия,&nbsp;д',
-    'tolerance' => 'Толерантный к подготовке поверхности',
-    'min_temp' => 'Минимальная т-ра отверждения,' . "&nbsp;&deg;C",
-    'max_service_temp' => 'Максимальная  т-ра эксплуатации,' . "&nbsp;&deg;C",
-];
-
-public static function getFieldsToShow(): array
-{
-    return [
-        'title' => 'Название',
         'vs' => 'Сухой остаток,&nbsp;об %',
         'dft' => 'Стандартная ТСП,&nbsp;мкм',
         'dry_to_touch' => 'Сухой на отлип,&nbsp;ч',
@@ -61,9 +47,24 @@ public static function getFieldsToShow(): array
         'min_temp' => 'Минимальная т-ра отверждения,' . "&nbsp;&deg;C",
         'max_service_temp' => 'Максимальная  т-ра эксплуатации,' . "&nbsp;&deg;C",
     ];
-}
 
-public static function getFieldsToCreate(): array
+    public static function getFieldsToShow(): array
+    {
+        return [
+            'title' => 'Название',
+            'vs' => 'Сухой остаток,&nbsp;об %',
+            'dft' => 'Стандартная ТСП,&nbsp;мкм',
+            'dry_to_touch' => 'Сухой на отлип,&nbsp;ч',
+            'dry_to_handle' => 'Сухой до перемещения,&nbsp;ч',
+            'min_int' => 'Минимальный интервал перекрытия,&nbsp;ч',
+            'max_int' => 'Максимальный интервал перекрытия,&nbsp;д',
+            'tolerance' => 'Толерантный к подготовке поверхности',
+            'min_temp' => 'Минимальная т-ра отверждения,' . "&nbsp;&deg;C",
+            'max_service_temp' => 'Максимальная  т-ра эксплуатации,' . "&nbsp;&deg;C",
+        ];
+    }
+
+    public static function getFieldsToCreate(): array
     {
         return [
             'title' => 'Название',
@@ -82,7 +83,8 @@ public static function getFieldsToCreate(): array
             'pds' => 'Техническое описание',
         ];
     }
-public static function getFieldsToSearch(): array
+
+    public static function getFieldsToSearch(): array
     {
         return [
             'brand_id' => 'Производитель',
@@ -100,6 +102,7 @@ public static function getFieldsToSearch(): array
 
         ];
     }
+
     public static function getFieldsToOrderBy(): array
     {
         return [
@@ -116,7 +119,8 @@ public static function getFieldsToSearch(): array
 
         ];
     }
-public static function getFieldsToMath(): array
+
+    public static function getFieldsToMath(): array
     {
         return [
             'vs',
@@ -130,7 +134,7 @@ public static function getFieldsToMath(): array
         ];
     }
 
-public static function getLinkedFields(): array
+    public static function getLinkedFields(): array
     {
         return [
             'binders' => 'Основа',
@@ -142,26 +146,40 @@ public static function getLinkedFields(): array
         ];
     }
 
-public static function getSelectionData()
-{
-    $selectionData = [];
-    foreach (Product::getFieldsToMath() as $fieldName) {
-        $selectionData[$fieldName] = app(ExtractValuesService::class)
-            ->getValues('products', $fieldName);
+    public static function getSelectionData()
+    {
+        $selectionData = [];
+        foreach (Product::getFieldsToMath() as $fieldName) {
+            $selectionData[$fieldName] = app(ExtractValuesService::class)
+                ->getValues('products', $fieldName);
 
+        }
+        return $selectionData;
     }
-    return $selectionData;
-}
+
+    public static function getRelationsFromArray(array $array): array
+    {
+        $relationsArray = [];
+        foreach ($array as $field => $cyrillic){
+            if (method_exists(Product::class,$field) or method_exists(Product::class, Str::singular($field))){
+                $string = '\App\Models\\' . ucfirst(Str::singular($field));
+                $instance = new $string();
+                $relationsArray[$field] = $instance->query()->orderBy('title', 'asc')->get();
+            }
+
+        }
+        return $relationsArray;
+    }
 
 
-
-public function binders(): BelongsToMany
+    public function binders(): BelongsToMany
     {
         return $this->belongsToMany(Binder::class, 'product_binders',
             'product_id', 'binder_id',
             'id', 'id'
         );
     }
+
     public function environments(): BelongsToMany
     {
         return $this->belongsToMany(Environment::class, 'product_environments',
@@ -185,6 +203,7 @@ public function binders(): BelongsToMany
             'id', 'id'
         );
     }
+
     public function resistances(): BelongsToMany
     {
         return $this->belongsToMany(Resistance::class, 'product_resistances',
@@ -192,6 +211,7 @@ public function binders(): BelongsToMany
             'id', 'id'
         );
     }
+
     public function numbers(): BelongsToMany
     {
         return $this->belongsToMany(Number::class, 'product_numbers',
@@ -220,20 +240,20 @@ public function binders(): BelongsToMany
 // прохожусь по основным параметрам
 
         $binders = $this->binders()->orderBy('binders.id')->get();
-        foreach ($binders as $binder){
+        foreach ($binders as $binder) {
             $bIds[] = $binder->id;
         }
         $substrates = $this->substrates()->get();
-        foreach ($substrates as $substrate){
+        foreach ($substrates as $substrate) {
             $substratesIds[] = $substrate->id;
         }
 
         $environments = $this->environments()->get();
-        foreach ($environments as $environment){
+        foreach ($environments as $environment) {
             $envIds[] = $environment->getKey('id');
         }
         $resistances = $this->resistances()->get();
-        foreach ($resistances as $resistance){
+        foreach ($resistances as $resistance) {
             $resIds[] = $resistance->getKey('id');
         }
 
@@ -241,21 +261,21 @@ public function binders(): BelongsToMany
 
         return
             Product::query()
-            ->join('product_binders', 'products.id', '=', 'product_binders.product_id')
-            ->join('binders', 'binders.id', '=', 'product_binders.binder_id')
-            ->join('product_substrates', 'products.id', '=', 'product_substrates.product_id')
-            ->join('substrates', 'substrates.id', '=', 'product_substrates.substrate_id')
-            ->join('product_environments', 'products.id', '=', 'product_environments.product_id')
-            ->join('environments', 'environments.id', '=', 'product_environments.environment_id')
-            ->where('products.title', '<>', $this->title)
-            ->whereBetween('vs', [$this->vs - $factorVs, $this->vs + $factorVs])
-            ->whereBetween('dft', [$this->dft - $factorDft, $this->dft + $factorDft])
-            ->where('substrates.id', $substratesIds)
-            ->where('environments.id', $envIds)
-            ->selectRaw('products.*')
-            ->groupBy('products.id')
-            ->havingRaw("group_concat(binders.id order by binders.id) like ?", [implode(',',$bIds) . '%'])
-            ->get();
+                ->join('product_binders', 'products.id', '=', 'product_binders.product_id')
+                ->join('binders', 'binders.id', '=', 'product_binders.binder_id')
+                ->join('product_substrates', 'products.id', '=', 'product_substrates.product_id')
+                ->join('substrates', 'substrates.id', '=', 'product_substrates.substrate_id')
+                ->join('product_environments', 'products.id', '=', 'product_environments.product_id')
+                ->join('environments', 'environments.id', '=', 'product_environments.environment_id')
+                ->where('products.title', '<>', $this->title)
+                ->whereBetween('vs', [$this->vs - $factorVs, $this->vs + $factorVs])
+                ->whereBetween('dft', [$this->dft - $factorDft, $this->dft + $factorDft])
+                ->where('substrates.id', $substratesIds)
+                ->where('environments.id', $envIds)
+                ->selectRaw('products.*')
+                ->groupBy('products.id')
+                ->havingRaw("group_concat(binders.id order by binders.id) like ?", [implode(',', $bIds) . '%'])
+                ->get();
     }
 
     public function sluggable(): array
