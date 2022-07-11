@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Product;
 use App\Models\Search;
 use App\Models\User;
+use App\Services\ViewDataService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
@@ -31,7 +32,7 @@ class ViewServiceProvider extends ServiceProvider
     {
         View::composer(['components.admin.sidebar', 'components.header'], function ($view) {
 // https://laravel.com/docs/9.x/views#sharing-data-with-all-views
-            $counts['products'] = Product::all()->count();
+            $counts['products'] = app(ViewDataService::class)->getAllProducts();
 //            $counts['users'] = User::all()->count();
 //            $counts['searches'] = Search::all()->count();
             $counts['compare'] = is_array(session()->get('products.compare')) ? count(session()->get('products.compare')) : 0;
