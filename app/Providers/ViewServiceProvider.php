@@ -37,15 +37,12 @@ class ViewServiceProvider extends ServiceProvider
 //            $counts['searches'] = Search::all()->count();
             $counts['compare'] = is_array(session()->get('products.compare')) ? count(session()->get('products.compare')) : 0;
 
-
             if (Auth::check()) {
                 $counts['userSearches'] = Search::query()
                     ->where('user_id', Auth::user()->id)
                     ->where('is_deleted', 0)
                     ->get()->count();
-                $counts['userProducts'] = DB::table('product_likes')
-                    ->where('user_id', Auth::user()->id)
-                    ->get()->count();
+                $counts['userProducts'] = app(ViewDataService::class)->getUserLikes(Auth::user()->id);
             }
 
 

@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Product;
 use App\Models\Search;
-use Cocur\Slugify\Slugify;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -13,7 +12,7 @@ class ProductSearchService
 {
     private string $title = '';
 
-    private function queryBuilder(array $searchData)
+    public function getProducts(array $searchData)
     {
         $products = Product::query();
         foreach ($searchData as $key => $value){
@@ -54,14 +53,6 @@ class ProductSearchService
                 ->getValues('products', $fieldName);
         }
         return $selectionData;
-    }
-
-    public function getProducts(array $request): object
-    {
-        $searchData = $this->getSearchData($request);
-
-        return $this->queryBuilder($searchData);
-
     }
 
     public function getSearchData(array $request): array

@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Http\Request;
 
-
 class SearchController extends Controller
 {
     /**
@@ -103,22 +102,14 @@ class SearchController extends Controller
     public function show(Search $search)
     {
         $searchData = json_decode($search->data, true);
-
+        $products = app(ProductSearchService::class)->getProducts($searchData);
         return view('searches.show', [
-            'products' => app(ProductSearchService::class)
-                ->getProducts($searchData)
-                ->paginate(Config::get('constants.ITEMS_PER_PAGE')),
+            'products' => $products->paginate(Config::get('constants.ITEMS_PER_PAGE')),
             'search' => $search,
             'searchData' => $searchData,
             'fieldsToOrderBy' => Product::getFieldsToOrderBy(),
             'fields' => array_merge(Product::getFieldsToCreate(), Product::getLinkedFields()),
             'linkedFields' => Product::getLinkedFields(),
-            //если есть данные по сравнению в сессии выдаю их, если нет, то пустой массив
-            'compareProduct' => session()->get('products.compare') ?? [],
-            'productCount' => app(ProductSearchService::class)
-                ->getProducts($searchData)
-                ->get()
-                ->count(),
         ]);
     }
 
@@ -145,7 +136,6 @@ class SearchController extends Controller
         $viewData = array_merge(Product::getRelationsFromArray($varsArr), $data);
 
         return view('searches.create', $viewData);
-
     }
 
     /**

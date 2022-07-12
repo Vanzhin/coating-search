@@ -9,18 +9,16 @@ class Card extends Component
 {
     public Product $product;
     public $likes;
-    public array $compareProduct;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct(Product $product, $likes, array $compareProduct)
+    public function __construct(Product $product, $likes)
     {
         $this->product = $product;
         $this->likes = $likes;
-        $this->compareProduct = $compareProduct;
 
     }
 

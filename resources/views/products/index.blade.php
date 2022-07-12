@@ -1,4 +1,5 @@
 @extends('layouts.main')
+
 @section('title')
     @parent Покрытия {{$param ?? null}}
 @endsection
@@ -6,7 +7,8 @@
     <section class="text-center container">
         <h1 class="fw-light">
             Все покрытия
-            <div   >
+            <span class="badge bg-secondary">{{ $products->total() }}</span>
+            <div>
                 {!! $string ?? null !!}
             </div>
         </h1>
@@ -15,10 +17,10 @@
 @section('content')
     <div class="album py-5 bg-light min-vh-100">
         <div class="container">
-{{--            @include('inc.message')--}}
+            {{--            @include('inc.message')--}}
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 @forelse($products as $product)
-                    <x-products.card :product="$product" :likes="$likes" :compareProduct="$compareProduct"/>
+                    <x-products.card :product="$product" :likes="$likes"/>
                 @empty
                     <h2>Записей нет</h2>
                 @endforelse
