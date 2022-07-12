@@ -9,7 +9,7 @@
         <section class="text-center container my-3">
         <h1 class="fw-light d-flex justify-content-center align-items-center">
             <span>Результаты поиска покрытий</span>
-            <span class="badge bg-secondary mx-3">{{ $productCount }}</span>
+            <span class="badge bg-secondary mx-3">{{ $products->total() }}</span>
         </h1>
         @include('inc.message')
             <a class="btn btn-outline-secondary m-3" data-bs-toggle="collapse" href="#collapseTitle" role="button" aria-expanded="false" aria-controls="collapseTitle">
@@ -79,7 +79,7 @@
                                     <h5 class="header">{{ Str::upper($product->title) }}</h5>
                                 </button>
                                 <a href="javascript:;" id="prod-{{$product->id}}" style="width: 20%;" class="d-flex justify-content-evenly align-items-center btn compare @if(isset($compareProduct) && in_array($product->id, $compareProduct)){{"add btn-secondary"}}@else {{"btn-warning"}}@endif" compare="{{$product->id}}">
-                                    @if(isset($compareProduct) && in_array($product->id, $compareProduct))
+                                    @if(session('products.compare') !== null && in_array($product->id, session('products.compare')))
                                         <i class="fa-solid fa-minus"></i>
                                         <span class="d-none d-md-inline-flex">Убрать из сравнения</span>
                                     @else
