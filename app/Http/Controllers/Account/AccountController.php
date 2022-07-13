@@ -23,7 +23,7 @@ class AccountController extends Controller
         return view('account.index', [
             'countSearches' => Search::query()
                 ->where('user_id', '=', Auth::user()->id)
-                ->where('status', '<>', 'deleted')
+                ->where('is_deleted', '=', 0)
             ->count(),
             'countLikes' => count(app(LikeService::class)->getLikedProductsId()),
         ]);
