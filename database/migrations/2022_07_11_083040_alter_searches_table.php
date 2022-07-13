@@ -33,6 +33,8 @@ return new class extends Migration
         Schema::table('searches', function (Blueprint $table) {
             $table->dropColumn('user_id');
             $table->dropColumn('is_deleted');
+            $table->enum('status', ['active', 'saved', 'deleted'])->default('active');
+
 
 
         });

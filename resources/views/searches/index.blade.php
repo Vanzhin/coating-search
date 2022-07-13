@@ -10,12 +10,19 @@
 @section('content')
     <div class="album py-5 bg-light min-vh-100 ">
         <div class="container d-flex flex-column rounded-2">
-            <a href="{{ route('search.create') }}" class="btn btn-primary btn-lg mb-4">Начать поиск</a>
+            @if(session('searchId'))
+                <a href="{{ route('search.edit', session('searchId')) }}" class="btn btn-primary btn-lg mb-4">Продолжить поиск</a>
+            @else
+                <a href="{{ route('search.create') }}" class="btn btn-primary btn-lg mb-4">Начать поиск</a>
+
+            @endif
+
             @if(Auth::user())
                 @forelse($searches as $search)
-                    <div id ="{{$search->id}}" class="list-group m-1 mw-100">
-                        <div  class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
-                            <a href="{{route('search.show', [$search])}}" class="text-decoration-none text-reset d-flex gap-2 w-100 flex-column ">
+                    <div id="{{$search->id}}" class="list-group m-1 mw-100">
+                        <div class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+                            <a href="{{route('search.show', [$search])}}"
+                               class="text-decoration-none text-reset d-flex gap-2 w-100 flex-column ">
                                 <div>
                                     <h6 class="mb-0">{{$search->title ?? 'Без названия'}}</h6>
                                     <p class="mb-0 opacity-75">{{ $search->description }}</p>
@@ -23,22 +30,23 @@
                                 <small class="opacity-50 text-nowrap">{{$search->updated_at}}</small>
                             </a>
                             <span class="btn btn-close" data-bs-toggle="modal" data-bs-target="#searchDeleteModal"
-                                    data-bs-item="{{$search->title ?? 'Без названия'}}"
-                                    data-bs-id="{{$search->id}}">
+                                  data-bs-item="{{$search->title ?? 'Без названия'}}"
+                                  data-bs-id="{{$search->id}}">
                             </span>
                         </div>
                     </div>
                 @empty
                     <h2>Записей нет</h2>
                 @endforelse
-            <div class="my-2">
-                {{ $searches->onEachSide(0)->links() }}
-            </div>
+                <div class="my-2">
+                    {{ $searches->onEachSide(0)->links() }}
+                </div>
             @endif
         </div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="searchDeleteModal" tabindex="-1" aria-labelledby="searchDeleteModalLabel" aria-hidden="true">
+    <div class="modal fade" id="searchDeleteModal" tabindex="-1" aria-labelledby="searchDeleteModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -50,7 +58,8 @@
                 </div>
                 <div class="modal-footer">
                     <a id="delete" href="javascript:;" class="btn btn-outline-danger col">Удалить</a>
-                    <button id="ok-button" class="btn btn-outline-primary col" data-bs-dismiss="modal" hidden>ОК</button>
+                    <button id="ok-button" class="btn btn-outline-primary col" data-bs-dismiss="modal" hidden>ОК
+                    </button>
                 </div>
             </div>
         </div>
@@ -65,7 +74,7 @@
             const myModalEl = document.getElementById('delete');
             myModalEl.removeAttribute('hidden');
             myModalEl.classList.remove('disabled');
-            myModalEl.innerHTML= 'Удалить'
+            myModalEl.innerHTML = 'Удалить'
             //прячу кнопку #ok-button
             const okButton = document.getElementById('ok-button')
             okButton.setAttribute('hidden', true);
@@ -97,7 +106,7 @@
             const el = document.getElementById(id);
             const okButton = document.getElementById('ok-button')
             event.target.classList.toggle('disabled')
-            event.target.innerHTML= '<div class="spinner-border" role="status"></div>'
+            event.target.innerHTML = '<div class="spinner-border" role="status"></div>'
             searchSend('/search/' + id).then(() => {
                 el.remove();
                 myModalEl.setAttribute('hidden', true);
@@ -108,7 +117,7 @@
             })
         })
 
-        async function searchSend(url){
+        async function searchSend(url) {
 
             let response = await fetch(url, {
                 method: 'DELETE',

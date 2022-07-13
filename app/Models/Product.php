@@ -146,6 +146,20 @@ class Product extends Model
         ];
     }
 
+    public static function relations(): array
+    {
+        return [
+            'binders',
+            'environments',
+            'numbers',
+            'resistances',
+            'substrates',
+            'additives',
+            'brand',
+            'catalog'
+        ];
+    }
+
     public static function getSelectionData()
     {
         $selectionData = [];
@@ -160,8 +174,8 @@ class Product extends Model
     public static function getRelationsFromArray(array $array): array
     {
         $relationsArray = [];
-        foreach ($array as $field => $cyrillic){
-            if (method_exists(Product::class,$field) or method_exists(Product::class, Str::singular($field))){
+        foreach ($array as $field => $cyrillic) {
+            if (method_exists(Product::class, $field) or method_exists(Product::class, Str::singular($field))) {
                 $string = '\App\Models\\' . ucfirst(Str::singular($field));
                 $instance = new $string();
                 $relationsArray[$field] = $instance->query()->orderBy('title', 'asc')->get();

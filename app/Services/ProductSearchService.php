@@ -14,7 +14,7 @@ class ProductSearchService
 
     public function getProducts(array $searchData)
     {
-        $products = Product::query();
+        $products = Product::with(Product::relations());
         foreach ($searchData as $key => $value){
 
             if (in_array($key,['vs', 'dft', 'min_temp', 'tolerance'])){
@@ -114,21 +114,7 @@ class ProductSearchService
         }
         return $this->title;
     }
-    public function getUpdatedData(Search $search, $requestedData): array
-    {
-        $updatedData = json_decode($search->data, 1);
-       dd($search, $requestedData, $updatedData);
-        foreach ($requestedData as $key => $value){
-            if (key_exists($key, $updatedData) && $updatedData[$key] === $value or in_array($key, ['status', 'search_title'])){
-                continue;
-            } else {
-                $updatedData[$key] = $value;
-            }
-        }
-//        dd($search, $requestedData, $updatedData);
 
-        return $updatedData;
-    }
     public function quickSearch(string $content)
     {
         $data = DB::table('products')->where('title','like', "%$content%")

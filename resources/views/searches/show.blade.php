@@ -4,7 +4,6 @@
 @endsection
 @section('header')
 {{--    если пользователь пытается просмотреть не свою запись, то выводу заглушку--}}
-{{--@dd(Auth::user()->getAuthIdentifier(), $search->user_id, $search->id,session('searchId') )--}}
     @if(Auth::check() ? Auth::user()->getAuthIdentifier() : false === $search->user_id or $search->id === session('searchId'))
         <section class="text-center container my-3">
         <h1 class="fw-light d-flex justify-content-center align-items-center">
@@ -50,7 +49,7 @@
                             <span class="d-none d-md-inline-flex">Обновить</span>
                         </a>
                         @if(Auth::user())
-                            @if($search->title)
+                            @if(!session('searchId'))
                                 <a href="{{route('search')}}" class="w-25 btn btn-info ms-1 d-flex justify-content-evenly align-items-center">
                                     <i class="fa-solid fa-magnifying-glass"></i>
                                     <span class="d-none d-md-inline-flex">Мои поиски</span>
@@ -161,13 +160,12 @@
                         @csrf
                         <div class="modal-body">
                             <label for="search-title"><h6>Название поиска: </h6></label>
-                            <input class="form-control" type="text"  id="validationText" placeholder="Необходимо указать название" required name="search_title" value="Поиск №{{$search->id}}">
+                            <input class="form-control" type="text"  id="validationText" placeholder="Необходимо указать название" required name="search_title" value="{{ $search->title ??  'Поиск № ' . $search->id}}">
                             <div class="invalid-feedback">
                                 Пожалуйста, укажите название
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button  class="btn btn-outline-secondary" data-bs-dismiss="modal">Отмена</button>
+                        <div class="modal-footer justify-content-center">
                             <button type="submit" class="btn btn-outline-success">Сохранить поиск</button>
                         </div>
                     </form>

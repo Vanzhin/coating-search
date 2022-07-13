@@ -40,7 +40,7 @@ class ViewServiceProvider extends ServiceProvider
             if (Auth::check()) {
                 $counts['userSearches'] = Search::query()
                     ->where('user_id', Auth::user()->id)
-                    ->where('is_deleted', 0)
+                    ->where('is_deleted', '', 0)
                     ->get()->count();
                 $counts['userProducts'] = app(ViewDataService::class)->getUserLikes(Auth::user()->id);
             }

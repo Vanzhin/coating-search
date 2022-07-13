@@ -23,7 +23,7 @@ class SearchController extends Controller
         if (Auth::check()) {
             $searches = Search::query()
                 ->where('user_id', Auth::user()->getAuthIdentifier())
-                ->where('is_deleted', 0)
+                ->where('is_deleted', '=', 0)
                 ->orderByDesc('updated_at')
                 ->paginate(Config::get('constants.ITEMS_PER_PAGE'));
         } else $searches = [];
@@ -42,6 +42,7 @@ class SearchController extends Controller
         //продукт передается в метод при точном подборе аналога вручную;
         // удаляю из сессии идентификатор поиска
         session()->forget('searchId');
+
         $data = [
             'product' => $product,
             'fields' => Product::getFieldsToSearch(),
@@ -50,6 +51,7 @@ class SearchController extends Controller
             'selectionData' => Product::getSelectionData(),
             'button' => 'Поиск'
         ];
+        //todo
         $varsArr = array_merge(Product::getLinkedFields(), ['brands' => 'Производитель', 'catalogs' => 'Каталог']);
         // объединяю массивы с необходимыми данными, то же самое для метода update
         $viewData = array_merge(Product::getRelationsFromArray($varsArr), $data);
@@ -84,7 +86,7 @@ class SearchController extends Controller
             }
         } else {
             //todo поработать над самим реквестом, потому как сейчас он включает в себя данные, которые не нужны
-            return back()->with('error', __('messages.searches.created.empty'))->withInput();
+            return back()->with('error', __('messages.searches.created.empty'));
         }
         if ($search) {
 
@@ -148,6 +150,9 @@ class SearchController extends Controller
     public function update(UpdateRequest $request, Search $search)
     {
         $data = app(ProductSearchService::class)->getSearchData($request->validated());
+        if(Auth::user()->getAuthIdentifier() !==  $search->user_id){
+            $data['user_id'] = Auth::user()->getAuthIdentifier();
+        }
         //todo зачем это?
         if (count($data) == 1 && isset($data['order-by'])) {
             $data = array_merge(json_decode($search->data, 1), $data);
@@ -155,11 +160,14 @@ class SearchController extends Controller
         if (key_exists('search_title', $data)) {
             $data['title'] = $data['search_title'];
             unset($data['search_title']);
+            session()->forget('searchId');
 
         } else{
             $data['data'] = json_encode($data);
             $data['description'] = app(ProductSearchService::class)->getSearchDescription($data);
             unset($data['title']);
+            session(['searchId' => $search->id]);
+
         }
 
         $updated = $search->fill(
