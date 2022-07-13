@@ -114,7 +114,6 @@ class ProductSearchService
         }
         return $this->title;
     }
-
     public function quickSearch(string $content)
     {
         $data = DB::table('products')->where('title','like', "%$content%")

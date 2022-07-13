@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, BelongsToMany, HasOne};
 use Illuminate\Support\Str;
+use phpDocumentor\Reflection\Types\Static_;
 
 class Product extends Model
 {
@@ -163,7 +164,7 @@ class Product extends Model
     public static function getSelectionData()
     {
         $selectionData = [];
-        foreach (Product::getFieldsToMath() as $fieldName) {
+        foreach (static::getFieldsToMath() as $fieldName) {
             $selectionData[$fieldName] = app(ExtractValuesService::class)
                 ->getValues('products', $fieldName);
 

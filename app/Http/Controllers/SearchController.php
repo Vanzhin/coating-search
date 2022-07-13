@@ -80,9 +80,7 @@ class SearchController extends Controller
                 session(['searchId' => $search->id]);
             } else {
                 $search = Search::find($searchId);
-                $search->fill(
-                    $dataToFill
-                )->save();
+                $search->fill($dataToFill)->save();
             }
         } else {
             //todo поработать над самим реквестом, потому как сейчас он включает в себя данные, которые не нужны
@@ -170,9 +168,7 @@ class SearchController extends Controller
 
         }
 
-        $updated = $search->fill(
-            $data
-        )->save();
+        $updated = $search->fill($data)->save();
 
         if ($updated) {
 
