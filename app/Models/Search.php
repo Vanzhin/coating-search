@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\TModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class Search extends Model
 {
@@ -16,8 +17,13 @@ class Search extends Model
         'user_id',
         'session_token',
         'description',
-        'status',
+        'is_deleted',
     ];
+
+    protected $casts = [
+        'is_deleted' => 'boolean'
+    ];
+
     public static function getFieldsToShow(): array
     {
         return [

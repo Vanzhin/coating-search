@@ -6,6 +6,7 @@ use App\Traits\TModel;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Resistance extends Model
 {
@@ -14,6 +15,16 @@ class Resistance extends Model
     protected $fillable = [
         'title'
     ];
+    public string $name = 'resistance';
+
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'product_resistances',
+            'resistance_id', 'product_id',
+            'id', 'id'
+        );
+    }
+
     public function sluggable(): array
     {
         return [

@@ -14,6 +14,13 @@ class Catalog extends Model
     protected $fillable = [
         'title'
     ];
+    public string $name = 'catalog';
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
     public function sluggable(): array
     {
         return [

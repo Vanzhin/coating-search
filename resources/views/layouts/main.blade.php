@@ -13,12 +13,14 @@
     <meta name="msapplication-TileColor" content="#424361">
     <meta name="theme-color" content="#ffffff">
 
-    <title>@section('title') {{env('APP_NAME')}} |@show</title>
+    <title>@section('title') {{env('APP_NAME')}} | @show</title>
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/carousel.css') }}" rel="stylesheet">
     <link href="{{ asset('css/list-groups.css') }}" rel="stylesheet">
     <link href="{{ asset('css/all.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/table.css') }}" rel="stylesheet">
+
 
 
 
@@ -56,13 +58,13 @@
 </main>
 @component('components.footer')
 @endcomponent
-<script src="{{ asset('js/bootstrap.bundle.min.js') }}" defer></script>
-<script src="{{ asset('js/jquery.min.js') }}" defer></script>
-<script src="{{ asset('js/all.min.js') }}" defer></script>
+<script src="{{ asset('js/jquery.min.js') }}"></script>
+<script src="{{ asset('js/all.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 
 
 {{--<!-- Latest compiled and minified JavaScript -->--}}
-<script src="{{ asset('js/bootstrap-select.min.js') }}" defer></script>
+<script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
 
 @stack('js')
 </body>

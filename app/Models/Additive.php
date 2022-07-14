@@ -15,6 +15,8 @@ class Additive extends Model
     protected $fillable = [
         'title'
     ];
+    public string $name = 'additive';
+
 
     public function products(): BelongsToMany
     {

@@ -13,8 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->float('max_int')->nullable()->change();
+        Schema::table('searches', function (Blueprint $table) {
+            $table->unsignedBigInteger('user_id')
+                ->nullable()
+                ->default('1')
+                ->change();
+
         });
     }
 
@@ -25,9 +29,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->dropColumn('max_int');
-
+        Schema::table('searches', function (Blueprint $table) {
+            $table->dropColumn('user_id');
         });
     }
 };

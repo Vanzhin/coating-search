@@ -47,12 +47,12 @@ class LoginController extends Controller
     protected function authenticated(Request $request, User $user)
     {
         event(new LoginEvent($user));
-        session()->flash('products.compare');
+//        session()->flash('products.compare');
     }
 
     protected function loggedOut(Request $request)
     {
-        session()->flash('products.compare');
+        session()->forget(['products.compare', 'searchId']);
         return redirect()->route('home');
 
     }

@@ -46,7 +46,7 @@
             <h3 class="float-md-start mb-0">{{ env('APP_NAME') }}</h3>
             <nav class="nav nav-masthead justify-content-center float-md-end">
                 @if(Auth::check())
-                    <a class="nav-link" href="{{ route('account.index') }}">Мой профиль</a>
+                    <a class="nav-link" href="{{ route('account.profile') }}">Мой профиль</a>
                 @else
                     <a class="nav-link" href="{{ route('login') }}">Вход</a>
                     <a class="nav-link" href="{{ route('register') }}">Регистрация</a>

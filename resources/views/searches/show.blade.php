@@ -4,11 +4,11 @@
 @endsection
 @section('header')
 {{--    если пользователь пытается просмотреть не свою запись, то выводу заглушку--}}
-    @if(Auth::check() ? Auth::user()->getAuthIdentifier() : false === $search->user_id or $search->session_token === session()->get('_token'))
+    @if(Auth::check() ? Auth::user()->getAuthIdentifier() : false === $search->user_id or $search->id === session('searchId'))
         <section class="text-center container my-3">
         <h1 class="fw-light d-flex justify-content-center align-items-center">
             <span>Результаты поиска покрытий</span>
-            <span class="badge bg-secondary mx-3">{{ $productCount }}</span>
+            <span class="badge bg-secondary mx-3">{{ $products->total() }}</span>
         </h1>
         @include('inc.message')
             <a class="btn btn-outline-secondary m-3" data-bs-toggle="collapse" href="#collapseTitle" role="button" aria-expanded="false" aria-controls="collapseTitle">
@@ -24,7 +24,7 @@
 @section('content')
         <div class="container min-vh-100 mb-4">
             <div class="d-flex">
-                <form class="form-control d-flex flex-wrap align-items-stretch" method="post" action="{{ route('search.update', [$search]) }}">
+                <form class="form-control d-flex flex-wrap align-items-stretch gap-2" method="post" action="{{ route('search.update', [$search]) }}">
                     @method('put')
                     @csrf
                     <div class="card flex-fill">
@@ -49,7 +49,7 @@
                             <span class="d-none d-md-inline-flex">Обновить</span>
                         </a>
                         @if(Auth::user())
-                            @if($search->status === 'saved')
+                            @if(!session('searchId'))
                                 <a href="{{route('search')}}" class="w-25 btn btn-info ms-1 d-flex justify-content-evenly align-items-center">
                                     <i class="fa-solid fa-magnifying-glass"></i>
                                     <span class="d-none d-md-inline-flex">Мои поиски</span>
@@ -61,10 +61,10 @@
                                 </a>
                             @endif
                         @endif
-                        <a  href="{{ route('products.compare') }}" id = "compare-btn" class=" ms-1 w-25 btn bg-secondary p-2 flex-fill d-flex justify-content-center align-items-center flex-nowrap @if(count($compareProduct) > 1){{''}}@else disabled @endif">
-                            <i class="fa-solid fa-chart-simple"></i>
-                            <span id = "product-to-compare" class="badge btn-warning ms-1">@if($compareProduct){{count($compareProduct)}}@else{{''}}@endif</span>
-                        </a>
+{{--                        <a  href="{{ route('products.compare') }}" class="compare-btn ms-1 w-25 btn bg-secondary p-2 flex-fill d-flex justify-content-center align-items-center flex-nowrap @if(count($compareProduct) > 1){{''}}@else disabled @endif">--}}
+{{--                            <i class="fa-solid fa-chart-simple"></i>--}}
+{{--                            <span class="product-to-compare badge btn-warning ms-1">@if($compareProduct){{count($compareProduct)}}@else{{''}}@endif</span>--}}
+{{--                        </a>--}}
                     </div>
                 </form>
             </div>
@@ -78,7 +78,7 @@
                                     <h5 class="header">{{ Str::upper($product->title) }}</h5>
                                 </button>
                                 <a href="javascript:;" id="prod-{{$product->id}}" style="width: 20%;" class="d-flex justify-content-evenly align-items-center btn compare @if(isset($compareProduct) && in_array($product->id, $compareProduct)){{"add btn-secondary"}}@else {{"btn-warning"}}@endif" compare="{{$product->id}}">
-                                    @if(isset($compareProduct) && in_array($product->id, $compareProduct))
+                                    @if(session('products.compare') !== null && in_array($product->id, session('products.compare')))
                                         <i class="fa-solid fa-minus"></i>
                                         <span class="d-none d-md-inline-flex">Убрать из сравнения</span>
                                     @else
@@ -128,7 +128,7 @@
                                                             @endforeach
                                                         </td>
                                                     @else
-                                                        <td>@if($product->$key){{Str::ucfirst($product->$key)}}@else {{'нет'}} @endif</td>
+                                                        <td>@if($product->$key === true){{'Да'}}@elseif($product->$key) {{Str::ucfirst($product->$key)}} @else {{'Нет'}} @endif</td>
                                                     @endif
 
                                                 @endforeach
@@ -160,14 +160,12 @@
                         @csrf
                         <div class="modal-body">
                             <label for="search-title"><h6>Название поиска: </h6></label>
-                            <input class="form-control" type="text"  id="validationText" placeholder="Необходимо указать название" required name="search_title" value="Поиск №{{$search->id}}">
+                            <input class="form-control" type="text"  id="validationText" placeholder="Необходимо указать название" required name="search_title" value="{{ $search->title ??  'Поиск № ' . $search->id}}">
                             <div class="invalid-feedback">
                                 Пожалуйста, укажите название
                             </div>
-                            <input class="form-control" type="text"  id="status" name="status" value="saved" hidden>
                         </div>
-                        <div class="modal-footer">
-                            <button  class="btn btn-outline-secondary" data-bs-dismiss="modal">Отмена</button>
+                        <div class="modal-footer justify-content-center">
                             <button type="submit" class="btn btn-outline-success">Сохранить поиск</button>
                         </div>
                     </form>
@@ -176,62 +174,13 @@
             </div>
         </div>
     @else
-        <div class="container text-center py-5">
+        <div class="container text-center py-5 vh-100">
             <h5>Запись не найдена</h5>
         </div>
     @endif
 @endsection
 @push('js')
-    <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', () => {
-            const buttons = document.querySelectorAll("a.compare");
-            buttons.forEach(button => button.addEventListener("click", function() {
-                button.classList.toggle("disabled");
-                button.innerHTML = '<div class="spinner-border" role="status"></div>';
-                const id = this.getAttribute('compare');
-                sendProductToCompare('/products/compare/' + id).then(() => {
-                    // location.reload();
-                    button.classList.toggle("disabled");
-
-                })
-            }));
-        });
-        //todo убрать отсюда и перенести в основной код выше
-async function sendProductToCompare(url){
-
-    let response = await fetch(url, {
-        method: 'GET',
-    });
-    let result = await response.json();
-    const prod_id = result.product_id;
-    const badge = document.getElementById('product-to-compare');
-    const compare_btn = document.getElementById('compare-btn');
-    const btn = document.getElementById('prod-'+ prod_id);
-    btn.classList.toggle("add");
-
-    if(result.total > 1){
-        badge.innerText = result.total;
-        compare_btn.classList.remove('disabled')
-    } else if(result.total === 0){
-        badge.innerText = '';
-        compare_btn.classList.add('disabled')
-    } else{
-        badge.innerText = result.total;
-        compare_btn.classList.add('disabled')
-    }
-    if(btn.classList.contains('add')){
-        btn.innerHTML = '<i class="fa-solid fa-minus"></i><span class="d-none d-md-inline-flex">Убрать из сравнения</span>';
-
-    } else {
-        btn.innerHTML = '<i class="fa-solid fa-plus"></i><span class="d-none d-md-inline-flex">Добавить в сравнение</span>';
-    }
-    btn.classList.toggle('btn-warning');
-    btn.classList.toggle('btn-secondary');
-    return result.ok;
-}
-
-    </script>
-
+    <script type="text/javascript" src="{{asset('js/compare-main.js')}}"></script>
 @endpush
 
 

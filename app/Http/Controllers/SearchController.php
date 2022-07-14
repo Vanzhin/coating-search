@@ -4,21 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Searches\CreateRequest;
 use App\Http\Requests\Searches\UpdateRequest;
-use App\Models\Additive;
-use App\Models\Binder;
-use App\Models\Brand;
-use App\Models\Catalog;
-use App\Models\Environment;
-use App\Models\Number;
 use App\Models\Product;
-use App\Models\Resistance;
 use App\Models\Search;
-use App\Models\Substrate;
 use App\Services\ProductSearchService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Http\Request;
-
 
 class SearchController extends Controller
 {
@@ -29,13 +20,14 @@ class SearchController extends Controller
      */
     public function index()
     {
-        if (Auth::check()){
+        if (Auth::check()) {
             $searches = Search::query()
                 ->where('user_id', Auth::user()->getAuthIdentifier())
-                ->whereIn('status', ['saved', 'active'])->orderByDesc('updated_at')
+                ->where('is_deleted', '=', 0)
+                ->orderByDesc('updated_at')
                 ->paginate(Config::get('constants.ITEMS_PER_PAGE'));
         } else $searches = [];
-        return view('searches.index',[
+        return view('searches.index', [
             'searches' => $searches
         ]);
     }
@@ -45,26 +37,26 @@ class SearchController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Product $product = null)
     {
-        $selectionData = Product::getSelectionData();
+        //продукт передается в метод при точном подборе аналога вручную;
+        // удаляю из сессии идентификатор поиска
+        session()->forget('searchId');
 
-        return view('searches.create', [
-            'fields'=> Product::getFieldsToSearch(),
-            'fieldsToOrderBy'=> Product::getFieldsToOrderBy(),
-            'brands' => Brand::all(),
-            'catalogs' => Catalog::all(),
+        $data = [
+            'product' => $product,
+            'fields' => Product::getFieldsToSearch(),
+            'fieldsToOrderBy' => Product::getFieldsToOrderBy(),
             'linkedFields' => Product::getLinkedFields(),
-            'binders' => Binder::query()->orderBy('title', 'asc')->get(),
-            'environments' => Environment::query()->orderBy('title', 'asc')->get(),
-            'numbers' => Number::all(),
-            'resistances' => Resistance::query()->orderBy('title', 'asc')->get(),
-            'substrates' => Substrate::query()->orderBy('title', 'asc')->get(),
-            'additives' => Additive::query()->orderBy('title', 'asc')->get(),
-            'selectionData' => $selectionData,
+            'selectionData' => Product::getSelectionData(),
             'button' => 'Поиск'
+        ];
+        //todo
+        $varsArr = array_merge(Product::getLinkedFields(), ['brands' => 'Производитель', 'catalogs' => 'Каталог']);
+        // объединяю массивы с необходимыми данными, то же самое для метода update
+        $viewData = array_merge(Product::getRelationsFromArray($varsArr), $data);
 
-        ]);
+        return view('searches.create', $viewData);
     }
 
     /**
@@ -76,38 +68,27 @@ class SearchController extends Controller
     public function store(CreateRequest $request)
     {
         $data = app(ProductSearchService::class)->getSearchData($request->validated());
-        if (sizeof($data)){
-            // если не зарегистрирован, то сохранять поиски нельзя
-            if (Auth::guest()){
-                $created = Search::updateOrCreate(
-                ['session_token' => $request->session()->get('_token')],
-                [
-                    'data' => json_encode($data),
-                    'description' => app(ProductSearchService::class)->getSearchDescription($data),
-                    'session_token' => $request->session()->get('_token')
-                ]
-            );
-
-        } else {
-                $created = Search::updateOrCreate(
-                    [
-                        'status' => 'active',
-                        'user_id' => Auth::user()->getAuthIdentifier()
-                    ],
-                    [
-                        'data' => json_encode($data),
-                        'description' => app(ProductSearchService::class)->getSearchDescription($data),
-                        'session_token' => $request->session()->get('_token'),
-                        'user_id' => Auth::user()->getAuthIdentifier()
-                    ]);
+        $searchId = session('searchId');
+        if (sizeof($data)) {
+            $dataToFill = [
+                'data' => json_encode($data),
+                'description' => app(ProductSearchService::class)->getSearchDescription($data),
+                'user_id' => Auth::user() ? Auth::user()->getAuthIdentifier() : null,
+            ];
+            if (is_null($searchId)) {
+                $search = Search::create($dataToFill);
+                session(['searchId' => $search->id]);
+            } else {
+                $search = Search::find($searchId);
+                $search->fill($dataToFill)->save();
             }
-        }else {
-            return back()->with('error', __('messages.searches.created.empty'))->withInput();
-
+        } else {
+            //todo поработать над самим реквестом, потому как сейчас он включает в себя данные, которые не нужны
+            return back()->with('error', __('messages.searches.created.empty'));
         }
-        if($created){
+        if ($search) {
 
-            return redirect()->route('search.show', [$created])->with('success', __('messages.searches.created.success'));
+            return redirect()->route('search.show', [$search])->with('success', __('messages.searches.created.success'));
         }
         return back()->with('error', __('messages.searches.created.error'))->withInput();
     }
@@ -121,24 +102,14 @@ class SearchController extends Controller
     public function show(Search $search)
     {
         $searchData = json_decode($search->data, true);
-
+        $products = app(ProductSearchService::class)->getProducts($searchData);
         return view('searches.show', [
-            'products' => app(ProductSearchService::class)
-                ->getProducts($searchData)
-                ->paginate(Config::get('constants.ITEMS_PER_PAGE')),
+            'products' => $products->paginate(Config::get('constants.ITEMS_PER_PAGE')),
             'search' => $search,
             'searchData' => $searchData,
-            'fieldsToOrderBy'=> Product::getFieldsToOrderBy(),
+            'fieldsToOrderBy' => Product::getFieldsToOrderBy(),
             'fields' => array_merge(Product::getFieldsToCreate(), Product::getLinkedFields()),
             'linkedFields' => Product::getLinkedFields(),
-            //если есть данные по сравнению в сессии выдаю их, если нет, то пустой массив
-            'compareProduct' => session()->get('products.compare') ?? [],
-            'productCount' => app(ProductSearchService::class)
-                ->getProducts($searchData)
-                ->get()
-                ->count(),
-
-
         ]);
     }
 
@@ -150,26 +121,21 @@ class SearchController extends Controller
      */
     public function edit(Search $search)
     {
-        $selectionData = Product::getSelectionData();
-
-        return view('searches.create', [
-            'fields'=> Product::getFieldsToSearch(),
-            'fieldsToOrderBy'=> Product::getFieldsToOrderBy(),
-            'brands' => Brand::all(),
-            'catalogs' => Catalog::all(),
+        $data = [
+            'fields' => Product::getFieldsToSearch(),
+            'fieldsToOrderBy' => Product::getFieldsToOrderBy(),
             'linkedFields' => Product::getLinkedFields(),
-            'binders' => Binder::query()->orderBy('title', 'asc')->get(),
-            'environments' => Environment::query()->orderBy('title', 'asc')->get(),
-            'numbers' => Number::all(),
-            'resistances' => Resistance::query()->orderBy('title', 'asc')->get(),
-            'substrates' => Substrate::query()->orderBy('title', 'asc')->get(),
-            'additives' => Additive::query()->orderBy('title', 'asc')->get(),
-            'selectionData' => $selectionData,
+            'selectionData' => Product::getSelectionData(),
             'search' => $search,
             'searchData' => json_decode($search->data, true),
             'method' => 'update',
-            'button' => 'Повторить поиск'
-        ]);
+            'button' => 'Повторить поиск',
+            'product' => null
+        ];
+        $varsArr = array_merge(Product::getLinkedFields(), ['brands' => 'Производитель', 'catalogs' => 'Каталог']);
+        $viewData = array_merge(Product::getRelationsFromArray($varsArr), $data);
+
+        return view('searches.create', $viewData);
     }
 
     /**
@@ -182,30 +148,33 @@ class SearchController extends Controller
     public function update(UpdateRequest $request, Search $search)
     {
         $data = app(ProductSearchService::class)->getSearchData($request->validated());
-
-        if (count($data) == 1 && isset($data['order-by'])){
+        if(Auth::user()->getAuthIdentifier() !==  $search->user_id){
+            $data['user_id'] = Auth::user()->getAuthIdentifier();
+        }
+        //todo зачем это?
+        if (count($data) == 1 && isset($data['order-by'])) {
             $data = array_merge(json_decode($search->data, 1), $data);
         }
+        if (key_exists('search_title', $data)) {
+            $data['title'] = $data['search_title'];
+            unset($data['search_title']);
+            session()->forget('searchId');
 
-        $updatedData = app(ProductSearchService::class)->getUpdatedData($search, $data);
+        } else{
+            $data['data'] = json_encode($data);
+            $data['description'] = app(ProductSearchService::class)->getSearchDescription($data);
+            unset($data['title']);
+            session(['searchId' => $search->id]);
 
-        $updated = $search->fill(
-            [
-                'data' => json_encode($updatedData),
-                'description' => app(ProductSearchService::class)->getSearchDescription($updatedData),
-                'session_token' => $request->session()->get('_token'),
-                'title' => $data['search_title'] ?? $search->title ?? null,
-                'status' => $data['status'] ?? $search->status ?? 'active',
-            ]
-        )->save();
+        }
 
+        $updated = $search->fill($data)->save();
 
-        if($updated){
+        if ($updated) {
 
-            return redirect()->route('search.show', [$search])->with('success', __('messages.searches.updated.success'));
+            return redirect()->route('search.show', $search)->with('success', __('messages.searches.updated.success'));
         }
         return back()->with('error', __('messages.searches.updated.error'))->withInput();
-
     }
 
     /**
@@ -216,24 +185,24 @@ class SearchController extends Controller
      */
     public function destroy(Search $search)
     {
-
         try {
-            $search->status = 'deleted';
+            $search->is_deleted = 1;
             $search->save();
             return response()->json('ok');
 
-        }catch(\Exception $e){
-            return response()->json('error', 400);
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
         }
     }
 
     public function quickProductSearch(Request $request)
     {
-        $request->get('text');
+        $request->get('title');
         try {
             return response()->json(app(ProductSearchService::class)->quickSearch($request->get('text')));
 
-        }catch(\Exception $e){
-            return response()->json('error', 400);
-        }    }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
+        }
+    }
 }

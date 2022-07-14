@@ -1,19 +1,24 @@
 <nav class="navbar navbar-dark bg-dark sticky-top" aria-label="Fifth navbar example">
     <div class="container">
-        <a class="navbar-brand col" href="{{ route('home') }}">
+        <a id="name" data-appname="{{env('APP_URL')}}" class="navbar-brand col" href="{{ route('home') }}">
             <i class="fa-solid fa-layer-group"></i>
             {{env('APP_NAME')}}
         </a>
-        <a class="col btn btn-outline-secondary text-reset text-decoration-none" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"
+        <a class="me-1 col btn btn-outline-secondary text-reset text-decoration-none" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"
         style="max-width: 50px;">
             <span class="navbar-toggler-icon"></span>
         </a>
-        <div class="col offset d-flex justify-content-end align-items-center flex-nowrap" id="navbarsExample05" style="">
+        <div class="col-md gap-2 offset d-flex flex-fill-1 justify-content-md-between align-items-center flex-nowrap" id="navbarsExample05" style="">
             <!-- Button trigger modal -->
-            <button class="btn btn-outline-secondary mx-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <span class="d-none d-md-inline-flex">Поиск</span>
             </button>
+            <a href="{{route('products.compare')}}"  class="position-relative compare-btn btn btn-outline-secondary @if($counts['compare'] < 2  or request()->routeIs('products.compare')) disabled @endif">
+                <i class="fa-solid fa-chart-simple"></i>
+                <span class="d-none d-md-inline-flex">Сравнение</span>
+                <span class="product-to-compare badge btn-warning ms-1">{{ $counts['compare'] > 0 ? $counts['compare'] :null }}</span>
+            </a>
             @if(Auth::guest())
                 <div class="text-center">
                     <a href="{{ route('login') }}"  class="btn btn-outline-primary me-auto">
@@ -23,11 +28,11 @@
                 </div>
             @else
                 <div class="dropdown">
-                    <a href="{{ route('account.index') }}" class="d-block link-dark text-warning text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="true">
-                        <img src="@if(Auth::user()->avatar){!!Auth::user()->avatar!!}@else{!!Storage::disk('public')->url('images/users/default.png')!!}@endif" width="32" height="32" class="rounded-circle">
+                    <a href="{{ route('account.profile') }}" class="d-block link-dark text-warning text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="true">
+                        <img src="@if(Auth::user()->avatar){!!Auth::user()->avatar!!}@else{!!Storage::disk('public')->url('images/users/default.png')!!}@endif" width="38" height="38" class="rounded">
                     </a>
-                    <ul class="dropdown-menu text-small shadow text-small dropdown-menu-dark" data-popper-placement="bottom-end" style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(0px, 34px, 0px);">
-                        <li><a class="dropdown-item" href="{{ route('account.index') }}">Профиль</a></li>
+                    <ul class="dropdown-menu text-small shadow text-small dropdown-menu-dark" data-popper-placement="bottom-end" style="position: absolute; inset: 0px 0px auto auto; margin-top: 10px; transform: translate3d(0px, 34px, 0px); z-index: 1021;">
+                        <li><a class="dropdown-item" href="{{ route('account.profile') }}">Профиль</a></li>
                         <li>
                             <a class="d-flex justify-content-between align-items-center dropdown-item" href="{{ route('search') }}">
                                 <span>Мои поиски</span>
@@ -35,9 +40,9 @@
                             </a>
                         </li>
                         <li>
-                            <a class="d-flex justify-content-between align-items-center dropdown-item" href="{{ route('account.my') }}">
+                            <a class="my-products-btn d-flex justify-content-between align-items-center dropdown-item" href="{{ route('account.products') }}">
                                 <span>Мои покрытия</span>
-                                <span class="badge bg-light text-dark ms-1">{{ $counts['userProducts'] !== 0 ? $counts['userProducts'] : null }}</span>
+                                <span class="my-products badge bg-light text-dark ms-1">{{ $counts['userProducts'] !== 0 ? $counts['userProducts'] : null }}</span>
                             </a>
                         </li>
                         <li><a class="dropdown-item disabled" href="#">Настройки</a></li>
@@ -120,42 +125,6 @@
     </div>
 </div>
 @push('js')
-    <script>
-        function quickSearch(content) {
-            const input = content.value;
-            const products = document.getElementById('products');
-            products.innerHTML = '<div class="spinner-border" role="status"></div>';
-            let search = { text : content.value }
-            if (input){
-                sendPost('/search/quick', search).then((result) => {
-                    console.log(result)
-                    let links ='';
-                    result.forEach(function(item) {
-                        links = links + '<a href="https://coatsearch.ru/products/' + item.id + '\"' + ' class="btn btn-outline-secondary col-12 col-md-5 m-1">' + item.title.toUpperCase() + '</a>';
-                    })
-                    if(links){
-                        products.innerHTML = links;
-                    }else {
-                        products.innerHTML = '<p class="col" >Кажется, ничего не найдено ;(</p>' + '<a href="https://coatsearch.ru/search/create" class="btn col-12 btn-secondary btn-lg mb-4">Начать поиск по параметрам</a>';
-                    }
-                });
-            } else {
-                products.innerHTML = '<p class="col">Похоже, задан пустой запрос</p>' + '<a href="https://coatsearch.ru/search/create" class="btn col-12 btn-secondary btn-lg mb-4">Начать поиск по параметрам</a>';
-            }
-        }
-        async function sendPost(url, data){
-
-            let response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                        .getAttribute('content'),
-                    'Content-Type': 'application/json; charset=utf-8',
-                },
-                body: JSON.stringify(data)
-            });
-            return await response.json();
-        }
-    </script>
+    <script src="{{asset('js/quick-search.js')}}"></script>
 @endpush
 

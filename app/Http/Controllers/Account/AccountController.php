@@ -23,7 +23,7 @@ class AccountController extends Controller
         return view('account.index', [
             'countSearches' => Search::query()
                 ->where('user_id', '=', Auth::user()->id)
-                ->where('status', '<>', 'deleted')
+                ->where('is_deleted', '=', 0)
             ->count(),
             'countLikes' => count(app(LikeService::class)->getLikedProductsId()),
         ]);
@@ -35,6 +35,8 @@ class AccountController extends Controller
             'products' => Product::query()
                 ->whereIn('id', app(LikeService::class)->getLikedProductsId())
                 ->paginate(10),
+            'likes' => app(LikeService::class)->getLikedProductsId(),
+            'compareProduct' => session()->get('products.compare') ?? [],
         ]);
     }
 }

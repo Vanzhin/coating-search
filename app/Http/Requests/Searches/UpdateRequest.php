@@ -42,10 +42,10 @@ class UpdateRequest extends FormRequest
             'substrates' => ['array', 'min:1'],
             'additives' => ['array', 'min:1'],
             'tolerance' => ['string'],
-            'title' => ['string', 'nullable'],
+            'title' => ['string', 'nullable', 'max:50'],
             'order-by' => ['string', 'nullable'],
-            'status' => ['string'],
             'search_title' => ['string', 'nullable'],
+            'is_deleted' => ['integer', 'max:1']
 
 
         ];

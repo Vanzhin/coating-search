@@ -2,29 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Brand;
-use App\Models\Environment;
 use App\Models\Product;
 use App\Services\LikeService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::query()->paginate(10);
+        $products = Product::query()->paginate(config('constants.ITEMS_PER_PAGE'));
         return view('products.index', [
             'products' => $products,
             'likes' => app(LikeService::class)->getLikedProductsId(),
-
+            'compareProduct' => session()->get('products.compare') ?? [],
         ]);
     }
 
-    public function show(Product $product) :object
+    public function show(Product $product): object
     {
         return view('products.show', [
             'product' => $product,
@@ -36,37 +30,14 @@ class ProductController extends Controller
             'resistances' => $product->resistances,
             'substrates' => $product->substrates,
             'additives' => $product->additives,
-
+            'likes' => app(LikeService::class)->getLikedProductsId(),
+            'compareProduct' => session()->get('products.compare') ?? [],
         ]);
-    }
-    //todo убрать отсюда
-    public function addToCompare( int $productId){
-        try {
-            if (session()->has('products.compare') && in_array($productId, session()->get('products.compare'))){
-                session()->pull('products.compare.' . array_search($productId, session()->get('products.compare')));
-            }else{
-                session()->push('products.compare', $productId);
-            }
-            return response()->json([
-                'total' => count(session()->get('products.compare')),
-                'product_id' => $productId,
-            ]);
-
-        }catch(\Exception $e){
-            return response()->json('error', 400);
-        } catch (NotFoundExceptionInterface $e) {
-            return response()->json('error', 401);
-
-        } catch (ContainerExceptionInterface $e) {
-            return response()->json('error', 402);
-
-        }
-
     }
 
     public function compare()
     {
-        if (session()->exists('products.compare')){
+        if (session()->exists('products.compare')) {
             $products = Product::query()->whereIn('id', session()->get('products.compare'))->get();
 
         } else $products = [];
@@ -77,24 +48,55 @@ class ProductController extends Controller
         ]);
     }
 
-    public function brand( $slug)
+    public function indexBySlug($param, $value)
     {
-        //сделал со слагом, чтобы был красивый адрес типа http://coating-search.test/products/brand/ppg
-        $brand = Brand::where('slug', $slug)->first();
+        //если связь или параметр есть, то вывожу данные, иначе показываю общую инфо
+        if (key_exists($param, Product::getFieldsToShow())) {
+            $factor = config('constants.FACTOR');
+            if ($value == 0) {
+                $products = Product::query()
+                    ->where($param, $value)
+                    ->orWhere($param, '=', null)
+                    ->paginate(config('constants.ITEMS_PER_PAGE'));
+            } else {
+                $products = Product::query()
+                    ->whereBetween($param, [$value - abs($value) * $factor, $value + abs($value) * $factor])
+                    ->paginate(config('constants.ITEMS_PER_PAGE'));
+            }
+            $info = $value != 0 ? $value . ' ± ' . abs($value) * $factor : 'Нет';
+
+            if ($param === 'tolerance') {
+                $info = $value ? 'Да' : 'Нет';
+            }
+            $string = '(' . Str::ucfirst(Product::getFieldsToShow()[$param]) . ': ' . $info . ')';
+
+        } else if (method_exists(Product::class, $param)) {
+            $string = '\App\Models\\' . ucfirst(Str::singular($param));
+            $instance = new $string();
+            $model = $instance->where('slug', $value)->first();
+
+            $products = $model->products()->paginate(config('constants.ITEMS_PER_PAGE'));
+            //todo подумать как сократить код и убрать это условие
+            if (in_array($param, ['brand', 'catalog'])) {
+                $info = match ($param) {
+                    'brand' => 'Производитель',
+                    'catalog' => 'Каталог',
+                };
+            } else {
+
+                $info = array_key_exists($param, Product::getLinkedFields()) ? Product::getLinkedFields()[$param] : null;
+            }
+            $string = '(' . Str::upper($info) . ': ' . Str::upper($model->title) . ')';
+
+        } else {
+            $products = Product::query()->paginate(config('constants.ITEMS_PER_PAGE'));
+        }
+
         return view('products.index', [
-            'products' => Brand::find($brand->id)->products()->paginate(10),
+            'products' => $products,
             'likes' => app(LikeService::class)->getLikedProductsId(),
-            'param' => '(бренд - ' . Str::upper($slug) . ')'
-
-
+            'compareProduct' => session()->get('products.compare') ?? [],
+            'string' => $string,
         ]);
     }
-
-    public function environment(Environment $environment)
-    {
-        return view('products.index', [
-            'products' => Environment::find($environment->id)->products()->paginate(10),
-        ]);
-    }
-
 }

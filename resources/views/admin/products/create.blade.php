@@ -48,7 +48,7 @@
                     <div class=" d-flex flex-column">
                         <input type="file" class="form-control" id="{{ $key }}-local" name="{{ $key }}-local" value="@if(isset($product)){{$product->$key}}@else{{old('pds-local')}}@endif" aria-label="Upload">
                         <p>или укажите ссылку:</p>
-                        <input type="text" class="form-control" id="{{ $key }}-link" name="{{ $key }}-link" value="@if(isset($product)){{$product->$key}}@else{{old('pds-link')}}@endif">
+                        <input type="text" class="form-control" id="{{ $key }}-link" name="{{ $key }}-link" value="@if(isset($product)){{str_ends_with($product->$key, 'pdf') ? '' :  $product->$key }}@else{{old('pds-link')}}@endif">
                     </div>
                     @continue
                 @endif

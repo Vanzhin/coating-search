@@ -41,8 +41,9 @@ class CreateRequest extends FormRequest
             'substrates' => ['array', 'min:1'],
             'additives' => ['array', 'min:1'],
             'tolerance' => ['string'],
-            'title' => ['string', 'nullable'],
+            'title' => ['string', 'nullable', 'max:50'],
             'order-by' => ['string', 'nullable'],
+            'search_title' => ['string', 'nullable'],
         ];
     }
 }

@@ -8,7 +8,8 @@ use App\Http\Controllers\{Auth\LoginController,
     SearchController,
     HomeController,
     LikeController,
-    CommentController};
+    CommentController
+};
 use App\Http\Controllers\Account\AccountController as AccountController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -21,11 +22,7 @@ use App\Http\Controllers\Admin\NumberController as AdminNumberController;
 use App\Http\Controllers\Admin\ResistanceController as AdminResistanceController;
 use App\Http\Controllers\Admin\SubstarteController as AdminSubstrateController;
 use App\Http\Controllers\Admin\SearchController as AdminSearchController;
-
-
-
-
-
+use App\Services\CompareService;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,22 +50,22 @@ Route::get('/info', function () {
 })->name('info');
 //products
 
-Route::group(['as' => 'products.', 'prefix' => 'products'], function(){
+Route::group(['as' => 'products.', 'prefix' => 'products'], function () {
+    // session
+    Route::get('/compare/{product}', [CompareService::class, 'add'])
+        ->where('product', '\d+');
     Route::get('/', [ProductController::class, 'index'])
-    ->name('index');
+        ->name('index');
     Route::get('/{product}', [ProductController::class, 'show'])
-    ->where('product', '\d+')
-    ->name('show');
-    Route::get('/brand/{slug}', [ProductController::class, 'brand'])
-        ->where('slug', '\w+')
-        ->name('brand');
-    Route::get('/environment/{environment}', [ProductController::class, 'environment'])
-        ->where('environment', '\d+')
-        ->name('environment');
+        ->where('product', '\d+')
+        ->name('show');
     Route::get('/compare', [ProductController::class, 'compare'])
         ->name('compare');
+    Route::get('/{param}/{value}', [ProductController::class, 'indexBySlug'])
+        ->where('param', '\w+')
+        ->name('indexBySlug');
 
-    });
+});
 //likes
 Route::get('/like/{product}', [LikeController::class, 'likeHandling'])
     ->where('product', '\d+')
@@ -81,6 +78,8 @@ Route::resources([
 ]);
 Route::get('/search', [SearchController::class, 'index'])
     ->name('search');
+Route::get('/search/create/{product?}', [SearchController::class, 'create'])
+    ->name('search.create');
 Route::post('/search/quick', [SearchController::class, 'quickProductSearch'])
 //    ->where('content', '\w+')
     ->name('search.quick');
@@ -89,7 +88,7 @@ Route::post('/search/quick', [SearchController::class, 'quickProductSearch'])
 Route::resources([
     '/comment' => CommentController::class,
 ]);
-Route::group(['as' => 'comment.', 'prefix' => 'comment'], function(){
+Route::group(['as' => 'comment.', 'prefix' => 'comment'], function () {
     Route::get('/', [CommentController::class, 'index'])
         ->name('index');
     Route::get('/{comment}', [CommentController::class, 'show'])
@@ -101,30 +100,26 @@ Route::group(['as' => 'comment.', 'prefix' => 'comment'], function(){
 //Route::post('/comment/quick', [CommentController::class, 'quickStore'])
 //    ->name('comment.quick');
 
-// session
-Route::get('/products/compare/{product}', [ProductController::class, 'addToCompare'])
-    ->where('product', '\d+');
-
 //admin
 
 Auth::routes(['verify' => true]);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::group(['middleware' => ['auth']], function (){
-    Route::group(['as' => 'account.', 'prefix' => 'account'], function (){
-        Route::get('/', [AccountController::class, 'index'])
-        ->middleware('verified')
-            ->name('index');
-        Route::get('/my/products', [AccountController::class, 'showFavoriteProducts'])
-        ->middleware('verified')
-            ->name('my');
+Route::group(['middleware' => ['auth']], function () {
+    Route::group(['as' => 'account.', 'prefix' => 'my'], function () {
+        Route::get('/profile', [AccountController::class, 'index'])
+            ->middleware('verified')
+            ->name('profile');
+        Route::get('/products', [AccountController::class, 'showFavoriteProducts'])
+            ->middleware('verified')
+            ->name('products');
     });
 
     Route::get('/logout', [LoginController::class, 'logout'])
-    ->name('account.logout');
+        ->name('account.logout');
 
-    Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => 'admin'], function() {
+    Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => 'admin'], function () {
         Route::get('/index', function () {
             return view('admin.index');
         })->name('index');
@@ -166,7 +161,7 @@ Route::group(['middleware' => ['auth']], function (){
             ->name('searches');
     });
 });
-Route::group(['middleware' => 'guest'], function(){
+Route::group(['middleware' => 'guest'], function () {
     Route::get('/auth/{network}/redirect', [OAuthController::class, 'redirect'])
         ->where('network', '\w+')
         ->name('auth.redirect');

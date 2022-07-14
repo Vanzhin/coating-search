@@ -23,24 +23,31 @@ class LikeService
     public function likeHandle(Product $product)
     {
         try {
+            $count = session('user.likes');
             $like = DB::table('product_likes')
                 ->where('product_id', '=', $product->id)
                 ->where('user_id', '=', Auth::user()->getAuthIdentifier());
             if ($like->exists()){
                 $like->delete();
-                $response = 'like';
+                $response = [
+                    'state' => 'like',
+                ];
+                session(['user.likes' => $count-1]);
             } else{
                 DB::table('product_likes')->insert([
                     'product_id' => $product->id,
                     'user_id' => Auth::user()->getAuthIdentifier(),
                 ]);
-                $response = 'dislike';
-
+                $response = [
+                    'state' => 'dislike',
+                ];
+                session(['user.likes' => $count+1]);
             }
+            $response['total'] = $count;
             return response()->json($response);
 
         }catch(\Exception $e){
-            return response()->json('error', 400);
+            return response()->json($e->getMessage(), 400);
         }
 
     }
