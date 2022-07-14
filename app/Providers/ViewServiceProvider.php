@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Product;
 use App\Models\Search;
 use App\Models\User;
+use App\Services\ProductSearchService;
 use App\Services\ViewDataService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -38,10 +39,9 @@ class ViewServiceProvider extends ServiceProvider
             $counts['compare'] = is_array(session()->get('products.compare')) ? count(session()->get('products.compare')) : 0;
 
             if (Auth::check()) {
-                $counts['userSearches'] = Search::query()
-                    ->where('user_id', Auth::user()->id)
-                    ->where('is_deleted', '', 0)
-                    ->get()->count();
+                $counts['userSearches'] = app(ProductSearchService::class)
+                    ->getAllSearches(Auth::user())
+                    ->count();
                 $counts['userProducts'] = app(ViewDataService::class)->getUserLikes(Auth::user()->id);
             }
 

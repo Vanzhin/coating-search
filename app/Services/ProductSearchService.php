@@ -4,7 +4,9 @@ namespace App\Services;
 
 use App\Models\Product;
 use App\Models\Search;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -124,6 +126,14 @@ class ProductSearchService
                 ->get(['id', 'title'])->toArray();
         };
         return $data;
+    }
+    public function getAllSearches(User $user)
+    {
+        return Search::query()
+            ->where('user_id', $user->id)
+            ->where('is_deleted', '=', 0)
+            ->orderByDesc('updated_at');
+
     }
 
 }

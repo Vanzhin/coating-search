@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Search;
 use App\Services\LikeService;
+use App\Services\ProductSearchService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -21,9 +22,7 @@ class AccountController extends Controller
     public function index()
     {
         return view('account.index', [
-            'countSearches' => Search::query()
-                ->where('user_id', '=', Auth::user()->id)
-                ->where('is_deleted', '=', 0)
+            'countSearches' => app(ProductSearchService::class)->getAllSearches(Auth::user())
             ->count(),
             'countLikes' => count(app(LikeService::class)->getLikedProductsId()),
         ]);

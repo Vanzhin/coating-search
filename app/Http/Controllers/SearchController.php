@@ -21,10 +21,7 @@ class SearchController extends Controller
     public function index()
     {
         if (Auth::check()) {
-            $searches = Search::query()
-                ->where('user_id', Auth::user()->getAuthIdentifier())
-                ->where('is_deleted', '=', 0)
-                ->orderByDesc('updated_at')
+            $searches = app(ProductSearchService::class)->getAllSearches(Auth::user())
                 ->paginate(Config::get('constants.ITEMS_PER_PAGE'));
         } else $searches = [];
         return view('searches.index', [
