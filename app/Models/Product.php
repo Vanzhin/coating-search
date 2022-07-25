@@ -254,43 +254,36 @@ class Product extends Model
 
 // прохожусь по основным параметрам
 
-        $binders = $this->binders()->orderBy('binders.id')->get();
+        $params = [];
+        $binders = $this->binders;
         foreach ($binders as $binder) {
-            $bIds[] = $binder->id;
+            $params['binders'][] = $binder->id;
         }
-        $substrates = $this->substrates()->get();
+        $substrates = $this->substrates;
         foreach ($substrates as $substrate) {
-            $substratesIds[] = $substrate->id;
+            $params['substrates'][] = $substrate->id;
         }
-
-        $environments = $this->environments()->get();
+        $environments = $this->environments;
         foreach ($environments as $environment) {
-            $envIds[] = $environment->getKey('id');
+            $params['environments'][] = $environment->getKey('id');
         }
-        $resistances = $this->resistances()->get();
+        $resistances = $this->resistances;
         foreach ($resistances as $resistance) {
-            $resIds[] = $resistance->getKey('id');
+            $params['resistances'][] = $resistance->getKey('id');
         }
 
 //        todo полный отстой - доработать
+        $pb =  Product::query();
+        foreach ($params as $table => $items){
+            foreach ($items as $key => $item){
+                $pb = $pb->join('product_' . $table . ' as ' . $table . $key, 'products.id', '=', $table . $key .  '.product_id')
+                    ->where($table . $key. '.' . Str::singular($table) . '_id', $item);
+            }
 
-        return
-            Product::query()
-                ->join('product_binders', 'products.id', '=', 'product_binders.product_id')
-                ->join('binders', 'binders.id', '=', 'product_binders.binder_id')
-                ->join('product_substrates', 'products.id', '=', 'product_substrates.product_id')
-                ->join('substrates', 'substrates.id', '=', 'product_substrates.substrate_id')
-                ->join('product_environments', 'products.id', '=', 'product_environments.product_id')
-                ->join('environments', 'environments.id', '=', 'product_environments.environment_id')
-                ->where('products.title', '<>', $this->title)
-                ->whereBetween('vs', [$this->vs - $factorVs, $this->vs + $factorVs])
-                ->whereBetween('dft', [$this->dft - $factorDft, $this->dft + $factorDft])
-                ->where('substrates.id', $substratesIds)
-                ->where('environments.id', $envIds)
-                ->selectRaw('products.*')
-                ->groupBy('products.id')
-                ->havingRaw("group_concat(binders.id order by binders.id) like ?", [implode(',', $bIds) . '%'])
-                ->get();
+        }
+        return $pb->whereBetween('vs', [$this->vs - $factorVs, $this->vs + $factorVs])
+            ->whereBetween('dft', [$this->dft - $factorDft, $this->dft + $factorDft])
+            ->get('products.*');
     }
 
     public function sluggable(): array
