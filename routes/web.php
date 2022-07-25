@@ -64,6 +64,9 @@ Route::group(['as' => 'products.', 'prefix' => 'products'], function () {
     Route::get('/{param}/{value}', [ProductController::class, 'indexBySlug'])
         ->where('param', '\w+')
         ->name('indexBySlug');
+    Route::get('/export/', [ProductController::class, 'export'])
+    ->name('export');
+
 
 });
 //likes

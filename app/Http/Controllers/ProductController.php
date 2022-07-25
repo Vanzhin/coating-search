@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ProductsExports;
 use App\Models\Product;
 use App\Services\LikeService;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
@@ -38,7 +40,7 @@ class ProductController extends Controller
     public function compare()
     {
         if (session()->exists('products.compare')) {
-            $products = Product::query()->whereIn('id', session()->get('products.compare'))->get();
+            $products = Product::with(Product::relations())->whereIn('id', session('products.compare'))->get();
 
         } else $products = [];
 
@@ -98,5 +100,17 @@ class ProductController extends Controller
             'compareProduct' => session()->get('products.compare') ?? [],
             'string' => $string,
         ]);
+    }
+
+    /**
+     * @param array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Session\SessionManager|\Illuminate\Session\Store|mixed $product_ids
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function export(array $product_ids = null)
+    {
+        if (!isset($product_ids)){
+            $product_ids = session('products.compare');
+        }
+        return Excel::download(new ProductsExports($product_ids), 'products.xlsx');
     }
 }

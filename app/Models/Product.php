@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, BelongsToMany, HasOne};
 use Illuminate\Support\Str;
-use phpDocumentor\Reflection\Types\Static_;
 
 class Product extends Model
 {
@@ -72,15 +71,15 @@ class Product extends Model
             'description' => 'Описание',
             'brand_id' => 'Производитель',
             'catalog_id' => 'Сегмент',
-            'vs' => 'Сухой остаток,&nbsp;об %',
-            'dft' => 'Стандартная ТСП,&nbsp;мкм',
-            'dry_to_touch' => 'Сухой на отлип,&nbsp;ч',
-            'dry_to_handle' => 'Сухой до перемещения,&nbsp;ч',
-            'min_int' => 'Минимальный интервал перекрытия,&nbsp;ч',
-            'max_int' => 'Максимальный интервал перекрытия,&nbsp;д',
+            'vs' => 'Сухой остаток, об %',
+            'dft' => 'Стандартная ТСП, мкм',
+            'dry_to_touch' => 'Сухой на отлип, ч',
+            'dry_to_handle' => 'Сухой до перемещения, ч',
+            'min_int' => 'Минимальный интервал перекрытия, ч',
+            'max_int' => 'Максимальный интервал перекрытия, д',
             'tolerance' => 'Толерантный к подготовке поверхности?',
-            'min_temp' => 'Минимальная т-ра отверждения,' . "&nbsp;&deg;C",
-            'max_service_temp' => 'Максимальная  т-ра эксплуатации,' . "&nbsp;&deg;C",
+            'min_temp' => 'Минимальная т-ра отверждения, °C',
+            'max_service_temp' => 'Максимальная  т-ра эксплуатации, °C',
             'pds' => 'Техническое описание',
         ];
     }
@@ -294,4 +293,6 @@ class Product extends Model
             ]
         ];
     }
+
+
 }
