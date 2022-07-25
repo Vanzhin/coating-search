@@ -13,7 +13,7 @@
         "laravel/sanctum": "^2.14.1",
         "laravel/socialite": "^5.5",
         "laravel/tinker": "^2.7",
-        "maatwebsite/excel": "^3.0.1",
+        "maatwebsite/excel": "^3.1",
         "psr/simple-cache": "^2.0",
         "snapappointments/bootstrap-select": "^1.13",
         "socialiteproviders/github": "^4.1",

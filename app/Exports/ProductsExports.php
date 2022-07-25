@@ -22,6 +22,7 @@ class ProductsExports implements FromQuery, WithMapping, WithHeadings, WithPrope
 
     use Exportable;
 
+
     private int $count = 1;
 
     public function __construct(array $product_ids)
