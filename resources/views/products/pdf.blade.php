@@ -115,7 +115,7 @@
     <a class="link" href="{{ route('home') }}">
         <img class="img" width="50" height="50" src="{{ public_path('mstile-150x150.png') }}" alt="{{env('APP_NAME')}}">
         <div align="justify" class="padding-bottom-15">
-            <div class="float-left">{{env('APP_NAME')}}</div> <div  class="text-small papping-top-5" align="right">Дата: {{ now() }}</div>
+            <div class="float-left">{{env('APP_NAME')}}</div> <div  class="text-small papping-top-5" align="right">Дата: {{ now('Asia/Yekaterinburg')->format('d.m.Y, H:i') }}</div>
         </div>
     </a>
     <hr>
