@@ -2,7 +2,8 @@
     <div class="container">
         <a id="name" data-appname="{{env('APP_URL')}}" class="navbar-brand col" href="{{ route('home') }}">
             <i class="fa-solid fa-layer-group"></i>
-            {{env('APP_NAME')}}
+            <span class="d-none d-md-inline-flex">{{env('APP_NAME')}}</span>
+
         </a>
         <a class="me-1 col btn btn-outline-secondary text-reset text-decoration-none" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"
         style="max-width: 50px;">
