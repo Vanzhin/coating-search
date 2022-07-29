@@ -65,7 +65,11 @@ Route::group(['as' => 'products.', 'prefix' => 'products'], function () {
         ->where('param', '\w+')
         ->name('indexBySlug');
     Route::get('/export/', [ProductController::class, 'export'])
-    ->name('export');
+        ->name('export');
+    Route::get('/pdf', [ProductController::class, 'createPdf'])
+        ->name('pdf');
+    Route::get('/pdf-view', [ProductController::class, 'viewPdf'])
+        ->name('pdf-view');
 
 
 });

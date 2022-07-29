@@ -8,13 +8,15 @@
         @auth()
             <div class="ms-1">
                 <a href="{{ route('products.export') }}" class="text-decoration-none btn-secondary p-2 rounded-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
-                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-                    </svg>
+                    <i class="fa-solid fa-file-excel"></i>
                 </a>
             </div>
         @endauth
+        <div class="ms-1">
+            <a href="{{ route('products.pdf') }}" class="text-decoration-none btn-secondary p-2 rounded-1">
+                <i class="fa-solid fa-file-pdf"></i>
+            </a>
+        </div>
     </section>
 @endsection
 @section('content')
@@ -24,10 +26,12 @@
                 @foreach($products as $product)
                     <div id="product-{{$product->id}}" class="track col-6 col-sm-3 p-0">
                         <div class="heading bg-secondary justify-content-between d-flex align-items-center px-1">
-                            <a href="{{route('products.show', $product)}}" class="text-light text-decoration-none flex-fill text-center">
+                            <a href="{{route('products.show', $product)}}"
+                               class="text-light text-decoration-none flex-fill text-center">
                                 <h5 class="p-0 m-0">{{Str::upper($product->title)}}</h5>
                             </a>
-                            <button id="del-{{$product->id}}"type="button" class="btn btn-close" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                            <button id="del-{{$product->id}}" type="button" class="btn btn-close" data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal"
                                     data-bs-product="{{Str::upper($product->title)}}"
                                     data-bs-id="{{$product->id}}">
                             </button>
@@ -36,23 +40,27 @@
                             @if($key === 'title')
                                 @continue
                             @endif
-                                <div class="entry text-center">
-                                    <h6>{!! $value !!}</h6>
-                                    <h4>
-                                        @if($product->$key === true){{'Да'}}
-                                        @elseif($product->$key or $product->$key === 0){{$product->$key}}
-                                        @else {{'Нет'}}
-                                        @endif
-                                    </h4>
-                                </div>
+                            <div class="entry text-center">
+                                <h6>{!! $value !!}</h6>
+                                <h4>
+                                    @if($product->$key === true){{'Да'}}
+                                    @elseif($product->$key or $product->$key === 0){{$product->$key}}
+                                    @else {{'Нет'}}
+                                    @endif
+                                </h4>
+                            </div>
                         @endforeach
                         @foreach($linkedFields as $key => $value)
                             <div class="entry large text-center">
                                 <h6>{!! $value !!}</h6>
                                 <h4>
-                                    @foreach($product->$key as $item)
-                                        <span>{{Str::ucfirst($item->title) ?? 'нет'}}</span><br>
-                                    @endforeach
+                                    @if(!count($product->$key))
+                                        {{ 'Нет' }}
+                                    @else
+                                        @foreach($product->$key as $item)
+                                            <span>{{Str::ucfirst($item->title) ?? 'нет'}}</span><br>
+                                        @endforeach
+                                    @endif
                                 </h4>
                             </div>
                         @endforeach
@@ -72,7 +80,7 @@
                     <div class="modal-message text-center"></div>
                 </div>
                 <div class="modal-footer">
-                    <a id="close"  class="btn btn-secondary col" data-bs-dismiss="modal" hidden>ОК</a>
+                    <a id="close" class="btn btn-secondary col" data-bs-dismiss="modal" hidden>ОК</a>
                     <a id="delete" href="javascript:;" class="btn btn-outline-danger col">Удалить</a>
                 </div>
             </div>
@@ -80,23 +88,23 @@
     </div>
     @push('js')
         <script>
-{{--todo функция comparedProductUpdate дублируется в compare-general.js, удалить дублирование--}}
-            function comparedProductUpdate(total, badgesClassName, buttonsClassName)
-            {
+            {{--todo функция comparedProductUpdate дублируется в compare-general.js, удалить дублирование--}}
+            function comparedProductUpdate(total, badgesClassName, buttonsClassName) {
                 const badges = document.querySelectorAll('.' + badgesClassName);
                 const compare_btns = document.querySelectorAll('.' + buttonsClassName);
-                if(total === 0){
+                if (total === 0) {
                     badges.forEach(badge => badge.innerText = '');
                     compare_btns.forEach(compare_btn => compare_btn.classList.add('disabled'));
 
-                } else if(total > 1) {
+                } else if (total > 1) {
                     badges.forEach(badge => badge.innerText = total);
                     compare_btns.forEach(compare_btn => compare_btn.classList.remove('disabled'))
-                } else{
+                } else {
                     badges.forEach(badge => badge.innerText = total);
                     compare_btns.forEach(compare_btn => compare_btn.classList.add('disabled'))
                 }
             }
+
             const deleteModal = document.getElementById('deleteModal');
             const del = deleteModal.querySelector('#delete');
             const close = document.getElementById('close');
@@ -124,7 +132,7 @@
             myModalEl.addEventListener('click', () => {
                 const id = event.target.getAttribute('product-to-delete');
                 event.target.classList.toggle('disabled')
-                event.target.innerHTML= '<div class="spinner-border" role="status"></div>'
+                event.target.innerHTML = '<div class="spinner-border" role="status"></div>'
                 const product = document.getElementById('product-' + id);
                 sendCompare('/products/compare/' + id).then(() => {
                     const title = document.getElementById('del-' + id).getAttribute('data-bs-product');
@@ -134,14 +142,14 @@
 
                     const modalTitle = document.querySelector('.modal-message');
                     modalTitle.textContent = 'Удалено: ' + title;
-                    if(!document.querySelector('.track')){
+                    if (!document.querySelector('.track')) {
                         document.querySelector('.scenes').innerHTML = '<h4 class="text-warning text-center">Список пуст</h4>';
                     }
 
                 })
             })
 
-            async function sendCompare(url){
+            async function sendCompare(url) {
 
                 let response = await fetch(url, {
                     method: 'GET',

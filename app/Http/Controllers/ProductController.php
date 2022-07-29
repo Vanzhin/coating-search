@@ -7,6 +7,8 @@ use App\Models\Product;
 use App\Services\LikeService;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
+use Pdf;
+
 
 class ProductController extends Controller
 {
@@ -108,9 +110,34 @@ class ProductController extends Controller
      */
     public function export(array $product_ids = null)
     {
-        if (!isset($product_ids)){
+        if (!isset($product_ids)) {
             $product_ids = session('products.compare');
         }
         return Excel::download(new ProductsExports($product_ids), 'products.xlsx');
     }
+
+
+    public function createPdf()
+    {
+        $products = Product::with(Product::relations())->whereIn('id', session('products.compare'))->get();
+        $pdf = Pdf::loadView('products.pdf', [
+            'products' => $products,
+            'linkedFields' => Product::getLinkedFields(),
+            'fieldsToShow' => Product::getFieldsToShow(),
+        ]);
+
+        return $pdf->download('compare_products.pdf');
+    }
+
+    public function viewPdf(){
+        $products = Product::with(Product::relations())->whereIn('id', session('products.compare'))->get();
+
+        return view('products.pdf',[
+            'products' => $products,
+            'linkedFields' => Product::getLinkedFields(),
+            'fieldsToShow' => Product::getFieldsToShow(),
+        ]);
+
+    }
+
 }
