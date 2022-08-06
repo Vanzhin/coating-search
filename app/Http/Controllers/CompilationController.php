@@ -57,7 +57,8 @@ class CompilationController extends Controller
                 'item' => Product::find($request->input('product_id'))->title . ' добавлен в подборку ' .  $created->title,
                 ]);
         }
-        return back()->with('error', __('messages.compilations.created.error'))->withInput();    }
+        return back()->with('error', __('messages.compilations.created.error'))->withInput();
+    }
 
     /**
      * Display the specified resource.
@@ -94,7 +95,15 @@ class CompilationController extends Controller
      */
     public function update(UpdateRequest $request, Compilation $compilation)
     {
-        dd($request,$compilation);
+        $data = $request->validated();
+        $updated = $compilation->fill($data)->save();
+        if($updated){
+            return back()->with([
+                'success' => __('messages.compilations.updated.success'),
+            ]);
+        }
+        return back()->with('error',__('messages.compilations.updated.error'))->withInput();
+
     }
 
     /**
