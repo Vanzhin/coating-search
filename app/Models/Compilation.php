@@ -7,6 +7,7 @@ use App\Traits\TModel;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Compilation extends Model implements IModel
@@ -16,7 +17,8 @@ class Compilation extends Model implements IModel
     protected $fillable = [
         'title',
         'user_id',
-        'is_private'
+        'is_private',
+        'description',
     ];
 
     protected $casts = [
@@ -26,9 +28,14 @@ class Compilation extends Model implements IModel
     public function products(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'compilations_products',
-            'product_id', 'compilation_id',
+            'compilation_id', 'product_id',
             'id', 'id'
         );
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
 

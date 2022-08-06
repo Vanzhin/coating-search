@@ -26,7 +26,6 @@
                            minlength="6"
                            maxlength="50"
                            value="{{Auth::user()->name ?? null}}"
-
                     >
                     <div class="valid-feedback">
                         Отлично!
@@ -65,7 +64,6 @@
                     <textarea class="form-control" id="validationCustomMessage" required
                               style="resize: none;"
                               name="message" rows="6"
-                              name="message"
                               minlength="10" maxlength="500"
                     ></textarea>
                     <div class="valid-feedback">

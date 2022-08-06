@@ -42,7 +42,8 @@ class ViewServiceProvider extends ServiceProvider
                 $counts['userSearches'] = app(ProductSearchService::class)
                     ->getAllSearches(Auth::user())
                     ->count();
-                $counts['userProducts'] = app(ViewDataService::class)->getUserLikes(Auth::user()->id);
+                $counts['userProducts'] = app(ViewDataService::class)->getUserLikes(Auth::user());
+                $counts['userCompilations'] = app(ViewDataService::class)->getUserCompilations(Auth::user());
             }
 
 

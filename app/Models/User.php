@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -77,5 +78,21 @@ class User extends Authenticatable implements MustVerifyEmail
             'role' => 'Роль',
             'status' => 'Статус',
         ];
+    }
+
+    public function compilations(): HasMany
+    {
+        return $this->hasMany(Compilation::class, 'user_id', 'id');
+    }
+
+    public function compiledProducts()
+    {
+        return Product::query()
+            ->join('compilations_products as cp','products.id', '=','cp.product_id' )
+            ->join('compilations as c','c.id', '=','cp.compilation_id' )
+            ->join('users as u','u.id', '=','c.user_id' )
+            ->where('u.id', '=', $this->id)
+            ->distinct()
+            ->get('products.*');
     }
 }

@@ -11,7 +11,7 @@
         </a>
         <div class="col-md gap-2 offset d-flex flex-fill-1 justify-content-md-between align-items-center flex-nowrap" id="navbarsExample05" style="">
             <!-- Button trigger modal -->
-            <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <span class="d-none d-md-inline-flex">Поиск</span>
             </button>
@@ -44,6 +44,12 @@
                             <a class="my-products-btn d-flex justify-content-between align-items-center dropdown-item" href="{{ route('account.products') }}">
                                 <span>Мои покрытия</span>
                                 <span class="my-products badge bg-light text-dark ms-1">{{ $counts['userProducts'] !== 0 ? $counts['userProducts'] : null }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="my-products-btn d-flex justify-content-between align-items-center dropdown-item" href="{{ route('account.compilations') }}">
+                                <span>Мои подборки</span>
+                                <span class="my-products badge bg-light text-dark ms-1">{{ $counts['userCompilations'] !== 0 ? $counts['userCompilations'] : null }}</span>
                             </a>
                         </li>
                         <li><a class="dropdown-item disabled" href="#">Настройки</a></li>

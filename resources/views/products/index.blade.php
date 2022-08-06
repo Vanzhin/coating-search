@@ -17,12 +17,12 @@
 @section('content')
     <div class="album py-5 bg-light min-vh-100">
         <div class="container">
-            {{--            @include('inc.message')--}}
+            @include('inc.message')
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 @forelse($products as $product)
                     <x-products.card :product="$product" :likes="$likes"/>
                 @empty
-                    <h2>Записей нет</h2>
+                    <h2 class="text-center">Записей нет</h2>
                 @endforelse
             </div>
             <div class="mt-2">
