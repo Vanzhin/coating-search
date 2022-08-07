@@ -135,7 +135,6 @@ class ProductController extends Controller
             'param' => $product,
             'title' => 'Обновление',
             'button' => 'Обновить'
-
         ]);
     }
 
