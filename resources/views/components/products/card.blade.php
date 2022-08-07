@@ -57,9 +57,7 @@
                                     <textarea name="description" class="form-control" id="compilationDescription"
                                               rows="5"
                                               cols="25"
-                                              style="resize: none;"
-                                    >
-                                    </textarea>
+                                              style="resize: none;"></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Сохранить</button>
                             </form>

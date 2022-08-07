@@ -73,7 +73,6 @@ class CompilationController extends Controller
         return view('compilations.show', [
             'compilation' => $compilation,
             'likes' => app(LikeService::class)->getLikedProductsId(),
-//            'user' => null,
         ]);
     }
 

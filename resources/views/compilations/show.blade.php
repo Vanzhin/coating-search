@@ -57,14 +57,8 @@
                                            maxlength="50">
                                 </div>
                                 <div class="mb-3 text-start">
-                                    <label for="compilDescription"
-                                           class="form-label text-secondary text-start">Описание</label>
-                                    <textarea name="description" class="form-control" id="compilDescription"
-                                              rows="5"
-                                              cols="25"
-                                              style="resize: none;">
-                                        {{$compilation->description}}
-                                    </textarea>
+                                    <label for="compilDescription" class="form-label text-secondary text-start">Описание</label>
+                                    <textarea name="description" class="form-control" id="compilDescription" rows="5" cols="25" style="resize: none;">{{$compilation->description}}</textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Обновить</button>
                             </form>

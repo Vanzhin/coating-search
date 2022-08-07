@@ -31,8 +31,7 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer(['components.admin.sidebar', 'components.header'], function ($view) {
-// https://laravel.com/docs/9.x/views#sharing-data-with-all-views
+        View::composer(['components.header'], function ($view) {
             $counts['products'] = app(ViewDataService::class)->getAllProducts();
             $counts['compare'] = is_array(session()->get('products.compare')) ? count(session()->get('products.compare')) : 0;
 
@@ -43,14 +42,25 @@ class ViewServiceProvider extends ServiceProvider
                 $counts['userProducts'] = app(ViewDataService::class)->getUserLikes(Auth::user());
                 $counts['userCompilations'] = app(ViewDataService::class)->getUserCompilations(Auth::user());
             }
-            if (Auth::user()->role === 'admin') {
-                $counts['users'] = User::all()->count();
-                $counts['searches'] = Search::all()->count();
-            }
+
+
+            return $view->with('counts', $counts);
+        });
+        View::composer(['components.admin.sidebar'], function ($view) {
+            $counts['products'] = app(ViewDataService::class)->getAllProducts();
+            $counts['compare'] = is_array(session()->get('products.compare')) ? count(session()->get('products.compare')) : 0;
+            $counts['users'] = User::all()->count();
+            $counts['searches'] = Search::all()->count();
+            $counts['userSearches'] = app(ProductSearchService::class)
+                ->getAllSearches(Auth::user())
+                ->count();
+            $counts['userProducts'] = app(ViewDataService::class)->getUserLikes(Auth::user());
+            $counts['userCompilations'] = app(ViewDataService::class)->getUserCompilations(Auth::user());
 
 
             return $view->with('counts', $counts);
         });
 
     }
+
 }
