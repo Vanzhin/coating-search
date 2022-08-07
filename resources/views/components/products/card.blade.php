@@ -67,26 +67,10 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li class="dropdown">
-                            <a class="dropdown-toggle dropdown-item" href="#" data-bs-toggle="dropdown"
-                               aria-expanded="false">Добавить в ...</a>
-                            <ul class="dropdown-menu dropdown-menu-dark">
-                                {{--                                todo убрать повтор запросов к бд--}}
-                                @foreach(Auth::user()->compilations as $comp)
-                                    @if($comp->products->contains('id', $product->id))
-                                        @continue
-                                    @endif
-                                    <li>
-                                        <a class="dropdown-item"
-                                           href="{{ route('compilations.add', ['product'=> $product, 'compilation' => $comp]) }}">{{ $comp->title }}</a>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </li>
-                        @if(request()->routeIs('compilations*'))
+                        @if(Auth::user()->compilations->count())
                             <li class="dropdown">
                                 <a class="dropdown-toggle dropdown-item" href="#" data-bs-toggle="dropdown"
-                                   aria-expanded="false">Переместить в ...</a>
+                                   aria-expanded="false">Добавить в ...</a>
                                 <ul class="dropdown-menu dropdown-menu-dark">
                                     {{--                                todo убрать повтор запросов к бд--}}
                                     @foreach(Auth::user()->compilations as $comp)
@@ -95,16 +79,34 @@
                                         @endif
                                         <li>
                                             <a class="dropdown-item"
-                                               href="{{ route('compilations.move', ['product'=> $product, 'compTo' => $comp, 'compFrom' => $compilation]) }}">{{ $comp->title }}</a>
+                                               href="{{ route('compilations.add', ['product'=> $product, 'compilation' => $comp]) }}">{{ $comp->title }}</a>
                                         </li>
                                     @endforeach
                                 </ul>
                             </li>
-                            <li class="dropdown">
-                                <a class="dropdown-item"
-                                   href="{{ route('compilations.delete', ['product'=> $product, 'compilation' => $compilation]) }}">Удалить</a>
-                            </li>
-
+                            @if(request()->routeIs('compilations*'))
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle dropdown-item" href="#" data-bs-toggle="dropdown"
+                                       aria-expanded="false">Переместить в ...</a>
+                                    <ul class="dropdown-menu dropdown-menu-dark">
+                                        @foreach(Auth::user()->compilations as $comp)
+                                            @if($comp->products->contains('id', $product->id))
+                                                @continue
+                                            @endif
+                                            <li>
+                                                <a class="dropdown-item"
+                                                   href="{{ route('compilations.move', ['product'=> $product, 'compTo' => $comp, 'compFrom' => $compilation]) }}">{{ $comp->title }}</a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+                                @if((!isset($user)) or ((Auth::user() ? Auth::user()->id : null) === $user->id))
+                                    <li class="dropdown">
+                                        <a class="dropdown-item"
+                                           href="{{ route('compilations.delete', ['product'=> $product, 'compilation' => $compilation]) }}">Удалить</a>
+                                    </li>
+                                @endif
+                            @endif
                         @endif
                     </ul>
                 </div>

@@ -114,10 +114,19 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-//todo сделать мидлвару чтобы пользователь мог смотреть только свой контент
+//public
+
+Route::get('/compilations/by/{user}', [CompilationController::class, 'showAllByUser'])
+    ->where('user','\d+')
+    ->name('compilations.public');
+Route::get('/compilations/{compilation}/by/{user}', [CompilationController::class, 'showOneByUser'])
+    ->where('user','\d+')
+    ->where('compilation', '\d+')
+    ->name('compilations.one');
 
 //для авторизованных пользователей
 Route::group(['middleware' => ['auth']], function () {
+//todo сделать мидлвару чтобы пользователь мог смотреть только свой контент
 
 //compilations
     Route::resources([

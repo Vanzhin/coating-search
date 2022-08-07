@@ -4,61 +4,63 @@
 @endsection
 @section('header')
     <section class="text-center container">
-        <h1 class="fw-light">Мои подборки покрытий</h1>
+        <h1 class="fw-light">
+            {{ $title ?? 'Мои подборки покрытий'}}
+        </h1>
     </section>
 @endsection
 @section('content')
     <div class="album py-5 bg-light min-vh-100 ">
         <div class="container d-flex flex-column rounded-2">
-            @if(Auth::user())
-                @forelse($compilations as $compilation)
-                    <div id="{{$compilation->id}}" class="list-group m-1 mw-100">
-                        <div class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
-                            <a href="{{route('compilations.show', [$compilation])}}"
-                               class="text-decoration-none text-reset d-flex gap-2 w-100 flex-column ">
-                                <div>
-                                    <h4 class="mb-0">
-                                        <span>{{Str::ucfirst($compilation->title ?? 'Без названия')}}</span>
-                                        <span class="badge bg-secondary">{{ $compilation->products->count() }}</span>
-                                    </h4>
-                                    <p class="mb-0 opacity-75">{{ $compilation->description }}</p>
-                                </div>
-                                <small class="opacity-50 text-nowrap">{{$compilation->updated_at}}</small>
-                            </a>
-                            <h4>@if($compilation->is_private)
+            @forelse($compilations as $compilation)
+                <div id="{{$compilation->id}}" class="list-group m-1 mw-100">
+                    <div class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+                        <a href="@if((!isset($user)) or ((Auth::user() ? Auth::user()->id : null) === $user->id))
+                        {{ route('compilations.show', [$compilation]) }}
+                        @else
+                        {{ route('compilations.one', [$compilation, $user]) }}
+                        @endif"
+                           class="text-decoration-none text-reset d-flex gap-2 w-100 flex-column ">
+                            <div>
+                                <h4 class="mb-0">
+                                    <span>{{Str::ucfirst($compilation->title ?? 'Без названия')}}</span>
+                                    <span class="badge bg-secondary">{{ $compilation->products->count() }}</span>
+                                </h4>
+                                <p class="mb-0 opacity-75">{{ $compilation->description }}</p>
+                            </div>
+                            <small class="opacity-50 text-nowrap">{{$compilation->updated_at}}</small>
+                        </a>
+                        @if((!isset($user)) or ((Auth::user() ? Auth::user()->id : null) === $user->id))
+                            <h4>
+                                @if($compilation->is_private)
                                     <span data-comp="{{ $compilation->id }}"
                                           title="Не доступна для других пользователей"
                                           class="text-secondary text-center align-bottom"
                                           onclick="PrivateHandle(this)">
-                                                <i class="fa-solid fa-lock"></i>
-                                            </span>
+                                        <i class="fa-solid fa-lock"></i>
+                                    </span>
                                 @else
                                     <span data-comp="{{ $compilation->id }}"
                                           title="Доступна для других пользователей"
                                           class="text-secondary text-center align-bottom"
                                           onclick="PrivateHandle(this)">
-                                                 <i class="fa-solid fa-lock-open"></i>
-                                            </span>
+                                        <i class="fa-solid fa-lock-open"></i>
+                                    </span>
                                 @endif</h4>
-                            <div class="btn-group">
-                                {{--                                @foreach($compilation->products as $product)--}}
-                                {{--                                    <a href="{{ route('products.show', $product) }}" class="btn btn-outline-secondary">{{ Str::upper($product->title) }}</a>--}}
-                                {{--                                @endforeach--}}
-                            </div>
                             <span class="btn btn-close" data-bs-toggle="modal"
                                   data-bs-target="#compilationDeleteModal"
                                   data-bs-item="{{$compilation->title ?? 'Без названия'}}"
                                   data-bs-id="{{$compilation->id}}">
                             </span>
-                        </div>
+                        @endif
                     </div>
-                @empty
-                    <h2>Записей нет</h2>
-                @endforelse
-                <div class="my-2">
-                    {{ $compilations->onEachSide(0)->links() }}
                 </div>
-            @endif
+            @empty
+                <h2>Записей нет</h2>
+            @endforelse
+            <div class="my-2">
+                {{ $compilations->onEachSide(0)->links() }}
+            </div>
         </div>
     </div>
     <!-- Modal -->

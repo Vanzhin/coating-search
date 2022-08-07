@@ -6,6 +6,7 @@ use App\Http\Requests\Compilations\CreateRequest;
 use App\Http\Requests\Compilations\UpdateRequest;
 use App\Models\Compilation;
 use App\Models\Product;
+use App\Models\User;
 use App\Services\LikeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +26,7 @@ class CompilationController extends Controller
             'compilations' => Compilation::query()
                 ->orderBy('updated_at', 'desc')
                 ->paginate(Config::get('constants.ITEMS_PER_PAGE')),
+
         ]);
     }
 
@@ -71,7 +73,7 @@ class CompilationController extends Controller
         return view('compilations.show', [
             'compilation' => $compilation,
             'likes' => app(LikeService::class)->getLikedProductsId(),
-
+//            'user' => null,
         ]);
     }
 
@@ -180,6 +182,28 @@ class CompilationController extends Controller
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 400);
         }
+    }
 
+    public function showAllByUser(User $user)
+    {
+        return view('compilations.index', [
+            'compilations' => Compilation::query()
+                ->where('is_private', '=', false)
+                ->where('user_id', '=', $user->id)
+                ->orderBy('updated_at', 'desc')
+                ->paginate(Config::get('constants.ITEMS_PER_PAGE')),
+            'user' => $user,
+            'title' => 'Подборки пользователя ' . $user->name,
+        ]);
+    }
+
+    public function showOneByUser(Compilation $compilation, User $user)
+    {
+        return view('compilations.show', [
+            'compilation' => $compilation,
+            'likes' => app(LikeService::class)->getLikedProductsId(),
+            'user' => $user,
+
+        ]);
     }
 }

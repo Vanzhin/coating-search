@@ -7,10 +7,10 @@
     <section class="text-center container">
         <h1 class="fw-light d-flex pt-3">
             <div class="flex-fill">
-                {{ Str::ucfirst($compilation->title ?? null) }}
+                {{ Str::ucfirst($compilation->title ?? null) }}{{ isset($user) ? '(' . $user->name .')' : null}}
                 <span class="badge bg-secondary">{{ $compilation->products->count() }}</span>
-
             </div>
+            @if((!isset($user)) or ((Auth::user() ? Auth::user()->id : null) === $user->id))
             <div class="d-flex">
                 <div class="ms-1">
                     @if($compilation->is_private)
@@ -72,6 +72,7 @@
                     </div>
                 </div>
             </div>
+            @endif
         </h1>
     </section>
 @endsection
@@ -82,7 +83,7 @@
             <h3 class="text-start bg-white rounded-2">{{ Str::ucfirst($compilation->description) }}</h3>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 @forelse($compilation->products as $product)
-                    <x-products.card :product="$product" :likes="$likes" :compilation="$compilation"/>
+                    <x-products.card :product="$product" :likes="$likes" :compilation="$compilation" :user="$user ?? null"/>
                 @empty
                     <h2 class="text-center w-100">Записей нет</h2>
                 @endforelse
