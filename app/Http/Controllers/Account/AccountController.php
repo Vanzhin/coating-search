@@ -44,7 +44,7 @@ class AccountController extends Controller
     public function showCompilations()
     {
         return view('compilations.index', [
-            'compilations' => Compilation::query()
+            'compilations' => Compilation::with('products')
                 ->where('user_id', Auth::user()->getAuthIdentifier())
                 ->orderBy('updated_at', 'desc')
                 ->paginate(Config::get('constants.ITEMS_PER_PAGE')),

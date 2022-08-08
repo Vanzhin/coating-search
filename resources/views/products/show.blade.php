@@ -4,6 +4,7 @@
 @endsection
 @section('content')
     <div class="position-relative overflow-hidden p-3 p-md-5 text-center bg-light">
+        @include('inc.message')
         <div class="card w-100">
             <h5 class="card-header d-flex justify-content-between align-items-center gap-2 text-secondary">
                 <span class="flex-fill text-dark">{{ Str::upper($product->title) }}</span>
@@ -13,7 +14,8 @@
                     </a>
                 @endif
                 @auth
-                   @if(Auth::user()->role === 'admin')
+                    <x-products.actions.compilation :product="$product" :compilation="$compilation ?? null "/>
+                @if(Auth::user()->role === 'admin')
                        <a href="{{ route('admin.products.edit',['product' => $product]) }}" class="text-warning"><i class="fa-solid fa-gear"></i></a>
                     @endif
                     <span like="{{$product->id}}" onclick="likeHandle(this)">

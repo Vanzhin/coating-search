@@ -8,10 +8,8 @@ use App\Models\Compilation;
 use App\Models\Product;
 use App\Models\User;
 use App\Services\LikeService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Str;
 
 class CompilationController extends Controller
 {
@@ -23,7 +21,7 @@ class CompilationController extends Controller
     public function index()
     {
         return view('compilations.index', [
-            'compilations' => Compilation::query()
+            'compilations' => Compilation::with('products')
                 ->orderBy('updated_at', 'desc')
                 ->paginate(Config::get('constants.ITEMS_PER_PAGE')),
 
@@ -73,6 +71,7 @@ class CompilationController extends Controller
         return view('compilations.show', [
             'compilation' => $compilation,
             'likes' => app(LikeService::class)->getLikedProductsId(),
+            'products' => $compilation->products()->paginate(Config::get('constants.ITEMS_PER_PAGE')),
         ]);
     }
 

@@ -3,14 +3,14 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{Auth\LoginController,
+    Auth\UnauthorizedController,
     OAuthController,
     ProductController,
     SearchController,
     HomeController,
     LikeController,
     CommentController,
-    CompilationController,
-};
+    CompilationController};
 use App\Http\Controllers\Account\AccountController as AccountController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -115,7 +115,6 @@ Auth::routes(['verify' => true]);
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 //public
-
 Route::get('/compilations/by/{user}', [CompilationController::class, 'showAllByUser'])
     ->where('user','\d+')
     ->name('compilations.public');
@@ -126,35 +125,38 @@ Route::get('/compilations/{compilation}/by/{user}', [CompilationController::clas
 
 //для авторизованных пользователей
 Route::group(['middleware' => ['auth']], function () {
+    Route::get('/unauthorized', UnauthorizedController::class)
+        ->name('unauthorized');
 //todo сделать мидлвару чтобы пользователь мог смотреть только свой контент
 
 //compilations
     Route::resources([
         '/compilations' => CompilationController::class,
     ]);
-    Route::group(['as' => 'compilations.', 'prefix' => 'compilations'], function () {
+    Route::group(['as' => 'compilations.', 'prefix' => 'compilations', 'middleware'=> 'ensureUserIsYou'], function () {
+            Route::get('/', [CompilationController::class, 'index'])
+                ->name('compilations');
+            Route::get('/add/product/{product}/to/compilation/{compilation}', [CompilationController::class, 'addProduct'])
+                ->where('product','\d+')
+                ->where('compilation', '\d+')
+                ->name('add');
+            Route::get('/delete/product/{product}/from/compilation/{compilation}', [CompilationController::class, 'deleteProduct'])
+                ->where('product','\d+')
+                ->where('compilation', '\d+')
+                ->name('delete');
+            Route::get('/move/product/{product}/from/compilation/{compFrom}/to/{compTo}', [CompilationController::class, 'moveProduct'])
+                ->where('product','\d+')
+                ->where('compFrom', '\d+')
+                ->where('compTo', '\d+')
+                ->name('move');
+            Route::get('/private/{compilation}', [CompilationController::class, 'privateHandle'])
+                ->where('compilation', '\d+')
+                ->name('private');
 
-        Route::get('/', [CompilationController::class, 'index'])
-            ->name('compilations');
-        Route::get('/add/product/{product}/to/compilation/{compilation}', [CompilationController::class, 'addProduct'])
-            ->where('product','\d+')
-            ->where('compilation', '\d+')
-            ->name('add');
-        Route::get('/delete/product/{product}/from/compilation/{compilation}', [CompilationController::class, 'deleteProduct'])
-            ->where('product','\d+')
-            ->where('compilation', '\d+')
-            ->name('delete');
-        Route::get('/move/product/{product}/from/compilation/{compFrom}/to/{compTo}', [CompilationController::class, 'moveProduct'])
-            ->where('product','\d+')
-            ->where('compFrom', '\d+')
-            ->where('compTo', '\d+')
-            ->name('move');
-        Route::get('/private/{compilation}', [CompilationController::class, 'privateHandle'])
-            ->where('compilation', '\d+')
-            ->name('private');
 
 
     });
+
     Route::group(['as' => 'account.', 'prefix' => 'my', 'middleware' => 'verified'], function () {
         Route::get('/profile', [AccountController::class, 'index'])
             ->name('profile');

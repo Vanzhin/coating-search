@@ -117,8 +117,6 @@
         })
         const myModalEl = document.getElementById('delete');
         const modalMessage = document.querySelector('.modal-message');
-        // console.log(modalMessage);
-        //         modalMessage.innerText = 'Поиск удален';
 
         myModalEl.addEventListener('click', () => {
             const id = event.target.getAttribute('item-to-delete');
