@@ -31,7 +31,9 @@
                             <small class="opacity-50 text-nowrap">{{$compilation->updated_at}}</small>
                         </a>
                         @if((!isset($user)) or ((Auth::user() ? Auth::user()->id : null) === $user->id))
-                            <h4>
+
+                            <h4 class="d-flex">
+                            <x-share :model="$compilation"></x-share>
                                 @if($compilation->is_private)
                                     <span data-comp="{{ $compilation->id }}"
                                           title="Не доступна для других пользователей"
@@ -46,7 +48,8 @@
                                           onclick="PrivateHandle(this)">
                                         <i class="fa-solid fa-lock-open"></i>
                                     </span>
-                                @endif</h4>
+                                @endif
+                            </h4>
                             <span class="btn btn-close" data-bs-toggle="modal"
                                   data-bs-target="#compilationDeleteModal"
                                   data-bs-item="{{$compilation->title ?? 'Без названия'}}"
@@ -86,8 +89,8 @@
 @endsection
 @push('js')
     <script>
-        const searchDeleteModal = document.getElementById('compilationDeleteModal');
-        searchDeleteModal.addEventListener('show.bs.modal', function (event) {
+        const CompilationDeleteModal = document.getElementById('compilationDeleteModal');
+        CompilationDeleteModal.addEventListener('show.bs.modal', function (event) {
             // Button that triggered the modal
             // возвращаю кнопку #delete в первоначальное состояние
             const myModalEl = document.getElementById('delete');
@@ -108,8 +111,8 @@
             // and then do the updating in a callback.
             //
             // Update the modal's content.
-            const modalTitle = searchDeleteModal.querySelector('.modal-message');
-            const item = searchDeleteModal.querySelector('#delete');
+            const modalTitle = CompilationDeleteModal.querySelector('.modal-message');
+            const item = CompilationDeleteModal.querySelector('#delete');
 
             modalTitle.textContent = 'Удалить подборку "' + title + '"?'
             item.setAttribute('item-to-delete', item_id)
