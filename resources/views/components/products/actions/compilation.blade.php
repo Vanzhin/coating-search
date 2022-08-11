@@ -53,12 +53,12 @@
         <li>
             <hr class="dropdown-divider">
         </li>
-        @if(Auth::user()->compilations->count() > 1)
+        @if(Auth::user()->compilations->diff($product->compilations->where('user_id', Auth::user()->id))->count() > 0)
             <li class="dropdown">
                 <a class="dropdown-toggle dropdown-item" href="#" data-bs-toggle="dropdown"
                    aria-expanded="false">Добавить в ...</a>
                 <ul class="dropdown-menu dropdown-menu-dark">
-                    {{--                                todo убрать повтор запросов к бд--}}
+                    {{--                                                    todo убрать повтор запросов к бд--}}
                     @foreach(Auth::user()->compilations as $comp)
                         @if($comp->products->contains('id', $product->id))
                             @continue
@@ -86,12 +86,14 @@
                         @endforeach
                     </ul>
                 </li>
-                @if((!isset($user)) or ((Auth::user() ? Auth::user()->id : null) === $user->id))
-                    <li class="dropdown">
-                        <a class="dropdown-item"
-                           href="{{ route('compilations.delete', ['product'=> $product, 'compilation' => $compilation]) }}">Удалить</a>
-                    </li>
-                @endif
+            @endif
+        @endif
+        @if(request()->routeIs('compilations*'))
+            @if((!isset($user)) or ((Auth::user() ? Auth::user()->id : null) === $user->id))
+                <li class="dropdown">
+                    <a class="dropdown-item"
+                       href="{{ route('compilations.delete', ['product'=> $product, 'compilation' => $compilation]) }}">Удалить</a>
+                </li>
             @endif
         @endif
     </ul>

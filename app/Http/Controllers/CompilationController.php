@@ -49,13 +49,13 @@ class CompilationController extends Controller
         $data = $request->validated();
         $data['user_id'] = Auth::user()->getAuthIdentifier();
         $created = Compilation::create($data);
-        if($created){
+        if ($created) {
             session()->forget('user.compilations');
             $created->products()->attach($request->input('product_id'));
             return back()->with([
                 'success' => __('messages.compilations.created.success'),
-                'item' => Product::find($request->input('product_id'))->title . ' добавлен в подборку ' .  $created->title,
-                ]);
+                'item' => Product::find($request->input('product_id'))->title . ' добавлен в подборку ' . $created->title,
+            ]);
         }
         return back()->with('error', __('messages.compilations.created.error'))->withInput();
     }
@@ -63,7 +63,7 @@ class CompilationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Compilation  $compilation
+     * @param \App\Models\Compilation $compilation
      * @return \Illuminate\Http\Response
      */
     public function show(Compilation $compilation)
@@ -78,7 +78,7 @@ class CompilationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Compilation  $compilation
+     * @param \App\Models\Compilation $compilation
      * @return \Illuminate\Http\Response
      */
     public function edit(Compilation $compilation)
@@ -89,27 +89,27 @@ class CompilationController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Compilation  $compilation
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Compilation $compilation
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateRequest $request, Compilation $compilation)
     {
         $data = $request->validated();
         $updated = $compilation->fill($data)->save();
-        if($updated){
+        if ($updated) {
             return back()->with([
                 'success' => __('messages.compilations.updated.success'),
             ]);
         }
-        return back()->with('error',__('messages.compilations.updated.error'))->withInput();
+        return back()->with('error', __('messages.compilations.updated.error'))->withInput();
 
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Compilation  $compilation
+     * @param \App\Models\Compilation $compilation
      * @return \Illuminate\Http\Response
      */
     public function destroy(Compilation $compilation)
@@ -126,11 +126,11 @@ class CompilationController extends Controller
 
     public function addProduct(Product $product, Compilation $compilation)
     {
-        if(!$compilation->products->contains($product)) {
+        if (!$compilation->products->contains($product)) {
             $compilation->products()->attach($product);
             return back()->with([
                 'success' => __('messages.compilations.updated.success'),
-                'item' => $product->title . ' добавлен в подборку ' .  $compilation->title,
+                'item' => $product->title . ' добавлен в подборку ' . $compilation->title,
             ]);
         }
         return back()->with('error', __('messages.compilations.updated.error'));
@@ -139,29 +139,31 @@ class CompilationController extends Controller
 
     public function deleteProduct(Product $product, Compilation $compilation)
     {
-        if($compilation->products->contains($product)) {
+        if ($compilation->products->contains($product)) {
             $compilation->products()->detach($product);
             return back()->with([
                 'success' => __('messages.compilations.updated.success'),
-                'item' => $product->title . ' удален из подборки ' .  $compilation->title,
+                'item' => $product->title . ' удален из подборки ' . $compilation->title,
             ]);
         }
         return back()->with('error', __('messages.compilations.updated.error'));
 
     }
+
     public function moveProduct(Product $product, Compilation $compFrom, Compilation $compTo)
     {
-        if($compFrom->products->contains($product) && !$compTo->products->contains($product)) {
+        if ($compFrom->products->contains($product) && !$compTo->products->contains($product)) {
             $compFrom->products()->detach($product);
             $compTo->products()->attach($product);
             return back()->with([
                 'success' => __('messages.compilations.updated.success'),
-                'item' => $product->title . ' перенесен из подборки ' .  $compFrom->title . ' в подборку ' . $compTo->title,
+                'item' => $product->title . ' перенесен из подборки ' . $compFrom->title . ' в подборку ' . $compTo->title,
             ]);
         }
         return back()->with('error', __('messages.compilations.updated.error'));
 
     }
+
     public function privateHandle(Compilation $compilation)
     {
         try {

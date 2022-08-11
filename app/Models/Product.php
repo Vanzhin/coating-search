@@ -294,12 +294,12 @@ class Product extends Model
         ];
     }
 
-//    public function compilations()
-//    {
-//        return $this->belongsToMany(Compilation::class, 'compilations_products',
-//        'product_id', 'compilation_id',
-//        'id', 'id');
-//    }
+    public function compilations(): BelongsToMany
+    {
+        return $this->belongsToMany(Compilation::class, 'compilations_products',
+        'product_id', 'compilation_id',
+        'id', 'id');
+    }
 
 
 }
