@@ -26,7 +26,7 @@
                     </div>
                     <div class="ms-4 ms-lg-3">
                         <span title="Редактировать" class="text-secondary" data-bs-toggle="modal"
-                        data-bs-target="#compilationEditModal">
+                              data-bs-target="#compilationEditModal">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </span>
                     </div>
@@ -76,18 +76,24 @@
     <div class="album py-5 bg-light min-vh-100">
         <div class="container">
             @include('inc.message')
-            <h3 class="text-start bg-white rounded-2">{{ Str::ucfirst($compilation->description) }}</h3>
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                @forelse($products as $product)
-                    <x-products.card :product="$product" :likes="$likes" :compilation="$compilation"
-                                     :user="$user ?? null"/>
-                @empty
-                    <h2 class="text-center w-100">Записей нет</h2>
-                @endforelse
-            </div>
-            <div class="mt-2">
-                {{ $products->onEachSide(0)->links() }}
-            </div>
+            @if(!$compilation->is_private or ((!isset($user)) or ((Auth::user() ? Auth::user()->id : null) === $user->id)))
+                <h3 class="text-start bg-white rounded-2">{{ Str::ucfirst($compilation->description) }}</h3>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                    @forelse($products as $product)
+                        <x-products.card :product="$product" :likes="$likes" :compilation="$compilation"
+                                         :user="$user ?? null"/>
+                    @empty
+                        <h2 class="text-center w-100">Записей нет</h2>
+                    @endforelse
+                </div>
+                <div class="mt-2">
+                    {{ $products->onEachSide(0)->links() }}
+                </div>
+            @else
+                <h2 class="text-center">Запись скрыта пользователем</h2>
+            @endif
+
+
         </div>
     </div>
 @endsection
