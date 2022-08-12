@@ -13,7 +13,7 @@
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <span class="d-none d-md-inline-flex">Поиск</span>
+                <span class="d-none d-lg-inline-flex">Поиск</span>
             </button>
             <a href="{{route('products.compare')}}"  class="position-relative compare-btn btn btn-outline-secondary @if($counts['compare'] < 2  or request()->routeIs('products.compare')) disabled @endif">
                 <i class="fa-solid fa-chart-simple"></i>
