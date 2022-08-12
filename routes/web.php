@@ -118,9 +118,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/compilations/by/{user}', [CompilationController::class, 'showAllByUser'])
     ->where('user','\d+')
     ->name('compilations.public');
-Route::get('/compilations/{compilation}/by/{user}', [CompilationController::class, 'showOneByUser'])
-    ->where('user','\d+')
-    ->where('compilation', '\d+')
+Route::get('/compilations/{compilation:slug}/by/{user:slug}', [CompilationController::class, 'showOneByUser'])
     ->name('compilations.one');
 
 //для авторизованных пользователей

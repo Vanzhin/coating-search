@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Services\LikeService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\View\View;
 
 class CompilationController extends Controller
 {
@@ -197,13 +198,15 @@ class CompilationController extends Controller
         ]);
     }
 
-    public function showOneByUser(Compilation $compilation, User $user)
+    public function showOneByUser( $compilation, User $user) : View
     {
+//        todo не работает если оставить так     public function showOneByUser( Compilation $compilation, User $user) : View
+        $compilation = Compilation::where('slug', $compilation)->first();
         return view('compilations.show', [
             'compilation' => $compilation,
             'likes' => app(LikeService::class)->getLikedProductsId(),
             'user' => $user,
-
+            'products' => $compilation->products()->paginate(Config::get('constants.ITEMS_PER_PAGE')),
         ]);
     }
 }

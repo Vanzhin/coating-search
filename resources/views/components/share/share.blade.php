@@ -34,12 +34,12 @@
                               maxlength="300"
                               style="resize: none;"></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">Отправить</button>
+                <button type="submit" class="btn btn-primary disabled">Отправить</button>
             </form>
         </li>
-        <li><a class="dropdown-item h3 text-center disabled" href="#"><i class="fa-brands fa-vk"></i></a></li>
-        <li><a class="dropdown-item h3 text-center disabled" href="#"><i class="fa-brands fa-whatsapp"></i></a></li>
-        <li><a class="dropdown-item h3 text-center disabled" href="#"><i class="fa-brands fa-telegram"></i></a></li>
+        <li><a class="dropdown-item h3 text-center" href="https://vk.com/share.php?url={{route('compilations.one', ['compilation' => $model, 'user' => Auth::user()])}}" target="_blank"><i class="fa-brands fa-vk"></i></a></li>
+        <li><a class="dropdown-item h3 text-center" href="https://api.whatsapp.com/send?text={{route('compilations.one', ['compilation' => $model, 'user' => Auth::user()])}}"><i class="fa-brands fa-whatsapp"></i></a></li>
+        <li><a class="dropdown-item h3 text-center" href="https://t.me/share/url?url={{route('compilations.one', ['compilation' => $model, 'user' => Auth::user()])}}&text="><i class="fa-brands fa-telegram"></i></a></li>
     </ul>
 </div>
 

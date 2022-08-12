@@ -12,8 +12,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Compilation extends Model implements IModel
 {
-    use HasFactory, TModel;
-    protected  $table = 'compilations';
+    use HasFactory, TModel, Sluggable;
+
+    protected $table = 'compilations';
     protected $fillable = [
         'title',
         'user_id',
@@ -39,4 +40,12 @@ class Compilation extends Model implements IModel
     }
 
 
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
+    }
 }

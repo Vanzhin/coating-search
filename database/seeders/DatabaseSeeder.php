@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             ProductNumbersSeeder::class,
             ProductResistancesSeeder::class,
             ProductSubstaratesSeeder::class,
+            AddSlugSeeder::class,
 
 
 

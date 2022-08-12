@@ -32,8 +32,7 @@
                         </a>
                         @if((!isset($user)) or ((Auth::user() ? Auth::user()->id : null) === $user->id))
 
-                            <h4 class="d-flex">
-                            <x-share :model="$compilation"></x-share>
+                            <div class="d-flex align-items-center gap-3 fs-2">
                                 @if($compilation->is_private)
                                     <span data-comp="{{ $compilation->id }}"
                                           title="Не доступна для других пользователей"
@@ -49,11 +48,13 @@
                                         <i class="fa-solid fa-lock-open"></i>
                                     </span>
                                 @endif
-                            </h4>
+                                <x-share :model="$compilation"></x-share>
+                            </div>
                             <span class="btn btn-close" data-bs-toggle="modal"
                                   data-bs-target="#compilationDeleteModal"
                                   data-bs-item="{{$compilation->title ?? 'Без названия'}}"
-                                  data-bs-id="{{$compilation->id}}">
+                                  data-bs-id="{{$compilation->id}}"
+                                  style="font-size: x-large">
                             </span>
                         @endif
                     </div>
