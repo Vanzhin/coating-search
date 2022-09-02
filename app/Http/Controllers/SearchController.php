@@ -145,7 +145,7 @@ class SearchController extends Controller
     public function update(UpdateRequest $request, Search $search)
     {
         $data = app(ProductSearchService::class)->getSearchData($request->validated());
-        if(Auth::user()->getAuthIdentifier() !==  $search->user_id){
+        if(Auth::user() && Auth::user()->getAuthIdentifier() !==  $search->user_id){
             $data['user_id'] = Auth::user()->getAuthIdentifier();
         }
         //todo зачем это?
